@@ -29,14 +29,15 @@ function buildUserProfile({ email, name }) {
 export function AuthProvider({ children }) {
   const [authState, setAuthState] = useState(getInitialAuthState)
 
-  const login = async ({ email, password, rememberMe = false }) => {
-    const response = await loginRequest({ email, password })
+  const login = async ({ identifier, password, rememberMe = false }) => {
+    const normalizedIdentifier = identifier.trim()
+    const response = await loginRequest({ identifier: normalizedIdentifier, password })
     const user = buildUserProfile(response.user)
 
     persistAuth({ token: response.access_token, user })
 
     if (rememberMe) {
-      localStorage.setItem(REMEMBERED_EMAIL_KEY, email.toLowerCase())
+      localStorage.setItem(REMEMBERED_EMAIL_KEY, normalizedIdentifier.toLowerCase())
     } else {
       localStorage.removeItem(REMEMBERED_EMAIL_KEY)
     }

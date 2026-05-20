@@ -9,6 +9,7 @@ from app.schemas.auth import AuthStatusResponse, AuthUser, LoginRequest, LoginRe
 
 DEMO_EMAIL = "ehteshamulhaque736@gmail.com"
 DEMO_PASSWORD = "123456789"
+DEMO_LOGIN_ID = "ehteshamulhaque736"
 TOKEN_PREFIX = "pr-engine"
 
 
@@ -42,14 +43,19 @@ def _decode_token(token: str) -> AuthUser | None:
 
 
 def login_user(payload: LoginRequest) -> LoginResponse:
-    if payload.email.lower() != DEMO_EMAIL or payload.password != DEMO_PASSWORD:
+    email = (payload.email or "").strip().lower()
+    login_id = (payload.login_id or "").strip().lower()
+    is_valid_user = email == DEMO_EMAIL or login_id == DEMO_LOGIN_ID
+
+    if not is_valid_user or payload.password != DEMO_PASSWORD:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password.",
         )
 
-    user = _build_user(payload.email)
-    return LoginResponse(access_token=_build_token(payload.email), user=user)
+    resolved_email = email or DEMO_EMAIL
+    user = _build_user(resolved_email)
+    return LoginResponse(access_token=_build_token(resolved_email), user=user)
 
 
 def validate_token(token: str) -> AuthStatusResponse:

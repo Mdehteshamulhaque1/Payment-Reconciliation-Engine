@@ -1,13 +1,11 @@
 import { useMemo, useState } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
-import { Eye, EyeOff, Loader2, ShieldCheck, ArrowRight, Mail, Lock } from 'lucide-react'
+import { Eye, EyeOff, Loader2, ShieldCheck, ArrowRight, User, Lock } from 'lucide-react'
 import { motion } from 'framer-motion'
 import AuthFrame from '../../components/auth/AuthFrame'
 import FormField from '../../components/auth/FormField'
 import { useAuth } from '../../context/AuthContext'
 import { REMEMBERED_EMAIL_KEY } from '../../utils/authStorage'
-
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export default function LoginPage() {
   const { login } = useAuth()
@@ -18,7 +16,7 @@ export default function LoginPage() {
   const rememberedEmail = useMemo(() => localStorage.getItem(REMEMBERED_EMAIL_KEY) || '', [])
 
   const [form, setForm] = useState({
-    email: rememberedEmail,
+    identifier: rememberedEmail,
     password: '',
     rememberMe: Boolean(rememberedEmail),
   })
@@ -33,8 +31,8 @@ export default function LoginPage() {
   const validate = () => {
     const nextErrors = {}
 
-    if (!emailPattern.test(form.email.trim())) {
-      nextErrors.email = 'Enter a valid email address.'
+    if (!form.identifier.trim()) {
+      nextErrors.identifier = 'Enter your email or login ID.'
     }
 
     if (!form.password.trim()) {
@@ -56,7 +54,7 @@ export default function LoginPage() {
       // Simulate a polished auth request so the button has a premium loading state.
       await new Promise((resolve) => window.setTimeout(resolve, 900))
       await login({
-        email: form.email.trim(),
+        identifier: form.identifier.trim(),
         password: form.password,
         rememberMe: form.rememberMe,
       })
@@ -92,13 +90,14 @@ export default function LoginPage() {
 
         <form className="space-y-5" onSubmit={handleSubmit} noValidate>
           <FormField
-            label="Email address"
-            type="email"
-            placeholder="name@company.com"
-            value={form.email}
-            onChange={(event) => updateField('email', event.target.value)}
-            error={errors.email}
-            autoComplete="email"
+            label="Email or Login ID"
+            type="text"
+            placeholder="name@company.com or username"
+            value={form.identifier}
+            onChange={(event) => updateField('identifier', event.target.value)}
+            error={errors.identifier}
+            autoComplete="username"
+            icon={User}
           />
 
           <label className="block">
