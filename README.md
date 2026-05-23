@@ -22,9 +22,6 @@ Managing and reconciling these transactions manually often leads to:
 * Manual Excel reconciliation
 * API timeout issues
 * Refund tracking problems
-
-Payment-Reconciliation-Engine solves these problems using intelligent automation, REST APIs, real-time analytics, and AI-driven anomaly detection.
-
 ---
 
 # Key Features
