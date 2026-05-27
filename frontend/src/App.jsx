@@ -32,6 +32,7 @@ export default function App() {
           <Route element={<ProtectedRoute />}>
             <Route element={<DashboardLayout />}>
               <Route path="/dashboard" element={<DashboardPage />} />
+              <Route index element={<DashboardPage />} />
               <Route path="/transactions" element={<TransactionsPage />} />
               <Route path="/reconciliation" element={<ReconciliationPage />} />
               <Route path="/reports" element={<ReportsPage />} />

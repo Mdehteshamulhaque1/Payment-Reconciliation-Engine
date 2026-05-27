@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { BarChart3, CheckCircle2, AlertCircle, TrendingUp, ShieldCheck, Clock3 } from 'lucide-react'
+import { BarChart3, CheckCircle2, AlertCircle, TrendingUp, ShieldCheck, Clock3, ArrowUpRight, Activity, BadgeCheck, SearchCheck } from 'lucide-react'
 
 const stats = [
   { title: 'Total Transactions', value: '12,450', delta: '+12.5%', icon: BarChart3, color: 'from-cyan-500 to-blue-600' },
@@ -15,19 +15,25 @@ const activities = [
   'Report snapshot generated for finance team.',
 ]
 
+const quickActions = [
+  { label: 'Review exceptions', icon: SearchCheck, value: '18 open' },
+  { label: 'Run reconciliation', icon: BadgeCheck, value: 'Instant match' },
+  { label: 'Inspect activity', icon: Activity, value: 'Live stream' },
+]
+
 export default function DashboardPage() {
   return (
     <div className="space-y-6">
-      <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="panel-surface p-6 sm:p-8">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+      <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="panel-surface overflow-hidden p-6 sm:p-8">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-sm uppercase tracking-[0.35em] text-cyan-300">Dashboard</p>
-            <h1 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">Reconciliation overview</h1>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">Monitor transaction status, exception counts, and operational throughput from one clean dashboard shell.</p>
+            <p className="text-sm uppercase tracking-[0.35em] text-[#E8FF47]">Dashboard</p>
+            <h1 className="mt-3 max-w-3xl text-3xl font-semibold text-white sm:text-5xl">Reconciliation overview</h1>
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">Monitor transaction status, exception counts, and operational throughput from one premium control surface.</p>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-300">
+          <div className="rounded-3xl border border-white/10 bg-white/5 px-5 py-4 text-sm text-slate-300 shadow-[0_20px_60px_rgba(0,0,0,0.18)]">
             <p className="font-medium text-white">Live session</p>
-            <p className="mt-1">Protected by a client-only token stored in localStorage.</p>
+            <p className="mt-1 max-w-xs leading-6">Protected by a client-only token stored in localStorage.</p>
           </div>
         </div>
       </motion.section>
@@ -45,7 +51,7 @@ export default function DashboardPage() {
               className="panel-surface p-5"
             >
               <div className="mb-5 flex items-center justify-between">
-                <div className={`rounded-2xl bg-gradient-to-br ${item.color} p-3 text-white`}>
+                <div className={`rounded-2xl bg-gradient-to-br ${item.color} p-3 text-white shadow-[0_18px_30px_rgba(0,0,0,0.18)]`}>
                   <Icon size={18} />
                 </div>
                 <span className="text-xs font-medium text-emerald-300">{item.delta}</span>
@@ -57,18 +63,18 @@ export default function DashboardPage() {
         })}
       </section>
 
-      <section className="grid gap-6 xl:grid-cols-[1.4fr_0.9fr]">
+      <section className="grid gap-6 xl:grid-cols-[1.35fr_0.85fr]">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="panel-surface p-6">
           <div className="mb-6 flex items-center justify-between gap-3">
             <div>
               <h2 className="text-xl font-semibold text-white">Transaction volume</h2>
               <p className="mt-1 text-sm text-slate-400">A premium placeholder chart area for future analytics.</p>
             </div>
-            <div className="rounded-full border border-cyan-400/20 bg-cyan-500/10 px-3 py-1 text-xs font-medium text-cyan-200">Updated just now</div>
+            <div className="rounded-full border border-[#E8FF47]/20 bg-[#E8FF47]/10 px-3 py-1 text-xs font-medium text-[#E8FF47]">Updated just now</div>
           </div>
 
-          <div className="grid gap-4 lg:grid-cols-[0.75fr_1.25fr]">
-            <div className="rounded-3xl border border-white/10 bg-slate-950/40 p-5">
+          <div className="grid gap-4 lg:grid-cols-[0.78fr_1.22fr]">
+            <div className="rounded-[28px] border border-white/10 bg-slate-950/40 p-5">
               <div className="flex items-center gap-3 text-slate-200">
                 <ShieldCheck size={18} className="text-cyan-300" />
                 <span className="font-medium">Operational health</span>
@@ -81,7 +87,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div className="rounded-3xl border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.5),rgba(8,15,28,0.9))] p-5">
+            <div className="rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.5),rgba(8,15,28,0.9))] p-5">
               <div className="mb-4 flex items-center gap-2 text-slate-200">
                 <Clock3 size={18} className="text-cyan-300" />
                 <span className="font-medium">Activity timeline</span>
@@ -104,6 +110,27 @@ export default function DashboardPage() {
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="panel-surface p-6">
           <h2 className="text-xl font-semibold text-white">Workflow summary</h2>
           <p className="mt-2 text-sm text-slate-400">This sidebar card keeps the dashboard feeling operational and high-trust.</p>
+
+          <div className="mt-6 space-y-3">
+            {quickActions.map((action) => {
+              const Icon = action.icon
+
+              return (
+                <div key={action.label} className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 transition hover:border-indigo-500/30 hover:bg-white/[0.07]">
+                  <div className="flex items-center gap-3">
+                    <span className="grid h-10 w-10 place-items-center rounded-2xl bg-[#1A1A2E] text-[#E8FF47]">
+                      <Icon size={16} />
+                    </span>
+                    <div>
+                      <p className="text-sm font-medium text-white">{action.label}</p>
+                      <p className="text-xs text-slate-400">{action.value}</p>
+                    </div>
+                  </div>
+                  <ArrowUpRight size={16} className="text-slate-500" />
+                </div>
+              )
+            })}
+          </div>
 
           <div className="mt-6 space-y-4">
             {[

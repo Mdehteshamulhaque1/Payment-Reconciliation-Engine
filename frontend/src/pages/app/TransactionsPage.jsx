@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Download, Filter, Search, ChevronRight } from 'lucide-react'
+import { Download, Filter, Search, ChevronRight, ArrowUpRight, SlidersHorizontal, BadgeCheck, AlertTriangle } from 'lucide-react'
 
 const transactions = [
   { id: 'TXN001', amount: '$5,240.50', status: 'matched', date: 'May 12, 2026', merchant: 'Tech Solutions Inc' },
@@ -31,19 +31,41 @@ export default function TransactionsPage() {
 
   return (
     <div className="space-y-6">
-      <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="panel-surface p-6 sm:p-8">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+      <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="panel-surface overflow-hidden p-6 sm:p-8">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-sm uppercase tracking-[0.35em] text-cyan-300">Transactions</p>
-            <h1 className="mt-3 text-3xl font-semibold text-white">Transaction history</h1>
+            <p className="text-sm uppercase tracking-[0.35em] text-[#E8FF47]">Transactions</p>
+            <h1 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">Transaction history</h1>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">Search, filter, and review a polished table layout designed for finance operations.</p>
           </div>
-          <button className="btn-secondary">
-            <Download size={18} />
-            Export
-          </button>
+          <div className="flex flex-wrap gap-3">
+            <button className="btn-secondary">
+              <SlidersHorizontal size={18} />
+              Advanced filters
+            </button>
+            <button className="btn-secondary">
+              <Download size={18} />
+              Export
+            </button>
+          </div>
         </div>
       </motion.section>
+
+      <section className="grid gap-4 md:grid-cols-3">
+        {[
+          ['Matched', '4,234', BadgeCheck],
+          ['Pending review', '18', AlertTriangle],
+          ['Average amount', '$2,940', ArrowUpRight],
+        ].map(([label, value, Icon]) => (
+          <motion.div key={label} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="panel-surface p-5">
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-slate-400">{label}</p>
+              <span className="grid h-10 w-10 place-items-center rounded-2xl bg-white/5 text-[#E8FF47]"><Icon size={16} /></span>
+            </div>
+            <p className="mt-3 text-3xl font-semibold text-white">{value}</p>
+          </motion.div>
+        ))}
+      </section>
 
       <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="panel-surface p-4 sm:p-6">
         <div className="flex flex-col gap-4 lg:flex-row">
@@ -63,7 +85,7 @@ export default function TransactionsPage() {
           </button>
         </div>
 
-        <div className="mt-6 overflow-hidden rounded-3xl border border-white/10">
+        <div className="mt-6 overflow-hidden rounded-[28px] border border-white/10">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-white/10 text-left">
               <thead className="bg-white/5 text-xs uppercase tracking-[0.25em] text-slate-400">
@@ -95,7 +117,7 @@ export default function TransactionsPage() {
                     </td>
                     <td className="px-6 py-4 text-sm text-slate-400">{transaction.date}</td>
                     <td className="px-6 py-4 text-center">
-                      <button className="rounded-xl border border-white/10 bg-white/5 p-2 text-slate-300 transition hover:border-cyan-400/30 hover:text-white">
+                      <button className="rounded-xl border border-white/10 bg-white/5 p-2 text-slate-300 transition hover:border-indigo-500/30 hover:text-white">
                         <ChevronRight size={18} />
                       </button>
                     </td>

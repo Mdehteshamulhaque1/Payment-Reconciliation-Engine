@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from 'react'
+import { createContext, useCallback, useContext, useMemo, useState } from 'react'
 import {
   REMEMBERED_EMAIL_KEY,
   clearAuth,
@@ -19,17 +19,19 @@ function getInitialAuthState() {
   }
 }
 
-function buildUserProfile({ email, name }) {
+function buildUserProfile({ email, name, role, avatar }) {
   return {
     name: name?.trim() || email.split('@')[0],
     email: email.toLowerCase(),
+    role: role || 'analyst',
+    avatar: avatar || name?.trim()?.[0]?.toUpperCase() || email[0]?.toUpperCase() || 'U',
   }
 }
 
 export function AuthProvider({ children }) {
   const [authState, setAuthState] = useState(getInitialAuthState)
 
-  const login = async ({ identifier, password, rememberMe = false }) => {
+  const login = useCallback(async ({ identifier, password, rememberMe = false }) => {
     const normalizedIdentifier = identifier.trim()
     const response = await loginRequest({ identifier: normalizedIdentifier, password })
     const user = buildUserProfile(response.user)
@@ -44,13 +46,13 @@ export function AuthProvider({ children }) {
 
     setAuthState({ token: response.access_token, user, isAuthenticated: true })
     return { token: response.access_token, user }
-  }
+  }, [])
 
-  const logout = () => {
+  const logout = useCallback(() => {
     clearAuth()
     localStorage.removeItem(REMEMBERED_EMAIL_KEY)
     setAuthState({ token: null, user: null, isAuthenticated: false })
-  }
+  }, [])
 
   const value = useMemo(
     () => ({

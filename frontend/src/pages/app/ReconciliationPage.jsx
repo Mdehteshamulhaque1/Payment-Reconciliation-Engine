@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { CheckCircle2, Clock3, AlertTriangle, Layers3 } from 'lucide-react'
+import { CheckCircle2, Clock3, AlertTriangle, Layers3, ArrowRight, Sparkles, ShieldCheck } from 'lucide-react'
 
 const metrics = [
   { label: 'Auto-matched', value: '9,824', icon: CheckCircle2, tone: 'from-emerald-500 to-teal-600' },
@@ -11,10 +11,18 @@ const metrics = [
 export default function ReconciliationPage() {
   return (
     <div className="space-y-6">
-      <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="panel-surface p-6 sm:p-8">
-        <p className="text-sm uppercase tracking-[0.35em] text-cyan-300">Reconciliation</p>
-        <h1 className="mt-3 text-3xl font-semibold text-white">Matching engine overview</h1>
-        <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">Use this page as the future home for reconciliation rules, matching health, and exception handling.</p>
+      <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="panel-surface overflow-hidden p-6 sm:p-8">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="text-sm uppercase tracking-[0.35em] text-[#E8FF47]">Reconciliation</p>
+            <h1 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">Matching engine overview</h1>
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">Use this page as the future home for reconciliation rules, matching health, and exception handling.</p>
+          </div>
+          <button className="btn-secondary">
+            <Sparkles size={18} />
+            Run engine
+          </button>
+        </div>
       </motion.section>
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -34,7 +42,13 @@ export default function ReconciliationPage() {
       </section>
 
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="panel-surface p-6">
-        <h2 className="text-xl font-semibold text-white">Workflow notes</h2>
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="text-xl font-semibold text-white">Workflow notes</h2>
+          <div className="flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-200">
+            <ShieldCheck size={14} />
+            Compliance ready
+          </div>
+        </div>
         <div className="mt-4 grid gap-4 lg:grid-cols-3">
           {[
             'Auto-match rules will live here once backend reconciliation endpoints exist.',
@@ -45,6 +59,14 @@ export default function ReconciliationPage() {
               {note}
             </div>
           ))}
+        </div>
+
+        <div className="mt-6 flex items-center justify-between rounded-3xl border border-white/10 bg-white/5 px-4 py-4 text-sm text-slate-300">
+          <div>
+            <p className="font-medium text-white">Next step</p>
+            <p className="mt-1 text-slate-400">Wire rule-evaluation and AI matcher endpoints once backend services are ready.</p>
+          </div>
+          <ArrowRight size={18} className="text-[#E8FF47]" />
         </div>
       </motion.div>
     </div>
