@@ -2,8 +2,8 @@ import { useMemo, useState, useCallback } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
 import { Mail, Lock, Eye, EyeOff, ShieldCheck, ArrowRight, Loader2, Copy } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { useAuth } from '../../../context/AuthContext'
-import { login as demoLogin } from '../../../services/authService'
+import { useAuth } from '../../context/AuthContext'
+import { login as demoLogin } from '../../services/authService'
 
 const CLEARBIT = {
   stripe: 'https://logo.clearbit.com/stripe.com',
