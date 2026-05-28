@@ -1,307 +1,246 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import toast from "react-hot-toast";
-import { Check, X, Play } from "lucide-react";
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
+import { CheckCircle2, Loader2, X } from 'lucide-react'
 
-function randInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+function buildBatches() {
+  return [
+    { id: 'Batch #2026-047', status: 'completed', date: 'May 22, 2026 — 14:32', matchRate: '99.85', matched: 4820, ai: 142, exceptions: 18, failed: 2 },
+    { id: 'Batch #2026-048', status: 'running', date: 'May 23, 2026 — 10:14', matchRate: '99.72', matched: 4715, ai: 128, exceptions: 23, failed: 4 },
+    { id: 'Batch #2026-049', status: 'failed', date: 'May 24, 2026 — 08:03', matchRate: '98.91', matched: 4508, ai: 111, exceptions: 41, failed: 9 },
+    { id: 'Batch #2026-050', status: 'completed', date: 'May 25, 2026 — 17:08', matchRate: '99.93', matched: 4897, ai: 122, exceptions: 10, failed: 1 },
+    { id: 'Batch #2026-051', status: 'completed', date: 'May 26, 2026 — 19:41', matchRate: '99.88', matched: 4869, ai: 137, exceptions: 14, failed: 2 },
+    { id: 'Batch #2026-052', status: 'running', date: 'May 27, 2026 — 07:27', matchRate: '99.61', matched: 4624, ai: 148, exceptions: 27, failed: 5 },
+  ]
 }
 
-function formatDateShort(d) {
-  const dt = new Date(d);
-  return dt.toLocaleString(undefined, { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" });
+function statusPill(status) {
+  if (status === 'completed') return <span className="status-pill status-pill-success">Completed</span>
+  if (status === 'running') return <span className="status-pill status-pill-info">Running</span>
+  return <span className="status-pill status-pill-danger">Failed</span>
 }
-
-function makeBatches() {
-  const names = ["Batch #2026-047", "Batch #2026-048", "Batch #2026-049", "Batch #2026-050", "Batch #2026-051", "Batch #2026-052"];
-  const statuses = ["completed", "running", "failed", "completed", "completed", "running"];
-  return names.map((n, i) => ({
-    id: `BATCH-${2026}-${randInt(100, 999)}`,
-    name: n,
-    status: statuses[i % statuses.length],
-    date: new Date(Date.now() - randInt(0, 10) * 24 * 3600 * 1000).toISOString(),
-    matchRate: (99 + Math.random() * 0.99).toFixed(2),
-    matched: 4820 + randInt(-20, 20),
-    exceptions: 18 + randInt(-5, 5),
-    failed: randInt(0, 5),
-  }));
-}
-
-function makeResults(count = 12) {
-  const types = ["exact", "fuzzy", "ai"];
-  const rows = [];
-  for (let i = 0; i < count; i++) {
-    const confidence = randInt(60, 100);
-    rows.push({
-      id: `TXN-2026-${randInt(10000, 99999)}`,
-      type: types[Math.floor(Math.random() * types.length)],
-      confidence,
-      status: confidence > 85 ? "Matched" : confidence > 70 ? "Pending" : "Failed",
-    });
-  }
-  return rows;
-}
-
-const stageDefs = [
-  { key: "fetch", label: "Fetch Data" },
-  { key: "exact", label: "Exact Match" },
-  { key: "ai", label: "AI Match" },
-  { key: "complete", label: "Complete" },
-];
 
 export default function ReconciliationPage() {
-  const [batches] = useState(() => makeBatches());
-  const [selectedId, setSelectedId] = useState(batches[0].id);
-  const selected = useMemo(() => batches.find((b) => b.id === selectedId) || batches[0], [batches, selectedId]);
+  const [batches, setBatches] = useState(() => buildBatches())
+  const [selectedIdx, setSelectedIdx] = useState(0)
+  const [runOpen, setRunOpen] = useState(false)
+  const [progress, setProgress] = useState(0)
+  const [toast, setToast] = useState('')
+  const timerRef = useRef(null)
 
-  const [results] = useState(() => makeResults(20));
-  const [showModal, setShowModal] = useState(false);
-  const [runProgress, setRunProgress] = useState(0);
-  const [running, setRunning] = useState(false);
+  const selected = batches[selectedIdx]
 
-  function startRun({ gateway, from, to, strategy }) {
-    setShowModal(true);
-    setRunProgress(0);
-    setRunning(true);
-    const duration = 3000; // 3s
-    const start = Date.now();
-    const iv = setInterval(() => {
-      const t = Date.now() - start;
-      const pct = Math.min(100, Math.round((t / duration) * 100));
-      setRunProgress(pct);
-      if (pct >= 100) {
-        clearInterval(iv);
-        setTimeout(() => {
-          setRunning(false);
-          setShowModal(false);
-          toast.success("Reconciliation started — batch queued (mock)");
-        }, 300);
-      }
-    }, 100);
+  const donut = useMemo(
+    () => [
+      { name: 'Matched', value: 96.4, color: '#10b981' },
+      { name: 'AI Matched', value: 2.8, color: '#4f46e5' },
+      { name: 'Exceptions', value: 0.7, color: '#f59e0b' },
+      { name: 'Failed', value: 0.1, color: '#ef4444' },
+    ],
+    [],
+  )
+
+  const rows = useMemo(
+    () =>
+      Array.from({ length: 10 }).map((_, i) => ({
+        id: `TXN-${12000 + i}`,
+        type: i % 4 === 0 ? 'ai' : i % 3 === 0 ? 'fuzzy' : 'exact',
+        confidence: Math.round(65 + Math.random() * 35),
+        status: i % 6 === 0 ? 'Exception' : 'Matched',
+      })),
+    [],
+  )
+
+  function openRunModal() {
+    setRunOpen(true)
+    setProgress(0)
   }
 
-  const pieData = useMemo(() => {
-    const matched = selected.matched;
-    const ai = Math.round(selected.matched * 0.03) || 142;
-    const exceptions = selected.exceptions;
-    const failed = selected.failed;
-    const total = matched + ai + exceptions + failed || 1;
-    return [
-      { name: "Matched", value: matched, color: "#10b981" },
-      { name: "AI Matched", value: ai, color: "#6366F1" },
-      { name: "Exceptions", value: exceptions, color: "#F59E0B" },
-      { name: "Failed", value: failed, color: "#EF4444" },
-    ];
-  }, [selected]);
+  function startReconciliation() {
+    const started = Date.now()
+    timerRef.current = setInterval(() => {
+      const p = Math.min(100, Math.round(((Date.now() - started) / 3000) * 100))
+      setProgress(p)
+      if (p >= 100) {
+        clearInterval(timerRef.current)
+        setRunOpen(false)
+        setToast('Batch completed successfully')
+        setTimeout(() => setToast(''), 1800)
+      }
+    }, 90)
+  }
+
+  useEffect(() => () => clearInterval(timerRef.current), [])
+
+  const stageText =
+    progress < 25
+      ? 'Fetching transactions...'
+      : progress < 60
+        ? 'Running exact match...'
+        : progress < 85
+          ? 'Running AI match...'
+          : 'Finalizing...'
 
   return (
-    <div className="p-6">
-      <div className="flex items-start justify-between mb-4">
-        <div>
-          <h1 className="text-2xl font-semibold">Reconciliation</h1>
-          <p className="text-sm text-neutral-400">Batches and reconciliation results</p>
-        </div>
-      </div>
-
-      <div className="flex gap-6">
-        {/* Left: batch list 35% */}
-        <div className="w-[35%]">
-          <div className="mb-3">
-            <button onClick={() => setShowModal(true)} className="w-full bg-indigo-600 text-white py-2 rounded">Run New Batch</button>
+    <div className="min-h-screen p-6">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold">Reconciliation Batches</h1>
+            <p className="text-sm text-[var(--muted)]">Run and inspect reconciliation pipeline results</p>
           </div>
-
-          <div className="space-y-3">
-            {batches.map((b) => (
-              <div key={b.id} onClick={() => setSelectedId(b.id)} className={`p-3 rounded border ${selectedId === b.id ? "border-indigo-500 bg-white/3" : "border-white/6"} cursor-pointer` }>
-                <div className="flex items-center justify-between">
-                  <div className="font-medium text-white">{b.name}</div>
-                  <div>
-                    {b.status === "completed" && <span className="px-2 py-1 rounded bg-green-500 text-black text-xs">Completed</span>}
-                    {b.status === "running" && <span className="px-2 py-1 rounded bg-blue-500 text-black text-xs animate-pulse">Running</span>}
-                    {b.status === "failed" && <span className="px-2 py-1 rounded bg-red-500 text-white text-xs">Failed</span>}
-                  </div>
-                </div>
-                <div className="text-xs text-neutral-400 mt-2">{formatDateShort(b.date)}</div>
-                <div className="flex items-center justify-between mt-3 text-sm">
-                  <div className="text-neutral-300">Match rate: <span className="font-dmMono text-white">{b.matchRate}%</span></div>
-                  <div className="text-neutral-300">Records: <span className="font-dmMono text-white">{b.matched} / {b.exceptions}</span></div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <button onClick={openRunModal} className="btn-primary">Run New Batch</button>
         </div>
 
-        {/* Right: details 65% */}
-        <div className="w-[65%] bg-transparent space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="text-lg font-medium">{selected.name}</div>
-              {selected.status === "completed" && <span className="px-2 py-1 rounded bg-green-500 text-black text-sm">Completed</span>}
-              {selected.status === "running" && <span className="px-2 py-1 rounded bg-blue-500 text-black text-sm animate-pulse">Running</span>}
-              {selected.status === "failed" && <span className="px-2 py-1 rounded bg-red-500 text-white text-sm">Failed</span>}
-            </div>
-            <div>
-              <button className="px-3 py-1 bg-white/6 rounded mr-2">Export Results</button>
-            </div>
-          </div>
-
-          {/* Progress stages */}
-          <div className="flex items-center space-x-6">
-            {stageDefs.map((s, idx) => {
-              const stageState = (() => {
-                // simple mapping: first two completed if selected.completed
-                if (selected.status === "completed") return idx <= 3 ? "done" : "pending";
-                if (selected.status === "running") return idx < 2 ? "done" : idx === 2 ? "running" : "pending";
-                if (selected.status === "failed") return idx < 3 ? "done" : "failed";
-                return "pending";
-              })();
-
-              return (
-                <div key={s.key} className="flex items-center space-x-3">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${stageState === "done" ? "bg-indigo-600" : stageState === "running" ? "bg-blue-500 animate-pulse" : "bg-white/6"}`}>
-                    {stageState === "done" ? <Check className="w-4 h-4" /> : stageState === "running" ? <Play className="w-4 h-4" /> : <div className="w-2 h-2 rounded-full bg-white/30" />}
-                  </div>
-                  <div>
-                    <div className="text-sm text-neutral-300">{s.label}</div>
-                    <div className="text-xs text-white">{stageState === "done" ? "1m 12s" : stageState === "running" ? "30s" : "--"}</div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Stats cards */}
-          <div className="grid grid-cols-4 gap-4 mt-4">
-            <div className="p-4 rounded bg-white/5">
-              <div className="text-xs text-neutral-400">Matched</div>
-              <div className="font-dmMono text-lg text-white">{selected.matched}</div>
-            </div>
-            <div className="p-4 rounded bg-white/5">
-              <div className="text-xs text-neutral-400">AI Matched</div>
-              <div className="font-dmMono text-lg text-white">{Math.round(selected.matched * 0.03)}</div>
-            </div>
-            <div className="p-4 rounded bg-white/5">
-              <div className="text-xs text-neutral-400">Exceptions</div>
-              <div className="font-dmMono text-lg text-white">{selected.exceptions}</div>
-            </div>
-            <div className="p-4 rounded bg-white/5">
-              <div className="text-xs text-neutral-400">Failed</div>
-              <div className="font-dmMono text-lg text-white">{selected.failed}</div>
-            </div>
-          </div>
-
-          {/* Donut + results */}
-          <div className="flex gap-6 mt-4">
-            <div className="w-1/3 p-4 rounded bg-white/3 flex items-center justify-center">
-              <div style={{ width: 220, height: 220 }}>
-                <ResponsiveContainer width="100%" height={220}>
-                  <PieChart>
-                    <Pie data={pieData} dataKey="value" innerRadius={70} outerRadius={100} startAngle={90} endAngle={-270}>
-                      {pieData.map((entry, idx) => (
-                        <Cell key={`cell-${idx}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="-mt-36 text-center">
-                  <div className="text-sm text-neutral-400">Match Rate</div>
-                  <div className="font-dmMono text-2xl text-white">{selected.matchRate}%</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex-1">
-              <div className="rounded bg-white/4 p-4">
-                <div className="text-sm text-neutral-300 mb-2">Results</div>
-                <table className="w-full text-sm">
-                  <thead className="text-neutral-400 text-xs">
-                    <tr>
-                      <th className="py-2 text-left">TXN ID</th>
-                      <th className="py-2 text-left">Match Type</th>
-                      <th className="py-2 text-left">Confidence</th>
-                      <th className="py-2 text-left">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {results.map((r) => (
-                      <tr key={r.id} className="border-t border-white/6">
-                        <td className="py-2 font-dmMono text-white">{r.id}</td>
-                        <td className="py-2 text-neutral-300">{r.type}</td>
-                        <td className="py-2">
-                          <div className="w-full bg-white/6 h-3 rounded overflow-hidden">
-                            <div style={{ width: `${r.confidence}%`, background: r.confidence > 90 ? "#10b981" : r.confidence > 75 ? "#F59E0B" : "#EF4444" }} className="h-3" />
-                          </div>
-                        </td>
-                        <td className="py-2"><span className={`px-2 py-1 rounded text-xs ${r.status === "Matched" ? "bg-green-500 text-black" : r.status === "Pending" ? "bg-amber-400 text-black" : "bg-red-500 text-white"}`}>{r.status}</span></td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Run Batch Modal */}
-      <AnimatePresence>
-        {showModal && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/50 flex items-center justify-center">
-            <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }} className="bg-[#071018] p-6 rounded w-2/5">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h3 className="text-lg font-medium">Run New Batch</h3>
-                  <div className="text-sm text-neutral-400">Select gateway, date range and strategy</div>
-                </div>
-                <button onClick={() => setShowModal(false)} className="p-2"><X /></button>
-              </div>
-
+        <div className="grid gap-6 lg:grid-cols-12">
+          <aside className="lg:col-span-4">
+            <div className="card p-3">
               <div className="space-y-3">
-                <div>
-                  <label className="text-xs text-neutral-400">Gateway</label>
-                  <select className="w-full p-2 bg-white/5 rounded">
-                    <option>Stripe</option>
-                    <option>Razorpay</option>
-                    <option>PayPal</option>
-                    <option>UPI</option>
-                  </select>
+                {batches.map((batch, idx) => (
+                  <button
+                    key={batch.id}
+                    onClick={() => setSelectedIdx(idx)}
+                    className={`w-full rounded-md border p-3 text-left transition ${selectedIdx === idx ? 'border-l-[3px] border-l-[#4f46e5] bg-white/5' : 'hover:bg-white/5'}`}
+                  >
+                    <div className="mb-1 flex items-center justify-between">
+                      <span className="font-semibold">{batch.id}</span>
+                      {statusPill(batch.status)}
+                    </div>
+                    <div className="text-xs text-[var(--muted)]">{batch.date}</div>
+                    <div className="mt-2 flex items-center justify-between text-sm">
+                      <span className="mono">{batch.matchRate}%</span>
+                      <span className="text-xs text-[var(--muted)]">{batch.matched} matched / {batch.exceptions} exceptions</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </aside>
+
+          <main className="lg:col-span-8">
+            <div className="card p-4">
+              <div className="mb-4 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <h2 className="text-lg font-semibold">{selected.id}</h2>
+                  {statusPill(selected.status)}
                 </div>
-                <div className="flex space-x-2">
-                  <div className="flex-1">
-                    <label className="text-xs text-neutral-400">From</label>
-                    <input type="date" className="w-full p-2 bg-white/5 rounded" />
+                <button className="btn-ghost">Export Results</button>
+              </div>
+
+              <div className="mb-6 flex items-center gap-3 text-sm">
+                <Stage title="Fetch Data" state="done" />
+                <span>→</span>
+                <Stage title="Exact Match" state="done" />
+                <span>→</span>
+                <Stage title="AI Match" state={selected.status === 'running' ? 'current' : 'done'} />
+                <span>→</span>
+                <Stage title="Complete" state={selected.status === 'completed' ? 'done' : 'pending'} />
+              </div>
+
+              <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+                <Stat title="Matched" value={selected.matched} tone="text-emerald-400" />
+                <Stat title="AI Matched" value={selected.ai} tone="text-indigo-400" />
+                <Stat title="Exceptions" value={selected.exceptions} tone="text-amber-400" />
+                <Stat title="Failed" value={selected.failed} tone="text-rose-400" />
+              </div>
+
+              <div className="mb-6 grid gap-4 lg:grid-cols-3">
+                <div className="rounded-lg border p-4">
+                  <div className="text-sm text-[var(--muted)]">Match Rate Distribution</div>
+                  <div style={{ height: 220 }} className="mt-2">
+                    <ResponsiveContainer>
+                      <PieChart>
+                        <Pie data={donut} innerRadius={56} outerRadius={84} dataKey="value">
+                          {donut.map((d) => <Cell key={d.name} fill={d.color} />)}
+                        </Pie>
+                      </PieChart>
+                    </ResponsiveContainer>
                   </div>
-                  <div className="flex-1">
-                    <label className="text-xs text-neutral-400">To</label>
-                    <input type="date" className="w-full p-2 bg-white/5 rounded" />
-                  </div>
-                </div>
-                <div>
-                  <label className="text-xs text-neutral-400">Match Strategy</label>
-                  <select className="w-full p-2 bg-white/5 rounded">
-                    <option>Exact</option>
-                    <option>Fuzzy</option>
-                    <option>AI</option>
-                  </select>
+                  <div className="mono -mt-4 text-center text-2xl font-bold">{selected.matchRate}%</div>
                 </div>
 
-                <div className="pt-4">
-                  <div className="w-full bg-white/6 h-3 rounded overflow-hidden">
-                    <div style={{ width: `${runProgress}%` }} className="h-3 bg-indigo-600 transition-all" />
+                <div className="rounded-lg border p-4 lg:col-span-2">
+                  <div className="mb-3 text-sm text-[var(--muted)]">Results</div>
+                  <div className="overflow-auto">
+                    <table className="w-full table-auto text-sm">
+                      <thead className="text-xs text-[var(--muted)]"><tr><th>ID</th><th>Match Type</th><th>Confidence</th><th>Status</th></tr></thead>
+                      <tbody>
+                        {rows.map((row) => (
+                          <tr key={row.id} className="border-t border-[var(--border)]">
+                            <td className="py-3">{row.id}</td>
+                            <td className="py-3">{row.type}</td>
+                            <td className="py-3">
+                              <div className="h-2.5 w-full rounded bg-slate-800">
+                                <div className={`h-2.5 rounded ${row.confidence > 90 ? 'bg-emerald-400' : row.confidence >= 75 ? 'bg-amber-400' : 'bg-rose-400'}`} style={{ width: `${row.confidence}%` }} />
+                              </div>
+                              <div className="mt-1 text-xs text-[var(--muted)]">{row.confidence}%</div>
+                            </td>
+                            <td className="py-3">{row.status}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
-                  <div className="text-sm text-neutral-400 mt-2">{running ? "Running reconciliation..." : runProgress >= 100 ? "Completed" : "Ready"}</div>
-                </div>
-
-                <div className="flex items-center justify-end space-x-2 mt-4">
-                  <button onClick={() => setShowModal(false)} className="px-3 py-2 bg-white/5 rounded">Cancel</button>
-                  <button onClick={() => startRun({})} className="px-3 py-2 bg-indigo-600 text-black rounded">Start Reconciliation</button>
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </div>
+          </main>
+        </div>
+      </div>
+
+      {runOpen && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/45 px-4">
+          <div className="w-full max-w-lg rounded-lg bg-[var(--surface-strong)] p-6">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-lg font-semibold">Run New Batch</h3>
+              <button onClick={() => setRunOpen(false)} className="rounded p-1 hover:bg-white/5"><X size={16} /></button>
+            </div>
+
+            <div className="space-y-3">
+              <select className="input-field"><option>Stripe</option><option>Razorpay</option><option>PayPal</option></select>
+              <input className="input-field" placeholder="May 20, 2026 — May 22, 2026" />
+              <select className="input-field"><option>Exact</option><option>Fuzzy</option><option>AI</option></select>
+
+              <div>
+                <div className="mb-1 text-xs text-[var(--muted)]">{stageText}</div>
+                <div className="h-3 w-full rounded bg-slate-800">
+                  <div className="h-3 rounded bg-[var(--primary)] transition-all" style={{ width: `${progress}%` }} />
+                </div>
+                <div className="mt-1 text-xs text-[var(--muted)]">{progress}%</div>
+              </div>
+
+              <div className="flex justify-end gap-2">
+                <button className="btn-ghost" onClick={() => setRunOpen(false)}>Cancel</button>
+                <button className="btn-primary" onClick={startReconciliation}>Start Reconciliation</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {toast && (
+        <div className="fixed bottom-6 right-6 rounded-lg bg-[var(--surface-strong)] p-3 shadow-lg">
+          <div className="flex items-center gap-2"><CheckCircle2 className="text-emerald-400" size={18} />{toast}</div>
+        </div>
+      )}
     </div>
-  );
+  )
+}
+
+function Stage({ title, state }) {
+  const cls = state === 'done' ? 'bg-[var(--primary)]' : state === 'current' ? 'animate-pulse bg-sky-500' : 'bg-slate-600'
+  return (
+    <div className="inline-flex items-center gap-2">
+      <span className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-xs text-white ${cls}`}>{state === 'done' ? '✓' : state === 'current' ? <Loader2 size={12} className="animate-spin" /> : '•'}</span>
+      <span>{title}</span>
+    </div>
+  )
+}
+
+function Stat({ title, value, tone }) {
+  return (
+    <div className="rounded-lg border p-4">
+      <div className="text-xs text-[var(--muted)]">{title}</div>
+      <div className={`mono mt-1 text-2xl font-bold ${tone}`}>{value}</div>
+    </div>
+  )
 }

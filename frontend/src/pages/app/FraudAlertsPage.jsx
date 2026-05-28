@@ -1,224 +1,249 @@
-import React, { useMemo } from "react";
-import toast from "react-hot-toast";
+import React, { useMemo, useState } from 'react'
+import { CheckCircle2 } from 'lucide-react'
 
 const ALERTS = [
   {
-    severity: "CRITICAL",
-    merchant: "Zomato",
-    domain: "zomato.com",
-    type: "Velocity Spike",
-    description: "8 transactions in 5 min",
-    amount: 420000,
-    gateway: "UPI",
+    severity: 'CRITICAL',
+    merchant: 'Zomato',
+    domain: 'zomato.com',
+    type: 'Velocity Spike',
+    description: '8 transactions in 5 min — sudden surge',
+    amount: '₹4,20,000',
+    gateway: ['stripe.com', 'Stripe'],
     confidence: 96,
-    time: "8 min ago",
+    time: '8 min ago',
   },
   {
-    severity: "HIGH",
-    merchant: "Uber",
-    domain: "uber.com",
-    type: "Amount Anomaly",
-    description: "340x higher than average",
-    amount: 98000,
-    gateway: "Stripe",
+    severity: 'HIGH',
+    merchant: 'Uber',
+    domain: 'uber.com',
+    type: 'Amount Anomaly',
+    description: '340x higher than average',
+    amount: '₹98,000',
+    gateway: ['razorpay.com', 'Razorpay'],
     confidence: 87,
-    time: "12 min ago",
+    time: '12 min ago',
   },
   {
-    severity: "HIGH",
-    merchant: "Swiggy",
-    domain: "swiggy.com",
-    type: "Duplicate Transaction",
-    description: "Same amount+merchant in 90 seconds",
-    amount: 2400,
-    gateway: "PhonePe",
+    severity: 'HIGH',
+    merchant: 'Swiggy',
+    domain: 'swiggy.com',
+    type: 'Duplicate Transaction',
+    description: 'Same amount+merchant in 90 seconds',
+    amount: '₹2,400',
+    gateway: ['razorpay.com', 'Razorpay'],
     confidence: 82,
-    time: "18 min ago",
+    time: '25 min ago',
   },
   {
-    severity: "MEDIUM",
-    merchant: "Amazon",
-    domain: "amazon.com",
-    type: "Odd Hours High Value",
-    description: "Transaction at 3:24 AM",
-    amount: 140000,
-    gateway: "Paytm",
+    severity: 'MEDIUM',
+    merchant: 'Amazon',
+    domain: 'amazon.com',
+    type: 'Odd Hours High Value',
+    description: 'Transaction at 3:24 AM',
+    amount: '₹1,40,000',
+    gateway: ['paypal.com', 'PayPal'],
     confidence: 71,
-    time: "45 min ago",
+    time: '42 min ago',
   },
   {
-    severity: "LOW",
-    merchant: "Netflix",
-    domain: "netflix.com",
-    type: "Failed Attempts",
-    description: "4 failed attempts before success",
-    amount: 649,
-    gateway: "PayPal",
+    severity: 'LOW',
+    merchant: 'Netflix',
+    domain: 'netflix.com',
+    type: 'Failed Attempts',
+    description: '4 failed attempts before success',
+    amount: '₹649',
+    gateway: ['stripe.com', 'Stripe'],
     confidence: 58,
-    time: "1 hr ago",
+    time: '1 hr ago',
   },
-];
+]
 
-const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const TOP_STATS = [
+  { label: 'Total Alerts Today', value: 7, tone: 'rose' },
+  { label: 'Critical', value: 1, tone: 'rose' },
+  { label: 'High', value: 2, tone: 'amber' },
+  { label: 'False Positives', value: 3, tone: 'slate' },
+]
 
-function colorForValue(v) {
-  if (v >= 8) return "bg-red-500";
-  if (v >= 5) return "bg-orange-400";
-  if (v >= 2) return "bg-yellow-300";
-  return "bg-neutral-700";
-}
+const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
-function formatINR(n) {
-  return `₹${n.toLocaleString("en-IN")}`;
+function heatValue(dayIdx, hour) {
+  const weekend = dayIdx === 4 || dayIdx === 5
+  const night = hour >= 22 || hour <= 3
+  if (weekend && night) return Math.random() < 0.6 ? 3 : Math.random() < 0.4 ? 2 : 1
+  if (weekend) return Math.random() < 0.3 ? 2 : 1
+  if (night) return Math.random() < 0.12 ? 1 : 0
+  return Math.random() < 0.06 ? 1 : 0
 }
 
 export default function FraudAlertsPage() {
-  // generate heatmap data 7 x 24
+  const [alerts] = useState(ALERTS)
+  const [toast, setToast] = useState('')
+
   const heatmap = useMemo(() => {
-    const grid = Array.from({ length: 7 }).map(() => Array.from({ length: 24 }).map(() => 0));
-    // increase weekend nights (Fri index 4, Sat index 5) hours 22-23 and 0-2
-    for (let d = 0; d < 7; d++) {
-      for (let h = 0; h < 24; h++) {
-        let base = Math.random() < 0.03 ? Math.floor(Math.random() * 3) : 0;
-        if ((d === 4 || d === 5) && (h >= 22 || h <= 2)) base += Math.floor(Math.random() * 6) + 2;
-        grid[d][h] = base;
-      }
-    }
-    return grid;
-  }, []);
+    return DAYS.map((d, di) => Array.from({ length: 24 }).map((_, h) => ({ day: d, hour: h, v: heatValue(di, h) })))
+  }, [])
+
+  function handleFalsePositive() {
+    setToast('Marked as false positive')
+    setTimeout(() => setToast(''), 2000)
+  }
+
+  function handleEscalate() {
+    setToast('Escalated alert')
+    setTimeout(() => setToast(''), 2000)
+  }
+
+  function handleRetrain() {
+    setToast('Retraining model...')
+    setTimeout(() => setToast('Model retrained successfully'), 1800)
+    setTimeout(() => setToast(''), 4200)
+  }
 
   return (
-    <div className="p-6 space-y-6">
-      <header className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">Fraud & Anomaly Detection</h1>
-          <p className="text-sm text-neutral-400">Active fraud alerts and model health</p>
-        </div>
-      </header>
-
-      {/* Top stats */}
-      <div className="grid grid-cols-4 gap-4">
-        <div className="p-4 rounded bg-white/5">
-          <div className="text-xs text-neutral-400">Total Alerts Today</div>
-          <div className="font-dmMono text-2xl text-red-400">7</div>
-        </div>
-        <div className="p-4 rounded bg-white/5">
-          <div className="text-xs text-neutral-400">Critical</div>
-          <div className="font-dmMono text-2xl text-red-500">1</div>
-        </div>
-        <div className="p-4 rounded bg-white/5">
-          <div className="text-xs text-neutral-400">High</div>
-          <div className="font-dmMono text-2xl text-orange-400">2</div>
-        </div>
-        <div className="p-4 rounded bg-white/5">
-          <div className="text-xs text-neutral-400">False Positives</div>
-          <div className="font-dmMono text-2xl text-neutral-300">3</div>
-        </div>
-      </div>
-
-      <div className="flex gap-6">
-        {/* Left: Live Feed 60% */}
-        <div className="w-3/5 space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <h2 className="text-lg font-medium">Active Fraud Alerts</h2>
-              <span className="flex items-center text-sm text-green-400"><span className="w-2 h-2 rounded-full bg-green-400 mr-2 animate-pulse"/> Live</span>
-            </div>
+    <div className="min-h-screen p-6">
+      <div className="max-w-7xl mx-auto">
+        <header className="mb-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold">Fraud & Anomaly Detection</h1>
+            <p className="text-sm text-[var(--muted)]">Active alerts and model telemetry</p>
           </div>
+          <div className="flex items-center gap-3">
+            <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm">
+              <span className="live-dot" />
+              <span className="text-[var(--success)] font-semibold">Live</span>
+            </div>
+            <button className="btn-primary">Investigate Now</button>
+          </div>
+        </header>
 
-          <div className="space-y-3">
-            {ALERTS.map((a, i) => (
-              <div key={i} className="p-4 rounded border border-white/6 flex items-center justify-between hover:bg-white/3 transition-colors">
-                <div className="flex items-center space-x-4">
-                  <div>
-                    <div className={`px-2 py-1 rounded text-xs font-bold ${a.severity === "CRITICAL" ? "bg-red-600 text-white" : a.severity === "HIGH" ? "bg-orange-400 text-black" : a.severity === "MEDIUM" ? "bg-yellow-300 text-black" : "bg-neutral-500 text-white"}`}>{a.severity}</div>
-                  </div>
+        <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {TOP_STATS.map((s) => (
+            <div key={s.label} className="rounded-lg border p-4">
+              <div className="text-xs font-semibold uppercase text-[var(--muted)]">{s.label}</div>
+              <div className={`mt-2 text-2xl font-bold ${s.tone === 'rose' ? 'text-rose-400' : s.tone === 'amber' ? 'text-amber-400' : 'text-slate-400'}`}>{s.value}</div>
+            </div>
+          ))}
+        </div>
 
-                  <img src={`https://logo.clearbit.com/${a.domain}`} alt="m" className="w-10 h-10 rounded" />
+        <div className="grid gap-6 lg:grid-cols-5">
+          <div className="space-y-4 lg:col-span-3">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold">Active Fraud Alerts</h2>
+              <div className="inline-flex items-center gap-3 text-sm text-[var(--muted)]">
+                <span className="live-dot" /> Live
+              </div>
+            </div>
 
-                  <div>
-                    <div className="text-sm text-white font-medium">{a.merchant}</div>
-                    <div className="text-xs text-neutral-400">{a.type} — {a.description}</div>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-6">
-                  <div className="text-right">
-                    <div className="font-dmMono text-lg text-white">{formatINR(a.amount)}</div>
-                    <div className="text-xs text-neutral-400 flex items-center"><img src={`https://logo.clearbit.com/${a.gateway.toLowerCase()}.com`} alt="gw" className="w-4 h-4 rounded mr-2" onError={(e)=>{e.currentTarget.style.display='none'}} /> <span className="text-neutral-400">{a.gateway}</span></div>
-                  </div>
-
-                  <div style={{ width: 220 }}>
-                    <div className="w-full bg-white/6 h-3 rounded overflow-hidden">
-                      <div style={{ width: `${a.confidence}%`, background: a.confidence > 90 ? "#ef4444" : a.confidence > 75 ? "#f59e0b" : "#9ca3af" }} className="h-3" />
+            <div className="space-y-3">
+              {alerts.map((a, i) => (
+                <div key={i} className="rounded-lg border p-4" style={{ background: 'var(--surface)' }}>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-3">
+                      <SeverityBadge severity={a.severity} />
+                      <img src={`https://logo.clearbit.com/${a.domain}`} alt={a.merchant} className="h-8 w-8 rounded" />
+                      <div>
+                        <div className="font-semibold">{a.merchant} — <span className="text-xs text-[var(--muted)]">{a.type}</span></div>
+                        <div className="text-sm text-[var(--muted)]">{a.description}</div>
+                      </div>
                     </div>
-                    <div className="text-xs text-neutral-400 mt-1">Confidence: {a.confidence}%</div>
-                  </div>
 
-                  <div className="text-sm text-neutral-400">{a.time}</div>
-
-                  <div className="flex items-center space-x-2">
-                    <button onClick={() => toast.success('Marked false positive (mock)')} className="px-3 py-1 rounded border border-white/6">Mark False Positive</button>
-                    <button onClick={() => toast('Escalated (mock)')} className="px-3 py-1 rounded bg-red-600 text-white">Escalate</button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Right: Heatmap + model info 40% */}
-        <div className="w-2/5 space-y-4">
-          <div className="p-4 rounded bg-white/4">
-            <div className="flex items-center justify-between mb-3">
-              <div>
-                <div className="text-sm text-neutral-300">Fraud by Hour × Day</div>
-                <div className="text-xs text-neutral-400">Heatmap of alerts (mock)</div>
-              </div>
-            </div>
-
-            <div className="overflow-x-auto">
-              <div className="grid grid-rows-7 gap-1">
-                {heatmap.map((row, dIdx) => (
-                  <div key={dIdx} className="flex items-center space-x-2">
-                    <div className="w-10 text-xs text-neutral-400">{days[dIdx]}</div>
-                    <div className="flex space-x-1">
-                      {row.map((v, h) => (
-                        <div key={h} title={`${days[dIdx]} ${h}:00 — ${v} alerts`} className={`w-6 h-6 ${colorForValue(v)} rounded-sm`} />
-                      ))}
+                    <div className="flex flex-col items-end gap-2">
+                      <div className="mono text-lg font-bold">{a.amount}</div>
+                      <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
+                        <img src={`https://logo.clearbit.com/${a.gateway[0]}`} alt={a.gateway[1]} className="h-4 w-4" />
+                        <div>{a.gateway[1]}</div>
+                      </div>
                     </div>
                   </div>
-                ))}
-              </div>
+
+                  <div className="mt-3 flex items-center gap-3">
+                    <div className="flex-1">
+                      <div className="h-3 w-full rounded bg-slate-800">
+                        <div className={`h-3 rounded ${a.confidence > 90 ? 'bg-rose-400' : a.confidence > 80 ? 'bg-amber-400' : 'bg-slate-400'}`} style={{ width: `${a.confidence}%` }} />
+                      </div>
+                      <div className="mt-1 text-xs text-[var(--muted)]">Confidence — {a.confidence}%</div>
+                    </div>
+
+                    <div className="text-xs text-[var(--muted)]">{a.time}</div>
+                  </div>
+
+                  <div className="mt-3 flex items-center gap-3">
+                    <button onClick={handleFalsePositive} className="btn-ghost">Mark False Positive</button>
+                    <button onClick={handleEscalate} className="btn-secondary text-rose-400">Escalate</button>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="p-4 rounded bg-white/5">
-            <div className="flex items-center justify-between mb-3">
-              <div>
-                <div className="text-sm text-neutral-300">AI Model Status</div>
-                <div className="text-xs text-neutral-400">IsolationForest</div>
+          <div className="space-y-4 lg:col-span-2">
+            <div className="rounded-lg border p-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-semibold">Fraud by Hour × Day</h3>
+                <div className="text-xs text-[var(--muted)]">Heatmap</div>
               </div>
-              <div className="text-sm text-neutral-400">Last trained: 2 hours ago</div>
+
+              <div className="mt-3 overflow-auto">
+                <div className="grid gap-1">
+                  <div className="mb-2 grid grid-cols-24 text-xs text-[var(--muted)]">
+                    {Array.from({ length: 24 }).map((_, h) => (
+                      <div key={h} className="text-center text-[10px]">{h}</div>
+                    ))}
+                  </div>
+
+                  {heatmap.map((row, ri) => (
+                    <div key={ri} className="flex items-center gap-2">
+                      <div className="w-10 text-xs text-[var(--muted)]">{DAYS[ri]}</div>
+                      <div className="grid flex-1 grid-cols-24 gap-1">
+                        {row.map((cell, ci) => {
+                          const cls = cell.v === 3 ? 'bg-rose-500' : cell.v === 2 ? 'bg-amber-400' : cell.v === 1 ? 'bg-yellow-300' : 'bg-slate-800'
+                          return <div key={ci} title={`${DAYS[ri]} ${cell.hour}:00 — ${cell.v} alerts`} className={`${cls} h-6 w-full rounded-sm`} />
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 bg-white/6 rounded">
-                <div className="text-xs text-neutral-400">Accuracy</div>
-                <div className="font-dmMono text-lg text-white">94.2%</div>
+            <div className="rounded-lg border p-4">
+              <h3 className="text-sm font-semibold">AI Model Status</h3>
+              <div className="mt-3 text-sm text-[var(--muted)]">Model: <span className="font-mono">IsolationForest</span></div>
+              <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
+                <div>Last trained: <div className="font-semibold">2 hours ago</div></div>
+                <div>Accuracy: <div className="font-semibold">94.2%</div></div>
+                <div>Training samples: <div className="font-semibold">48,291</div></div>
+                <div>Status: <div className="font-semibold text-emerald-400">Healthy</div></div>
               </div>
-              <div className="p-3 bg-white/6 rounded">
-                <div className="text-xs text-neutral-400">Training samples</div>
-                <div className="font-dmMono text-lg text-white">48,291</div>
-              </div>
-            </div>
 
-            <div className="mt-3 text-right">
-              <button onClick={() => toast.success('Retraining started (mock)')} className="px-3 py-2 bg-indigo-600 text-black rounded">Retrain Model</button>
+              <div className="mt-4 flex items-center justify-end gap-3">
+                <button onClick={handleRetrain} className="btn-primary">Retrain Model</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      {toast && (
+        <div className="fixed bottom-6 right-6 rounded-lg bg-[var(--surface-strong)] p-3 shadow-lg">
+          <div className="flex items-center gap-3">
+            <CheckCircle2 className="text-emerald-400" />
+            <div>{toast}</div>
+          </div>
+        </div>
+      )}
     </div>
-  );
+  )
+}
+
+function SeverityBadge({ severity }) {
+  const map = {
+    CRITICAL: 'bg-rose-500 text-white',
+    HIGH: 'bg-amber-400 text-black',
+    MEDIUM: 'bg-yellow-300 text-black',
+    LOW: 'bg-slate-400 text-black',
+  }
+  return <div className={`rounded px-2 py-1 text-xs font-semibold ${map[severity] || 'bg-slate-400'}`}>{severity}</div>
 }

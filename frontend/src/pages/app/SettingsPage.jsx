@@ -1,112 +1,57 @@
-import { useEffect, useMemo, useState } from 'react'
-import { motion } from 'framer-motion'
-import { Bell, BriefcaseBusiness, Check, CreditCard, Lock, Palette, Plus, ShieldCheck, SlidersHorizontal, Sparkles, UserCircle2, Users, X } from 'lucide-react'
-import toast from 'react-hot-toast'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
+import { CheckCircle2, Loader2, X } from 'lucide-react'
 
 const THEME_KEY = 'recon-theme'
-const TABS = ['Profile', 'Security', 'Notifications', 'Gateways', 'Appearance', 'Team']
 
-const GATEWAYS = [
-  { name: 'Stripe', domain: 'stripe.com', status: 'Connected', apiKey: 'sk_live_****1234', lastSync: '4 min ago' },
-  { name: 'Razorpay', domain: 'razorpay.com', status: 'Connected', apiKey: 'sk_live_****1234', lastSync: '12 min ago' },
-  { name: 'PayPal', domain: 'paypal.com', status: 'Disconnected', apiKey: 'sk_live_****1234', lastSync: '1 hr ago' },
-]
-
-const TEAM_MEMBERS = [
-  { name: 'Aarav Mehta', email: 'aarav@reconengine.com', role: 'Admin', status: 'Active' },
-  { name: 'Nisha Patel', email: 'nisha@reconengine.com', role: 'Analyst', status: 'Active' },
-  { name: 'Rohan Iyer', email: 'rohan@reconengine.com', role: 'Operator', status: 'Invited' },
-]
-
-function applyTheme(nextTheme) {
-  const root = document.documentElement
-  root.classList.remove('dark', 'dim')
-
-  if (nextTheme === 'dark' || nextTheme === 'dim') {
-    root.classList.add(nextTheme)
-  }
-
-  localStorage.setItem(THEME_KEY, nextTheme)
+function initialsFromName(name = '') {
+  const parts = name.trim().split(/\s+/)
+  if (!parts.length) return 'U'
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase()
+  return (parts[0][0] + parts[1][0]).toUpperCase()
 }
 
-function themePreview(theme) {
-  if (theme === 'light') return { bg: 'bg-[#F7F6F2]', card: 'bg-white', accent: 'bg-indigo-500' }
-  if (theme === 'dim') return { bg: 'bg-[#14161B]', card: 'bg-[#1B1E25]', accent: 'bg-sky-400' }
-  return { bg: 'bg-[#0B0D12]', card: 'bg-[#11141B]', accent: 'bg-indigo-500' }
+function applyTheme(next) {
+  const el = document.documentElement
+  el.classList.remove('dark', 'dim')
+  if (next === 'dark') el.classList.add('dark')
+  if (next === 'dim') el.classList.add('dim')
+  localStorage.setItem(THEME_KEY, next)
 }
 
-function getStrengthScore(password) {
-  let score = 0
-  if (password.length >= 8) score += 1
-  if (password.length >= 12) score += 1
-  if (/[A-Z]/.test(password)) score += 1
-  if (/[0-9]/.test(password)) score += 1
-  if (/[^A-Za-z0-9]/.test(password)) score += 1
+function RolePill({ role }) {
+  const r = (role || 'viewer').toLowerCase()
+  const cls =
+    r === 'admin'
+      ? 'bg-violet-600 text-white'
+      : r === 'analyst'
+        ? 'bg-sky-600 text-white'
+        : 'bg-slate-500 text-white'
 
-  return score
-}
-
-function StrengthBar({ password }) {
-  const score = getStrengthScore(password)
-  const label = score <= 1 ? 'Weak' : score === 2 ? 'Fair' : score === 3 ? 'Strong' : 'Very strong'
-  const width = `${Math.max(12, score * 25)}%`
-  const color = score <= 1 ? 'bg-red-500' : score === 2 ? 'bg-amber-400' : score === 3 ? 'bg-emerald-400' : 'bg-green-500'
-
-  return (
-    <div>
-      <div className="flex items-center justify-between text-xs text-slate-400">
-        <span>Password strength</span>
-        <span>{label}</span>
-      </div>
-      <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/10">
-        <div className={`h-full ${color} transition-all`} style={{ width }} />
-      </div>
-    </div>
-  )
-}
-
-function Toggle({ checked, onChange }) {
-  return (
-    <button
-      type="button"
-      onClick={() => onChange(!checked)}
-      className={`relative h-7 w-12 rounded-full border transition ${checked ? 'border-emerald-500/40 bg-emerald-500/20' : 'border-white/10 bg-white/5'}`}
-      aria-pressed={checked}
-    >
-      <span
-        className={`absolute top-1 h-5 w-5 rounded-full bg-white transition-all ${checked ? 'left-6' : 'left-1'}`}
-      />
-    </button>
-  )
-}
-
-function Avatar({ initials }) {
-  return (
-    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-indigo-600 text-lg font-bold text-white ring-1 ring-indigo-300/30">
-      {initials}
-    </div>
-  )
+  return <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${cls}`}>{role || 'viewer'}</span>
 }
 
 export default function SettingsPage() {
   const { user } = useAuth()
   const isAdmin = (user?.role || '').toLowerCase() === 'admin'
-  const availableTabs = useMemo(() => (isAdmin ? TABS : TABS.filter((tab) => tab !== 'Team')), [isAdmin])
 
-  const [activeTab, setActiveTab] = useState('Profile')
-  const [fullName, setFullName] = useState(user?.name || '')
+  const tabs = useMemo(() => {
+    const all = ['Profile', 'Security', 'Notifications', 'Gateways', 'Appearance', 'Team']
+    return isAdmin ? all : all.filter((t) => t !== 'Team')
+  }, [isAdmin])
+
+  const [tab, setTab] = useState('Profile')
+
+  const [name, setName] = useState(user?.name || '')
   const [email, setEmail] = useState(user?.email || '')
-  const [company, setCompany] = useState('Recon Studio')
-  const [currentPassword, setCurrentPassword] = useState('')
-  const [newPassword, setNewPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [fontSize, setFontSize] = useState(16)
-  const [compactMode, setCompactMode] = useState(false)
-  const [showInviteModal, setShowInviteModal] = useState(false)
-  const [inviteEmail, setInviteEmail] = useState('')
-  const [theme, setTheme] = useState(() => localStorage.getItem(THEME_KEY) || 'light')
-  const [notificationSettings, setNotificationSettings] = useState({
+  const [company, setCompany] = useState('Recon Labs')
+  const role = user?.role || 'viewer'
+
+  const [currentPwd, setCurrentPwd] = useState('')
+  const [newPwd, setNewPwd] = useState('')
+  const [confirmPwd, setConfirmPwd] = useState('')
+
+  const [notif, setNotif] = useState({
     exceptionAlerts: true,
     dailyReport: true,
     fraudAlerts: true,
@@ -115,403 +60,419 @@ export default function SettingsPage() {
     weeklySummary: false,
   })
 
+  const [gateways] = useState([
+    { name: 'Stripe', domain: 'stripe.com', status: 'online', key: 'sk_live_****1234', lastSync: '2m ago' },
+    { name: 'Razorpay', domain: 'razorpay.com', status: 'online', key: 'sk_live_****2345', lastSync: '5m ago' },
+    { name: 'PayPal', domain: 'paypal.com', status: 'offline', key: 'sk_live_****3456', lastSync: '1h ago' },
+  ])
+
+  const [theme, setTheme] = useState(() => localStorage.getItem(THEME_KEY) || 'light')
+  const [fontSize, setFontSize] = useState('medium')
+  const [compact, setCompact] = useState(false)
+
+  const [members, setMembers] = useState([
+    { name: 'Ehteshamul Haque', email: 'admin@reconengine.com', role: 'admin', status: 'active' },
+    { name: 'Analyst User', email: 'analyst@reconengine.com', role: 'analyst', status: 'active' },
+  ])
+  const [inviteOpen, setInviteOpen] = useState(false)
+  const [inviteEmail, setInviteEmail] = useState('')
+
+  const [loadingGateway, setLoadingGateway] = useState('')
+  const [toast, setToast] = useState('')
+
   useEffect(() => {
     applyTheme(theme)
   }, [theme])
 
   useEffect(() => {
-    if (!isAdmin && activeTab === 'Team') {
-      setActiveTab('Profile')
-    }
-  }, [activeTab, isAdmin])
+    if (fontSize === 'small') document.documentElement.style.fontSize = '14px'
+    else if (fontSize === 'large') document.documentElement.style.fontSize = '18px'
+    else document.documentElement.style.fontSize = ''
+  }, [fontSize])
 
-  const initials = useMemo(() => {
-    const name = fullName || user?.name || 'U'
-    return name
-      .split(/\s+/)
-      .slice(0, 2)
-      .map((part) => part[0]?.toUpperCase())
-      .join('')
-  }, [fullName, user?.name])
+  useEffect(() => {
+    if (compact) document.documentElement.classList.add('compact')
+    else document.documentElement.classList.remove('compact')
+  }, [compact])
 
-  const handleSaveProfile = () => {
-    toast.success('Profile updated!')
+  useEffect(() => {
+    if (!isAdmin && tab === 'Team') setTab('Profile')
+  }, [isAdmin, tab])
+
+  function showToast(message, ms = 1800) {
+    setToast(message)
+    setTimeout(() => setToast(''), ms)
   }
 
-  const handleUpdatePassword = () => {
-    if (!newPassword || newPassword !== confirmPassword) {
-      toast.error('Passwords do not match')
+  function saveProfile() {
+    showToast('Profile updated!')
+  }
+
+  function updatePassword() {
+    if (!newPwd || newPwd !== confirmPwd) {
+      showToast('Passwords do not match')
       return
     }
-
-    toast.success('Password updated!')
+    showToast('Password updated')
+    setCurrentPwd('')
+    setNewPwd('')
+    setConfirmPwd('')
   }
 
-  const handleRevokeSession = (label) => {
-    toast.success(`Revoked session: ${label}`)
+  function revokeSession() {
+    showToast('Session revoked')
   }
 
-  const handleTestConnection = (gateway) => {
-    toast.loading(`Testing ${gateway} connection...`)
+  function testGateway(g) {
+    setLoadingGateway(g.name)
     setTimeout(() => {
-      toast.dismiss()
-      const success = Math.random() > 0.25
-      toast[success ? 'success' : 'error'](success ? `${gateway} connection successful` : `${gateway} connection failed`)
+      const ok = Math.random() > 0.2
+      showToast(ok ? `Connection to ${g.name} successful` : `Connection to ${g.name} failed`)
+      setLoadingGateway('')
     }, 1200)
   }
 
-  const handleConfigureGateway = (gateway) => {
-    toast(`Opening ${gateway} configuration...`)
-  }
-
-  const handleInviteMember = () => {
+  function inviteMember() {
     if (!inviteEmail.trim()) {
-      toast.error('Enter an email address')
+      showToast('Please enter an email')
       return
     }
 
-    toast.success(`Invite sent to ${inviteEmail}`)
+    setMembers((s) => [
+      ...s,
+      {
+        name: inviteEmail.split('@')[0],
+        email: inviteEmail,
+        role: 'viewer',
+        status: 'invited',
+      },
+    ])
+
     setInviteEmail('')
-    setShowInviteModal(false)
+    setInviteOpen(false)
+    showToast('Invite sent')
   }
 
-  const handleThemeSelect = (nextTheme) => {
-    setTheme(nextTheme)
-    applyTheme(nextTheme)
+  function passwordStrength(pw) {
+    let score = 0
+    if (pw.length >= 8) score++
+    if (/[A-Z]/.test(pw)) score++
+    if (/[0-9]/.test(pw)) score++
+    if (/[^A-Za-z0-9]/.test(pw)) score++
+    return score
   }
 
-  const tabButtonClass = (tab) =>
-    `rounded-full px-4 py-2 text-sm transition ${activeTab === tab ? 'bg-indigo-600 text-white' : 'bg-white/5 text-slate-300 hover:bg-white/10'}`
+  const pwdScore = passwordStrength(newPwd)
 
   return (
-    <div className="space-y-6" style={{ fontSize: `${fontSize}px` }}>
-      <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="panel-surface p-6 sm:p-8">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <p className="text-sm uppercase tracking-[0.35em] text-[#E8FF47]">Settings</p>
-            <h1 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">Workspace settings</h1>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">Profile, security, notifications, gateways, appearance and team controls for the reconciliation workspace.</p>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {availableTabs.map((tab) => (
-              <button key={tab} type="button" onClick={() => setActiveTab(tab)} className={tabButtonClass(tab)}>
-                {tab}
-              </button>
-            ))}
-          </div>
+    <div className="min-h-screen p-6">
+      <div className="max-w-6xl mx-auto">
+        <header className="mb-6">
+          <h1 className="text-2xl font-semibold">Settings</h1>
+        </header>
+
+        <div className="mb-4 flex flex-wrap items-center gap-3">
+          {tabs.map((t) => (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className={`rounded px-3 py-2 ${tab === t ? 'border border-[var(--border)] bg-[var(--bg3)]' : 'text-[var(--muted)]'}`}
+            >
+              {t}
+            </button>
+          ))}
         </div>
-      </motion.section>
 
-      {activeTab === 'Profile' && (
-        <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="panel-surface p-6">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
-            <div className="flex flex-col items-center gap-3 lg:w-64">
-              <Avatar initials={initials} />
-              <button type="button" className="btn-secondary w-full justify-center">
-                <Sparkles size={16} />
-                Change Avatar
-              </button>
-            </div>
-
-            <div className="grid flex-1 gap-4 md:grid-cols-2">
-              <label className="space-y-2">
-                <span className="text-sm text-slate-300">Full Name</span>
-                <input value={fullName} onChange={(e) => setFullName(e.target.value)} className="input-field" />
-              </label>
-
-              <label className="space-y-2">
-                <span className="text-sm text-slate-300">Email</span>
-                <input value={email} onChange={(e) => setEmail(e.target.value)} className="input-field" />
-              </label>
-
-              <label className="space-y-2">
-                <span className="text-sm text-slate-300">Company</span>
-                <input value={company} onChange={(e) => setCompany(e.target.value)} className="input-field" />
-              </label>
-
-              <label className="space-y-2">
-                <span className="text-sm text-slate-300">Role</span>
-                <div className="inline-flex w-fit items-center rounded-full border border-indigo-400/20 bg-indigo-500/10 px-3 py-2 text-sm font-semibold text-indigo-200">
-                  {user?.role || 'analyst'}
+        {tab === 'Profile' && (
+          <div className="rounded-lg border p-6">
+            <div className="flex flex-col gap-6 md:flex-row">
+              <div>
+                <div className="grid h-16 w-16 place-items-center rounded-full bg-indigo-600 text-2xl font-semibold text-white">
+                  {initialsFromName(name || email)}
                 </div>
-              </label>
-
-              <div className="md:col-span-2 flex justify-end">
-                <button type="button" onClick={handleSaveProfile} className="btn-primary">
-                  Save Changes
+                <button onClick={() => showToast('Change avatar not implemented')} className="btn-ghost mt-2">
+                  Change Avatar
                 </button>
               </div>
-            </div>
-          </div>
-        </motion.section>
-      )}
 
-      {activeTab === 'Security' && (
-        <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="panel-surface p-6 space-y-6">
-          <div>
-            <h2 className="text-xl font-semibold text-white">Change Password</h2>
-            <div className="mt-4 grid gap-4 md:grid-cols-3">
-              <input value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} type="password" placeholder="Current password" className="input-field" />
-              <input value={newPassword} onChange={(e) => setNewPassword(e.target.value)} type="password" placeholder="New password" className="input-field" />
-              <input value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} type="password" placeholder="Confirm password" className="input-field" />
-            </div>
-            <div className="mt-4 max-w-md">
-              <StrengthBar password={newPassword} />
-            </div>
-            <div className="mt-4 flex justify-end">
-              <button type="button" onClick={handleUpdatePassword} className="btn-primary">
-                Update Password
-              </button>
-            </div>
-          </div>
-
-          <div>
-            <h2 className="text-xl font-semibold text-white">Active Sessions</h2>
-            <div className="mt-4 space-y-3">
-              {[
-                { label: 'Chrome on Windows', location: 'New Delhi, India', when: 'Active now' },
-                { label: 'Mobile Safari', location: 'Mumbai, India', when: '2 hours ago' },
-              ].map((session) => (
-                <div key={session.label} className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/5 p-4 md:flex-row md:items-center md:justify-between">
+              <div className="flex-1">
+                <div className="grid gap-3 sm:grid-cols-2">
                   <div>
-                    <div className="text-sm font-semibold text-white">{session.label}</div>
-                    <div className="text-sm text-slate-400">{session.location} — {session.when}</div>
+                    <label className="text-xs text-[var(--muted)]">Full Name</label>
+                    <input className="input-field mt-1" value={name} onChange={(e) => setName(e.target.value)} />
                   </div>
-                  <button type="button" onClick={() => handleRevokeSession(session.label)} className="btn-secondary w-fit">
-                    Revoke
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.section>
-      )}
-
-      {activeTab === 'Notifications' && (
-        <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="panel-surface p-6 space-y-4">
-          <div className="flex items-center gap-3 text-white">
-            <Bell size={18} className="text-indigo-300" />
-            <h2 className="text-xl font-semibold">Notification Preferences</h2>
-          </div>
-
-          {[
-            ['Exception alerts', 'Get immediate alerts when matching fails or exceptions are queued.', 'exceptionAlerts'],
-            ['Daily reconciliation report', 'Receive a daily summary of successful and unresolved batches.', 'dailyReport'],
-            ['Fraud detection alerts', 'Be notified whenever anomaly detection flags suspicious activity.', 'fraudAlerts'],
-            ['Settlement failures', 'Alert the operations team when settlements fail or stall.', 'settlementFailures'],
-            ['API downtime alerts', 'Warn the team if gateway or reconciliation APIs become unavailable.', 'apiDowntime'],
-            ['Weekly summary email', 'A concise weekly digest of KPIs and resolution trends.', 'weeklySummary'],
-          ].map(([label, description, key]) => (
-            <div key={label} className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
-              <div>
-                <div className="text-sm font-semibold text-white">{label}</div>
-                <div className="text-sm text-slate-400">{description}</div>
-              </div>
-              <Toggle
-                checked={notificationSettings[key]}
-                onChange={(next) => setNotificationSettings((current) => ({ ...current, [key]: next }))}
-              />
-            </div>
-          ))}
-        </motion.section>
-      )}
-
-      {activeTab === 'Gateways' && (
-        <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="panel-surface p-6">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div className="flex items-center gap-3 text-white">
-              <BriefcaseBusiness size={18} className="text-indigo-300" />
-              <h2 className="text-xl font-semibold">Connected Gateways</h2>
-            </div>
-            <button type="button" className="btn-primary">
-              <Plus size={16} />
-              Add Gateway
-            </button>
-          </div>
-
-          <div className="mt-6 overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead className="text-xs uppercase tracking-[0.2em] text-slate-400">
-                <tr>
-                  <th className="py-3">Logo</th>
-                  <th className="py-3">Name</th>
-                  <th className="py-3">Status</th>
-                  <th className="py-3">API Key</th>
-                  <th className="py-3">Last Sync</th>
-                  <th className="py-3">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {GATEWAYS.map((gateway) => (
-                  <tr key={gateway.name} className="border-t border-white/10">
-                    <td className="py-4">
-                      <img src={`https://logo.clearbit.com/${gateway.domain}`} alt={gateway.name} className="h-8 w-8 rounded-lg" />
-                    </td>
-                    <td className="py-4 text-white">{gateway.name}</td>
-                    <td className="py-4">
-                      <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${gateway.status === 'Connected' ? 'bg-emerald-500/15 text-emerald-200' : 'bg-rose-500/15 text-rose-200'}`}>
-                        <span className={`mr-2 h-2 w-2 rounded-full ${gateway.status === 'Connected' ? 'bg-emerald-400' : 'bg-rose-400'}`} />
-                        {gateway.status}
-                      </span>
-                    </td>
-                    <td className="py-4 font-dmMono text-slate-300">{gateway.apiKey}</td>
-                    <td className="py-4 text-slate-300">{gateway.lastSync}</td>
-                    <td className="py-4">
-                      <div className="flex flex-wrap gap-2">
-                        <button type="button" onClick={() => handleTestConnection(gateway.name)} className="btn-secondary">
-                          Test Connection
-                        </button>
-                        <button type="button" onClick={() => handleConfigureGateway(gateway.name)} className="btn-secondary">
-                          Configure
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </motion.section>
-      )}
-
-      {activeTab === 'Appearance' && (
-        <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="panel-surface p-6 space-y-6">
-          <div className="flex items-center gap-3 text-white">
-            <Palette size={18} className="text-indigo-300" />
-            <h2 className="text-xl font-semibold">Appearance</h2>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-3">
-            {['Light', 'Dim', 'Dark'].map((label) => {
-              const themeName = label.toLowerCase()
-              const preview = themePreview(themeName)
-              const selected = theme === themeName
-
-              return (
-                <button
-                  key={label}
-                  type="button"
-                  onClick={() => handleThemeSelect(themeName)}
-                  className={`rounded-3xl border p-4 text-left transition ${selected ? 'border-indigo-500' : 'border-white/10 hover:border-white/20'}`}
-                >
-                  <div className={`rounded-2xl ${preview.bg} p-3`}>
-                    <div className={`h-3 w-24 rounded-full ${preview.card}`} />
-                    <div className={`mt-3 h-24 rounded-2xl ${preview.card} p-3`}>
-                      <div className={`h-2 w-16 rounded-full ${preview.accent}`} />
-                      <div className="mt-3 h-2 w-20 rounded-full bg-white/20" />
-                      <div className="mt-2 h-2 w-12 rounded-full bg-white/12" />
+                  <div>
+                    <label className="text-xs text-[var(--muted)]">Email</label>
+                    <input className="input-field mt-1" value={email} onChange={(e) => setEmail(e.target.value)} />
+                  </div>
+                  <div>
+                    <label className="text-xs text-[var(--muted)]">Company</label>
+                    <input className="input-field mt-1" value={company} onChange={(e) => setCompany(e.target.value)} />
+                  </div>
+                  <div>
+                    <label className="text-xs text-[var(--muted)]">Role</label>
+                    <div className="mt-2">
+                      <RolePill role={role} />
                     </div>
                   </div>
-                  <div className="mt-4 text-sm font-semibold text-white">{label}</div>
-                </button>
-              )
-            })}
-          </div>
-
-          <div className="space-y-4">
-            <div>
-              <div className="flex items-center justify-between text-sm text-slate-300">
-                <span>Font size</span>
-                <span>{fontSize < 15 ? 'Small' : fontSize < 18 ? 'Medium' : 'Large'}</span>
-              </div>
-              <input type="range" min="14" max="20" step="1" value={fontSize} onChange={(e) => setFontSize(Number(e.target.value))} className="mt-3 w-full" />
-            </div>
-
-            <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
-              <div>
-                <div className="text-sm font-semibold text-white">Compact mode</div>
-                <div className="text-sm text-slate-400">Tighten spacing across panels and tables.</div>
-              </div>
-              <Toggle checked={compactMode} onChange={setCompactMode} />
-            </div>
-          </div>
-        </motion.section>
-      )}
-
-      {activeTab === 'Team' && (
-        <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="panel-surface p-6">
-          {!isAdmin ? (
-            <div className="rounded-3xl border border-rose-500/20 bg-rose-500/10 p-6 text-rose-100">
-              <h2 className="text-xl font-semibold">Access Denied</h2>
-              <p className="mt-2 text-sm text-rose-100/80">Team management is available to admin users only.</p>
-            </div>
-          ) : (
-            <>
-              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                <div className="flex items-center gap-3 text-white">
-                  <Users size={18} className="text-indigo-300" />
-                  <h2 className="text-xl font-semibold">Team Members</h2>
                 </div>
-                <button type="button" onClick={() => setShowInviteModal(true)} className="btn-primary">
-                  <Plus size={16} />
-                  Invite Member
-                </button>
-              </div>
 
-              <div className="mt-6 overflow-x-auto">
-                <table className="w-full text-left text-sm">
-                  <thead className="text-xs uppercase tracking-[0.2em] text-slate-400">
-                    <tr>
-                      <th className="py-3">Avatar</th>
-                      <th className="py-3">Name</th>
-                      <th className="py-3">Email</th>
-                      <th className="py-3">Role</th>
-                      <th className="py-3">Status</th>
-                      <th className="py-3">Action</th>
+                <div className="mt-4 flex justify-end">
+                  <button onClick={saveProfile} className="btn-primary">Save Changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {tab === 'Security' && (
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="rounded-lg border p-4">
+              <h3 className="text-sm font-semibold">Change Password</h3>
+              <div className="mt-3 space-y-3">
+                <input type="password" placeholder="Current password" className="input-field" value={currentPwd} onChange={(e) => setCurrentPwd(e.target.value)} />
+                <input type="password" placeholder="New password" className="input-field" value={newPwd} onChange={(e) => setNewPwd(e.target.value)} />
+                <input type="password" placeholder="Confirm password" className="input-field" value={confirmPwd} onChange={(e) => setConfirmPwd(e.target.value)} />
+
+                <div>
+                  <div className="text-xs text-[var(--muted)]">Password strength</div>
+                  <div className="mt-1 h-3 w-full rounded bg-slate-800">
+                    <div
+                      className={`h-3 rounded ${
+                        pwdScore <= 1
+                          ? 'w-1/4 bg-rose-400'
+                          : pwdScore === 2
+                            ? 'w-1/2 bg-amber-400'
+                            : pwdScore === 3
+                              ? 'w-3/4 bg-emerald-400'
+                              : 'w-full bg-emerald-400'
+                      }`}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex justify-end">
+                  <button onClick={updatePassword} className="btn-primary">Update Password</button>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-lg border p-4">
+              <h3 className="text-sm font-semibold">Active Sessions</h3>
+              <div className="mt-3 space-y-3">
+                <div className="flex items-center justify-between rounded p-3">
+                  <div>
+                    <div className="font-semibold">Chrome on Windows</div>
+                    <div className="text-xs text-[var(--muted)]">New Delhi, India — Active now</div>
+                  </div>
+                  <button onClick={revokeSession} className="btn-ghost">Revoke</button>
+                </div>
+
+                <div className="flex items-center justify-between rounded p-3">
+                  <div>
+                    <div className="font-semibold">Mobile Safari</div>
+                    <div className="text-xs text-[var(--muted)]">Mumbai, India — 2 hours ago</div>
+                  </div>
+                  <button onClick={revokeSession} className="btn-ghost">Revoke</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {tab === 'Notifications' && (
+          <div className="space-y-4 rounded-lg border p-4">
+            {[
+              { key: 'exceptionAlerts', label: 'Exception alerts', desc: 'Notify on reconciliation exceptions' },
+              { key: 'dailyReport', label: 'Daily reconciliation report', desc: 'Receive daily summary' },
+              { key: 'fraudAlerts', label: 'Fraud detection alerts', desc: 'Real-time fraud alerts' },
+              { key: 'settlementFailures', label: 'Settlement failures', desc: 'Notify on settlement issues' },
+              { key: 'apiDowntime', label: 'API downtime alerts', desc: 'Notify when APIs are down' },
+              { key: 'weeklySummary', label: 'Weekly summary email', desc: 'Weekly executive summary' },
+            ].map((n) => (
+              <div key={n.key} className="flex items-center justify-between">
+                <div>
+                  <div className="font-semibold">{n.label}</div>
+                  <div className="text-xs text-[var(--muted)]">{n.desc}</div>
+                </div>
+                <label className="inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={notif[n.key]}
+                    onChange={(e) => setNotif((s) => ({ ...s, [n.key]: e.target.checked }))}
+                  />
+                </label>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {tab === 'Gateways' && (
+          <div className="rounded-lg border p-4">
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-sm font-semibold">Connected Gateways</h3>
+              <button className="btn-primary">Add Gateway</button>
+            </div>
+
+            <div className="overflow-auto">
+              <table className="w-full table-auto text-sm">
+                <thead className="text-xs text-[var(--muted)]">
+                  <tr>
+                    <th>Gateway</th>
+                    <th>Status</th>
+                    <th>API Key</th>
+                    <th>Last Sync</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {gateways.map((g) => (
+                    <tr key={g.name} className="border-t border-[var(--border)]">
+                      <td className="flex items-center gap-3 py-3">
+                        <img src={`https://logo.clearbit.com/${g.domain}`} alt={g.name} className="h-6 w-6" />
+                        {g.name}
+                      </td>
+                      <td className="py-3">
+                        {g.status === 'online' ? (
+                          <span className="status-pill status-pill-success">Online</span>
+                        ) : (
+                          <span className="status-pill status-pill-danger">Offline</span>
+                        )}
+                      </td>
+                      <td className="py-3">{g.key}</td>
+                      <td className="py-3">{g.lastSync}</td>
+                      <td className="py-3 text-right">
+                        <button onClick={() => testGateway(g)} className="btn-ghost mr-2">
+                          {loadingGateway === g.name ? <Loader2 className="animate-spin" size={16} /> : 'Test Connection'}
+                        </button>
+                        <button onClick={() => showToast(`Configure ${g.name}`)} className="btn-primary">Configure</button>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {TEAM_MEMBERS.map((member) => (
-                      <tr key={member.email} className="border-t border-white/10">
-                        <td className="py-4">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600 text-sm font-bold text-white">
-                            {member.name.split(' ').map((part) => part[0]).join('').slice(0, 2)}
-                          </div>
-                        </td>
-                        <td className="py-4 text-white">{member.name}</td>
-                        <td className="py-4 text-slate-300">{member.email}</td>
-                        <td className="py-4">
-                          <span className="rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-200">{member.role}</span>
-                        </td>
-                        <td className="py-4 text-slate-300">{member.status}</td>
-                        <td className="py-4">
-                          <button type="button" className="btn-secondary text-rose-200 hover:text-rose-100">
-                            Remove
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </>
-          )}
-        </motion.section>
-      )}
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
 
-      {showInviteModal && isAdmin ? (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 px-4">
-          <div className="w-full max-w-md rounded-3xl border border-white/10 bg-[var(--bg2)] p-6 shadow-2xl shadow-black/40">
+        {tab === 'Appearance' && (
+          <div className="rounded-lg border p-4">
+            <h3 className="text-sm font-semibold">Theme</h3>
+            <div className="mt-3 flex gap-3">
+              {[
+                { key: 'light', label: 'Light' },
+                { key: 'dim', label: 'Dim' },
+                { key: 'dark', label: 'Dark' },
+              ].map((t) => (
+                <button
+                  key={t.key}
+                  onClick={() => setTheme(t.key)}
+                  className={`w-32 rounded border p-3 text-left ${theme === t.key ? 'border-[var(--primary)]' : 'border-[var(--border)]'}`}
+                >
+                  <div className="font-semibold">{t.label}</div>
+                  <div className="text-xs text-[var(--muted)]">Preview</div>
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-4">
+              <label className="text-sm">Font size</label>
+              <div className="mt-2 flex items-center gap-3">
+                <select value={fontSize} onChange={(e) => setFontSize(e.target.value)} className="input-field max-w-xs">
+                  <option value="small">Small</option>
+                  <option value="medium">Medium</option>
+                  <option value="large">Large</option>
+                </select>
+                <label className="inline-flex items-center gap-2">
+                  Compact mode
+                  <input type="checkbox" checked={compact} onChange={(e) => setCompact(e.target.checked)} />
+                </label>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {tab === 'Team' && (
+          <div className="rounded-lg border p-4">
+            {!isAdmin ? (
+              <div className="p-6 text-center text-sm">Access Denied — admin only</div>
+            ) : (
+              <>
+                <div className="mb-3 flex items-center justify-between">
+                  <h3 className="text-sm font-semibold">Team Members</h3>
+                  <button onClick={() => setInviteOpen(true)} className="btn-primary">Invite Member</button>
+                </div>
+
+                <div className="overflow-auto">
+                  <table className="w-full table-auto text-sm">
+                    <thead className="text-xs text-[var(--muted)]">
+                      <tr>
+                        <th>Member</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {members.map((m) => (
+                        <tr key={m.email} className="border-t border-[var(--border)]">
+                          <td className="flex items-center gap-3 py-3">
+                            <div className="grid h-8 w-8 place-items-center rounded-full bg-indigo-600 text-white">
+                              {initialsFromName(m.name)}
+                            </div>
+                            {m.name}
+                          </td>
+                          <td className="py-3">{m.email}</td>
+                          <td className="py-3"><RolePill role={m.role} /></td>
+                          <td className="py-3">{m.status}</td>
+                          <td className="py-3 text-right">
+                            <button onClick={() => showToast(`Removed ${m.name}`)} className="btn-ghost">Remove</button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+
+      {inviteOpen && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/40 px-4">
+          <div className="w-full max-w-md rounded-lg bg-[var(--surface-strong)] p-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-white">Invite Member</h3>
-              <button type="button" onClick={() => setShowInviteModal(false)} className="rounded-full p-2 text-slate-400 hover:bg-white/5 hover:text-white">
-                <X size={18} />
+              <h3 className="text-lg font-semibold">Invite Member</h3>
+              <button onClick={() => setInviteOpen(false)} className="rounded p-1 hover:bg-white/5" aria-label="Close invite modal">
+                <X size={16} />
               </button>
             </div>
-            <div className="mt-4 space-y-3">
-              <input value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} type="email" placeholder="team@company.com" className="input-field" />
-              <div className="flex justify-end gap-2">
-                <button type="button" onClick={() => setShowInviteModal(false)} className="btn-secondary">
-                  Cancel
-                </button>
-                <button type="button" onClick={handleInviteMember} className="btn-primary">
-                  Send Invite
-                </button>
-              </div>
+            <div className="mt-3">
+              <input
+                value={inviteEmail}
+                onChange={(e) => setInviteEmail(e.target.value)}
+                placeholder="user@example.com"
+                className="input-field w-full"
+              />
+            </div>
+            <div className="mt-4 flex justify-end gap-3">
+              <button onClick={() => setInviteOpen(false)} className="btn-ghost">Cancel</button>
+              <button onClick={inviteMember} className="btn-primary">Send Invite</button>
             </div>
           </div>
         </div>
-      ) : null}
+      )}
+
+      {toast && (
+        <div className="fixed bottom-6 right-6 rounded-lg bg-[var(--surface-strong)] p-3 shadow-lg">
+          <div className="flex items-center gap-3">
+            <CheckCircle2 className="text-emerald-400" size={18} />
+            <div>{toast}</div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
