@@ -189,21 +189,6 @@ This project aims to solve modern fintech reconciliation challenges including:
 
 ---
 
-# Learning Goals
-
-This project is also part of a deep learning journey into:
-
-* Backend Engineering
-* Fintech Systems
-* FastAPI Development
-* Database Design
-* REST API Architecture
-* System Design
-* AI-assisted automation
-* Scalable application development
-
----
-
 # Installation (Planned)
 
 ## Backend
