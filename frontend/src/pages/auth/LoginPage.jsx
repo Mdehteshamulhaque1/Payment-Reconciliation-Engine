@@ -38,6 +38,7 @@ export default function LoginPage() {
   const demoCredentials = useMemo(() => ({
     admin: { email: 'admin@reconengine.com', password: 'Admin@123' },
     analyst: { email: 'analyst@reconengine.com', password: 'Analyst@123' },
+    viewer: { email: 'viewer@reconengine.com', password: 'Viewer@123' },
   }), [])
 
   const fillWith = useCallback((who) => {
@@ -171,6 +172,16 @@ export default function LoginPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <button type="button" onClick={(e) => { e.stopPropagation(); copyCreds('analyst') }} aria-label="copy analyst" className="p-1 rounded hover:bg-white/5"><Copy size={16} /></button>
+                </div>
+              </button>
+
+              <button type="button" onClick={() => fillWith('viewer')} className="flex items-center justify-between rounded-md px-3 py-2 text-sm text-left hover:bg-white/2">
+                <div>
+                  <div style={{ color: '#E8FF47', fontWeight: 700 }}>Viewer</div>
+                  <div style={{ color: '#CFCFBD', fontFamily: 'DM Mono, monospace' }}>viewer@reconengine.com / Viewer@123</div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button type="button" onClick={(e) => { e.stopPropagation(); copyCreds('viewer') }} aria-label="copy viewer" className="p-1 rounded hover:bg-white/5"><Copy size={16} /></button>
                 </div>
               </button>
             </div>

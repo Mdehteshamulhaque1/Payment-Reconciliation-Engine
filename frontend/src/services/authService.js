@@ -1,7 +1,5 @@
-import { buildFakeToken } from '../utils/authStorage'
-
 // HARDCODED DEMO USERS — add your credentials here
-export const DEMO_USERS = [
+const DEMO_USERS = [
   {
     email: 'admin@reconengine.com',
     password: 'Admin@123',
@@ -25,23 +23,19 @@ export const DEMO_USERS = [
   },
 ]
 
-export function getDemoUser(identifier) {
-  const normalizedIdentifier = identifier.trim().toLowerCase()
-
-  return DEMO_USERS.find((user) => user.email === normalizedIdentifier) || null
-}
-
 export async function login({ identifier, password }) {
   // simulate network delay
-  await new Promise((resolve) => setTimeout(resolve, 800))
+  await new Promise(resolve => setTimeout(resolve, 800))
 
-  const user = getDemoUser(identifier)
+  const user = DEMO_USERS.find(
+    u => u.email === identifier.trim().toLowerCase()
+  )
 
   if (!user || user.password !== password) {
     throw new Error('Invalid email or password.')
   }
 
-  const fakeToken = buildFakeToken(user.email)
+  const fakeToken = `recon_${btoa(user.email)}_${Date.now()}`
 
   return {
     access_token: fakeToken,

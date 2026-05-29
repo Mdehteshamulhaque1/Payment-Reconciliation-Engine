@@ -11,6 +11,11 @@ class Settings(BaseSettings):
     DEBUG: bool = False
     ENVIRONMENT: str = "development"
 
+    secret_key: str = "replace-me"
+    jwt_algorithm: str = "HS256"
+    celery_broker_url: str = "redis://redis:6379/0"
+    redis_url: str = "redis://redis:6379/1"
+
     MYSQL_HOST: str = "localhost"
     MYSQL_PORT: int = 3306
     MYSQL_USER: str = "root"
@@ -24,6 +29,7 @@ class Settings(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
         case_sensitive=False,
+        extra="ignore",
     )
 
     @property
