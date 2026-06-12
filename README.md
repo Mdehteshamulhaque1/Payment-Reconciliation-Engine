@@ -1,236 +1,150 @@
-# Payment-Reconciliation-Engine
-An AI-powered fintech reconciliation platform built to automate transaction verification, payment matching, settlement tracking, and anomaly detection across multiple payment gateways.
+# Payment Reconciliation Engine
+
+A fintech platform designed to automate transaction reconciliation, payment gateway monitoring, and settlement tracking across multiple payment providers (UPI, Stripe, Razorpay, PayPal, and banking APIs).
+
+> **Project status:** Active development. Core scaffolding (authentication, database models, API structure, frontend application, Docker/monitoring setup) is in place. Reconciliation logic, fraud detection, and AI-based matching are currently placeholder implementations and are under active development.
 
 ## Overview
 
-Modern businesses process payments through multiple systems such as:
+Businesses processing payments across multiple gateways and banking channels often face:
 
-* UPI
-* Stripe
-* Razorpay
-* PayPal
-* Banking APIs
-* Wallets
-* Card networks
+- Settlement mismatches between gateway records and internal ledgers
+- Duplicate or failed-but-deducted transactions
+- Manual, spreadsheet-based reconciliation workflows
+- Delayed settlement confirmations and refund tracking issues
+- Lack of visibility into gateway latency and API failures
 
-Managing and reconciling these transactions manually often leads to:
+This project aims to provide a unified backend and dashboard for monitoring transactions, detecting mismatches, and reconciling payment data across gateways.
 
-* Settlement mismatches
-* Duplicate payments
-* Failed transaction confusion
-* Delayed confirmations
-* Manual Excel reconciliation
-* API timeout issues
-* Refund tracking problems
----
+## Tech Stack
 
-# Key Features
+**Frontend**
+- React 18 + TypeScript
+- Vite
+- Tailwind CSS
+- Framer Motion
+- Zustand
+- Recharts
+- Axios
 
-## AI-Powered Reconciliation
+**Backend**
+- Python 3.11
+- FastAPI
+- SQLAlchemy
+- Pydantic / Pydantic Settings
+- MySQL (via PyMySQL)
+- Celery (task queue scaffolding)
+- Redis (caching / broker scaffolding)
 
-Automatically compare and verify:
+**Infrastructure**
+- Docker & Docker Compose
+- Prometheus & Grafana (monitoring scaffolding)
 
-* Payment gateway records
-* Internal transaction records
-* Bank settlement data
+## Project Structure
 
----
-
-## Real-Time Transaction Monitoring
-
-Track:
-
-* Successful payments
-* Failed transactions
-* Pending settlements
-* Duplicate entries
-* API latency
-
----
-
-## Smart Mismatch Detection
-
-Detect:
-
-* Duplicate transactions
-* Settlement mismatches
-* Failed-but-deducted payments
-* Suspicious transaction patterns
-
----
-
-## API Monitoring System
-
-Monitor:
-
-* API response time
-* Gateway failures
-* Retry attempts
-* Service availability
-
----
-
-## Fraud & Anomaly Detection
-
-AI-powered detection for:
-
-* Unusual payment spikes
-* Multiple failed attempts
-* Abnormal transaction behavior
-
----
-
-## Analytics Dashboard
-
-Visualize:
-
-* Revenue trends
-* Success/failure ratios
-* Gateway performance
-* Settlement status
-* Reconciliation reports
-
----
-
-# Tech Stack
-
-## Frontend
-
-* React
-* TypeScript
-* Tailwind CSS
-* Framer Motion
-* Axios
-* Recharts
-
-## Backend
-
-* Python
-* FastAPI
-* REST APIs
-* SQLAlchemy
-* JWT Authentication
-* Pydantic
-
-## Database
-
-* MySQL
-
-## Future Enhancements
-
-* Redis
-* Celery
-* Docker
-* Kafka
-* WebSockets
-* AI/ML models
-
----
-
-# Project Architecture
-
-```bash
+```
 Payment-Reconciliation-Engine/
-│
-├── frontend/
-│   ├── components/
-│   ├── pages/
-│   ├── services/
-│   ├── routes/
-│   └── assets/
-│
 ├── backend/
 │   ├── app/
-│   ├── api/
-│   ├── models/
-│   ├── services/
-│   ├── database/
-│   └── utils/
-│
-└── docs/
+│   │   ├── api/v1/        # API route modules (auth, transactions, reconciliation, fraud, etc.)
+│   │   ├── core/          # Config, security, Celery, Redis setup
+│   │   ├── db/            # Database session and base models
+│   │   ├── models/        # SQLAlchemy models
+│   │   ├── schemas/        # Pydantic schemas
+│   │   ├── services/       # Business logic (reconciliation, fraud detection, etc.)
+│   │   ├── tasks/          # Celery task definitions
+│   │   └── main.py         # FastAPI application entrypoint
+│   ├── admin_panel/        # Django-based admin/audit module
+│   ├── webhook_service/    # Gateway webhook handlers (Stripe, Razorpay, PayPal)
+│   ├── database/           # Seed scripts
+│   └── requirements.txt
+├── frontend/
+│   ├── src/
+│   │   ├── components/     # UI components (landing page, layout, auth, dashboard)
+│   │   ├── pages/          # Application pages (dashboard, transactions, reports, etc.)
+│   │   ├── services/        # API service layer
+│   │   ├── routes/          # Route guards
+│   │   ├── context/          # Auth context
+│   │   └── hooks/, utils/, styles/
+│   └── package.json
+├── monitoring/              # Prometheus & Grafana configuration
+├── docker-compose.yml
+└── package.json
 ```
 
----
+## Current Implementation Status
 
-# Current Development Status
+### Implemented
+- FastAPI application structure with versioned API routing (`/api/v1`)
+- Authentication endpoints (login, token validation)
+- Transaction creation and listing endpoints backed by SQLAlchemy/MySQL
+- Health check endpoint with database connectivity check
+- Database models for transactions, users, gateways, rules, exceptions, audit logs, and reconciliation
+- React frontend with landing page, authentication pages (login/signup), and a full dashboard shell (transactions, reconciliation, fraud alerts, monitoring, reports, settings)
+- Docker Compose setup for backend, frontend, MySQL, and Redis
+- Prometheus/Grafana monitoring configuration scaffold
 
-## Completed
+### In Progress / Planned
+- Reconciliation engine logic (currently a placeholder)
+- AI-based transaction matching (currently a placeholder)
+- Fraud and anomaly detection (currently a placeholder)
+- Rule engine evaluation logic
+- Gateway integration services and webhook handling (Stripe, Razorpay, PayPal handlers are stubbed)
+- Celery task execution for batch reconciliation, imports, and report generation
+- Analytics and reporting endpoints
+- WebSocket-based real-time updates
 
-* Project planning
-* Architecture design
-* UI planning
-* GitHub setup
+## Getting Started
 
-## In Progress
+### Prerequisites
+- Python 3.11+
+- Node.js 18+
+- MySQL 8
+- Redis (optional, required for future Celery features)
+- Docker & Docker Compose (optional, for containerized setup)
 
-* Frontend landing page
-## Planned
-
-* Authentication system
-* Transaction APIs
-* AI reconciliation engine
-* Analytics dashboard
-* Fraud detection module
-* Deployment pipeline
-
----
-
-# Real-World Problems Solved
-
-This project aims to solve modern fintech reconciliation challenges including:
-
-* Payment mismatches
-* Delayed settlements
-* Gateway synchronization issues
-* Transaction verification automation
-* Financial reporting complexity
-* Fraud detection
-* API reliability monitoring
-
----
-
-# Installation (Planned)
-
-## Backend
+### Backend Setup
 
 ```bash
 cd backend
 pip install -r requirements.txt
-uvicorn main:app --reload
+cp .env.example .env   # update database credentials as needed
+uvicorn app.main:app --reload
 ```
 
-## Frontend
+The API will be available at `http://localhost:8000`, with interactive docs at `http://localhost:8000/docs`.
+
+### Frontend Setup
 
 ```bash
 cd frontend
 npm install
+cp .env.example .env   # update API base URL as needed
 npm run dev
 ```
 
----
+### Running with Docker Compose
 
-# Future Scope
+```bash
+docker-compose up --build
+```
 
-* Multi-bank integration
-* Real payment gateway integrations
-* AI anomaly prediction
-* Automated settlement workflows
-* Cloud deployment
-* Dockerized microservices
-* Real-time notifications
-* Enterprise reporting system
+This starts the backend, frontend, MySQL database, and Redis services.
 
----
+## Roadmap
 
-# Author
+- Implement core reconciliation matching logic between gateway, internal, and bank records
+- Build out fraud detection rules and anomaly scoring
+- Integrate live payment gateway APIs (Stripe, Razorpay, PayPal, UPI)
+- Add Celery-based background processing for batch reconciliation and report generation
+- Expand analytics dashboard with real-time data
+- Add automated testing and CI/CD pipeline
 
-Mdehteshamulhaque1
+## Author
 
-GitHub:
-https://github.com/Mdehteshamulhaque1
+**Mdehteshamulhaque1**
+GitHub: [https://github.com/Mdehteshamulhaque1](https://github.com/Mdehteshamulhaque1)
 
----
+## License
 
-# License
-
-This project is created for educational, portfolio, and learning purposes.
+This project is developed for educational and portfolio purposes.
