@@ -24,10 +24,6 @@
 
 ---
 
-> **⚠️ Project Status:** This project is in **active development**. The application scaffolding — backend API, database models, authentication, frontend dashboard, Docker setup, and monitoring stack — is implemented and functional. The core **reconciliation engine, AI matching, fraud detection, and gateway integrations are currently placeholder modules** and represent the primary focus of upcoming development. See [Current Implementation Status](#-current-implementation-status) for a transparent breakdown.
-
----
-
 ## 📖 Table of Contents
 
 - [Overview](#-overview)
