@@ -1,24 +1,56 @@
 <div align="center">
 
-# Payment Reconciliation Engine
+<img src="https://img.shields.io/badge/💳-Payment_Reconciliation_Engine-06B6D4?style=for-the-badge&labelColor=0d1117&color=06B6D4" alt="PayFlow" />
 
-### Automated Transaction Reconciliation, Fraud Detection & Settlement Tracking Across Multiple Payment Gateways
+<br />
 
-[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
-[![Docker](https://img.shields.io/badge/Docker-24-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+# 💳 Payment Reconciliation Engine
 
-[![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](#license)
-[![Tests](https://img.shields.io/badge/Tests-35%20Passing-brightgreen?style=flat-square)](#testing)
-[![Status](https://img.shields.io/badge/Status-Production%20Ready-ff6900?style=flat-square)](#current-status)
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=28&duration=3000&pause=1000&color=06B6D4&center=true&vCenter=true&multiline=true&repeat=true&width=700&height=100&lines=Automated+Transaction+Reconciliation;Fraud+Detection+%26+Settlement+Tracking;Multi-Gateway+Payment+Platform" alt="Typing SVG" />
+
+<br />
+
+<a href="https://github.com/Mdehteshamulhaque1/Payment-Reconciliation-Engine">
+  <img src="https://img.shields.io/badge/Version-2.0-06B6D4?style=for-the-badge&labelColor=0d1117" alt="Version" />
+</a>
+<a href="#license">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge&labelColor=0d1117" alt="License" />
+</a>
+<a href="#testing">
+  <img src="https://img.shields.io/badge/Tests-35%20Passing-brightgreen?style=for-the-badge&labelColor=0d1117" alt="Tests" />
+</a>
+<a href="#current-status">
+  <img src="https://img.shields.io/badge/Status-Production%20Ready-ff6900?style=for-the-badge&labelColor=0d1117" alt="Status" />
+</a>
+
+<br />
+
+<div align="center">
+
+![SVG ⚡](https://img.shields.io/badge/⚡-Python_3.11+-3776AB?style=flat-square&logo=python&logoColor=white)
+![SVG ⚡](https://img.shields.io/badge/⚡-FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
+![SVG ⚡](https://img.shields.io/badge/⚡-React_18-61DAFB?style=flat-square&logo=react&logoColor=black)
+![SVG ⚡](https://img.shields.io/badge/⚡-TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![SVG ⚡](https://img.shields.io/badge/⚡-MySQL_8-4479A1?style=flat-square&logo=mysql&logoColor=white)
+![SVG ⚡](https://img.shields.io/badge/⚡-Redis-DC382D?style=flat-square&logo=redis&logoColor=white)
+![SVG ⚡](https://img.shields.io/badge/⚡-Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![SVG ⚡](https://img.shields.io/badge/⚡-Celery-37814A?style=flat-square&logo=celery&logoColor=white)
 
 </div>
 
+<br />
+
+<img src="https://raw.githubusercontent.com/Mdehteshamulhaque1/Payment-Reconciliation-Engine/main/frontend/public/hero-dashboard.png" width="100%" alt="Dashboard Preview" />
+
+<br />
+
 ---
+
+**Payment Reconciliation Engine** is a production-grade fintech platform that automates transaction reconciliation across multiple payment gateways, detects fraud in real-time, tracks settlements with double-entry ledger accounting, and provides a live operational dashboard.
+
+---
+
+</div>
 
 ## Table of Contents
 
@@ -74,6 +106,99 @@ Businesses processing payments across multiple channels face critical operationa
 ---
 
 ## Key Features
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### 🔄 Automated Reconciliation
+> Compares **4 sources** (internal DB, gateway, settlement, bank) for every transaction, classifies discrepancies, and assigns confidence scores.
+
+</td>
+<td width="50%" valign="top">
+
+### 🛡️ Fraud Detection
+> **7 configurable rules** (velocity, large amounts, duplicates, refund abuse, unusual hours) with cumulative risk scoring.
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+### 💰 Settlement Tracking
+> Full lifecycle management with automatic fee calculation, bank record matching, and double-entry ledger accounting.
+
+</td>
+<td width="50%" valign="top">
+
+### ⚡ Real-Time Dashboard
+> Executive KPIs, payment flow visualization, live transaction stream, and gateway health monitoring.
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+### 🔌 5 Gateway Integrations
+> Stripe, Razorpay, PayPal, UPI, Bank Transfer — with webhook processing, HMAC verification, and health monitoring.
+
+</td>
+<td width="50%" valign="top">
+
+### 📊 Prometheus Metrics
+> **40+ metrics** covering HTTP requests, transactions, reconciliation, fraud, webhooks, and Celery tasks.
+
+</td>
+</tr>
+</table>
+
+---
+
+<div align="center">
+
+### 🏗️ System Overview
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                         FRONTEND (React)                            │
+│   Landing Page  │  Dashboard  │  Transactions  │  Reconciliation   │
+│           React Query  +  Zustand  +  Framer Motion                │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                │  HTTP /api/v1  +  WebSocket
+┌───────────────────────────────▼─────────────────────────────────────┐
+│                       API GATEWAY (FastAPI)                          │
+│   Auth  │  Transactions  │  Gateways  │  Webhooks  │  Settlements  │
+│              JWT Auth  │  Rate Limiting  │  Request Logging          │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                │
+┌───────────────────────────────▼─────────────────────────────────────┐
+│                       SERVICE LAYER                                  │
+│  Reconciliation Engine  │  Fraud Detector  │  Settlement Service    │
+│  Gateway Service  │  Ledger Service  │  Webhook Service  │  Rules  │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                │
+┌───────────────────────────────▼─────────────────────────────────────┐
+│                       DATA LAYER                                     │
+│   SQLAlchemy 2.0 (Async)  │  MySQL 8  │  Redis 7  │  Celery        │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+</div>
+
+---
+
+<div align="center">
+
+### 📈 Project Stats
+
+<img src="https://img.shields.io/badge/Backend-30%20Models-06B6D4?style=for-the-badge&labelColor=0d1117" alt="Models" />
+<img src="https://img.shields.io/badge/API-70%2B%20Endpoints-5B5CEB?style=for-the-badge&labelColor=0d1117" alt="Endpoints" />
+<img src="https://img.shields.io/badge/Services-13%20Services-22C55E?style=for-the-badge&labelColor=0d1117" alt="Services" />
+<img src="https://img.shields.io/badge/Tests-35%20Tests-F59E0B?style=for-the-badge&labelColor=0d1117" alt="Tests" />
+<img src="https://img.shields.io/badge/Metrics-40%2B-EC4899?style=for-the-badge&labelColor=0d1117" alt="Metrics" />
+<img src="https://img.shields.io/badge/Gateways-5-A855F7?style=for-the-badge&labelColor=0d1117" alt="Gateways" />
+
+</div>
 
 ### Core Engine
 - **Automated Reconciliation** — Compares 4 sources (internal DB, gateway, settlement, bank) for every transaction, classifies discrepancies, and assigns confidence scores
@@ -653,14 +778,77 @@ docker-compose -f docker-compose.monitoring.yml up -d
 
 ---
 
-## Author
+<div align="center">
+
+### 👨‍💻 Author
+
+<a href="https://github.com/Mdehteshamulhaque1">
+  <img src="https://github.com/Mdehteshamulhaque1.png" width="120" style="border-radius:50%; border: 3px solid #06B6D4; box-shadow: 0 0 20px rgba(6,182,212,0.4);" alt="Ehtesham Ul Haque" />
+</a>
+
+<br />
 
 **Ehtesham Ul Haque**
-- GitHub: [@Mdehteshamulhaque1](https://github.com/Mdehteshamulhaque1)
-- Email: ehteshamulhaque736@gmail.com
+
+<a href="https://github.com/Mdehteshamulhaque1">
+  <img src="https://img.shields.io/badge/GitHub-Follow-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+</a>
+<a href="mailto:ehteshamulhaque736@gmail.com">
+  <img src="https://img.shields.io/badge/Email-Contact-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" />
+</a>
+<a href="https://www.linkedin.com/in/ehtesham-ul-haque">
+  <img src="https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+</a>
+
+<br />
+<br />
 
 ---
 
-## License
+### 🌟 Star History
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+[![Star History Chart](https://api.star-history.com/svg?repos=Mdehteshamulhaque1/Payment-Reconciliation-Engine&type=Date&theme=dark)](https://star-history.com/#Mdehteshamulhaque1/Payment-Reconciliation-Engine&Date)
+
+<br />
+
+---
+
+### 📊 Contribution Graph
+
+![Contribution Graph](https://github-readme-activity-graph.vercel.app/graph?username=Mdehteshamulhaque1&bg_color=0d1117&color=06B6D4&line=06B6D4&point=FFFFFF&area=true&area_color=06B6D4&hide_border=true)
+
+<br />
+
+---
+
+### ⭐ Support the Project
+
+If you find this project useful, please give it a ⭐ on GitHub!
+
+<br />
+
+<img src="https://raw.githubusercontent.com/Mdehteshamulhaque1/Payment-Reconciliation-Engine/main/frontend/public/hero-dashboard.png" width="100%" alt="Dashboard" />
+
+<br />
+
+---
+
+**Made with ❤️ by Ehtesham Ul Haque**
+
+<img src="https://raw.githubusercontent.com/Mdehteshamulhaque1/Payment-Reconciliation-Engine/main/frontend/public/favicon.svg" width="30" alt="PayFlow" /> **PayFlow** — *Automating Payment Reconciliation*
+
+<br />
+
+---
+
+### 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+<br />
+
+<div align="center">
+
+![Visitors](https://komarev.com/ghpvc/?username=Mdehteshamulhaque1&color=06B6D4&style=for-the-badge&label=PROFILE+VISITORS)
+
+</div>
