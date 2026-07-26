@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     MYSQL_USER: str = "root"
     MYSQL_PASSWORD: str = ""
     MYSQL_DB: str = "payment_reconciliation_engine"
-    DATABASE_URL: str | None = None
+    DATABASE_URL: str | None = "sqlite+aiosqlite:///./dev.db"
 
     CORS_ORIGINS: list[str] = [
         "http://localhost:3000",
