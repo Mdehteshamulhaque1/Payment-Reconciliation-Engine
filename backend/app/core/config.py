@@ -28,7 +28,13 @@ class Settings(BaseSettings):
     MYSQL_DB: str = "payment_reconciliation_engine"
     DATABASE_URL: str | None = None
 
-    CORS_ORIGINS: list[str] = ["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:3001"]
+    CORS_ORIGINS: list[str] = [
+        "http://localhost:3000",
+        "http://localhost:3004",
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:3004",
+        "http://localhost:5173",
+    ]
     RATE_LIMIT_PER_MINUTE: int = 100
     RATE_LIMIT_WEBHOOK_PER_MINUTE: int = 300
     RATE_LIMIT_AUTH_PER_MINUTE: int = 20

@@ -18,7 +18,6 @@ const navLinks = [
 
 function PublicHeader() {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const location = useLocation()
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
 
   return (
@@ -31,7 +30,6 @@ function PublicHeader() {
 
         <nav className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => {
-            const isActive = location.pathname === link.path || (link.path.includes('#') && location.pathname === link.path.split('#')[0])
             return (
               <Link
                 key={link.path}

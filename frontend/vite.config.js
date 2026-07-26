@@ -10,12 +10,19 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000,
+    port: 3004,
     proxy: {
       '/api': {
         target: 'http://localhost:8000',
         changeOrigin: true,
       }
     }
+  },
+  preview: {
+    port: 3004,
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
   }
 })

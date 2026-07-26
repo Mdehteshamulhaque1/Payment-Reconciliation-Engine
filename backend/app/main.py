@@ -68,9 +68,17 @@ app = FastAPI(
 app.add_middleware(RequestIDMiddleware)
 app.add_middleware(RequestLoggingMiddleware)
 app.add_middleware(RateLimiterMiddleware, max_requests=settings.RATE_LIMIT_PER_MINUTE, window_seconds=60)
+
+cors_origins = list(settings.CORS_ORIGINS)
+if settings.ENVIRONMENT == "production":
+    cors_origins.extend([
+        "https://payment-reconciliation-engine.vercel.app",
+        "https://payment-reconciliation-engine-git-main.vercel.app",
+    ])
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
