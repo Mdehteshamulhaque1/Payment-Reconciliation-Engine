@@ -14,5 +14,5 @@ services:
         value: "false"
       - key: ENVIRONMENT
         value: "production"
-    healthCheckPath: /api/v1/health
+    healthCheckPath: /health
     autoDeploy: true
