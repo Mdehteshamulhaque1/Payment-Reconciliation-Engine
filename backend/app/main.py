@@ -94,11 +94,13 @@ app.include_router(api_router, prefix=settings.API_V1_PREFIX)
 
 
 @app.get("/", tags=["Root"])
+@app.head("/")
 async def root() -> dict[str, str]:
     return {"message": f"{settings.APP_NAME} v{settings.APP_VERSION} is running"}
 
 
 @app.get("/health", tags=["Health"])
+@app.head("/health")
 async def health() -> dict[str, str]:
     db_ok = await check_db_health()
     redis_ok = False
