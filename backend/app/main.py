@@ -74,11 +74,14 @@ if settings.ENVIRONMENT == "production":
     cors_origins.extend([
         "https://payment-reconciliation-engine.vercel.app",
         "https://payment-reconciliation-engine-git-main.vercel.app",
+        "https://payflow-backend.vercel.app",
+        "https://payflow-backend-git-main.vercel.app",
     ])
+    cors_origins = [o for o in cors_origins if o and ".vercel.app" in o]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=cors_origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
