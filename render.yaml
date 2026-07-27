@@ -3,34 +3,16 @@ services:
     name: payment-reconciliation-engine
     runtime: python
     plan: free
-    buildCommand: cd backend && pip install -r requirements.txt
-    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: DATABASE_URL
-        sync: false
+        value: postgresql://payflow_admin:PBnSlVfFcX6bWU55lJWdbdRh21GmAlR0@dpg-d9jnk4ou01pc73944ot0-a/payment_reconciliation_engine
       - key: SECRET_KEY
         generateValue: true
       - key: DEBUG
         value: "false"
       - key: ENVIRONMENT
         value: "production"
-      - key: CORS_ORIGINS
-        sync: false
-      - key: STRIPE_SECRET_KEY
-        sync: false
-      - key: STRIPE_WEBHOOK_SECRET
-        sync: false
-      - key: RAZORPAY_KEY_ID
-        sync: false
-      - key: RAZORPAY_KEY_SECRET
-        sync: false
-      - key: RAZORPAY_WEBHOOK_SECRET
-        sync: false
-      - key: PAYPAL_CLIENT_ID
-        sync: false
-      - key: PAYPAL_CLIENT_SECRET
-        sync: false
-      - key: PAYPAL_WEBHOOK_ID
-        sync: false
     healthCheckPath: /api/v1/health
     autoDeploy: true

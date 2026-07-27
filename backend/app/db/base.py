@@ -9,7 +9,7 @@ engine = create_async_engine(
     settings.sqlalchemy_database_uri,
     echo=settings.DEBUG,
     pool_pre_ping=True,
-    **({} if settings.is_sqlite else {"pool_recycle": 3600}),
+    **({} if settings.is_sqlite else {"pool_recycle": 3600, "pool_size": 5, "max_overflow": 10}),
 )
 
 async_session_factory = async_sessionmaker(

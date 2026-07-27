@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     MYSQL_USER: str = "root"
     MYSQL_PASSWORD: str = ""
     MYSQL_DB: str = "payment_reconciliation_engine"
-    DATABASE_URL: str | None = "sqlite+aiosqlite:///./dev.db"
+    DATABASE_URL: str | None = None
 
     CORS_ORIGINS: list[str] = [
         "http://localhost:3000",
@@ -71,7 +71,12 @@ class Settings(BaseSettings):
     @property
     def sqlalchemy_database_uri(self) -> str:
         if self.DATABASE_URL:
-            return self.DATABASE_URL
+            url = self.DATABASE_URL
+            if url.startswith("postgresql://"):
+                url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
+            elif url.startswith("postgres://"):
+                url = url.replace("postgres://", "postgresql+asyncpg://", 1)
+            return url
         password = quote_plus(self.MYSQL_PASSWORD)
         return (
             f"mysql+pymysql://{self.MYSQL_USER}:{password}"
