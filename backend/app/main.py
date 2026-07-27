@@ -41,6 +41,29 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         from app.services.gateway_service import ensure_seed_gateways
         await ensure_seed_gateways(db)
 
+        from sqlalchemy import select
+        from app.models.user import User
+        from app.core.security import get_password_hash
+        result = await db.execute(select(User).where(User.email == "qwerty123@gmail.com"))
+        if not result.scalar_one_or_none():
+            old = await db.execute(select(User).where(User.email == "ethethamulhaque736@gmail.com"))
+            old_user = old.scalar_one_or_none()
+            if old_user:
+                old_user.email = "qwerty123@gmail.com"
+                old_user.hashed_password = get_password_hash("12345@123")
+                old_user.full_name = "Admin User"
+            else:
+                admin = User(
+                    email="qwerty123@gmail.com",
+                    hashed_password=get_password_hash("12345@123"),
+                    full_name="Admin User",
+                    is_active=True,
+                    is_superuser=True,
+                    is_verified=True,
+                )
+                db.add(admin)
+            await db.commit()
+
     ACTIVE_CONNECTIONS.set(0)
 
     yield
