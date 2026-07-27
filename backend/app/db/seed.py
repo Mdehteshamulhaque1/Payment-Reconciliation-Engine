@@ -24,12 +24,12 @@ async def seed_all():
 
     async with async_session_factory() as db:
         # ── 1. Default admin user ──
-        result = await db.execute(select(User).where(User.email == "ethethamulhaque736@gmail.com"))
+        result = await db.execute(select(User).where(User.email == "qwerty123@gmail.com"))
         if not result.scalar_one_or_none():
             admin = User(
-                email="ethethamulhaque736@gmail.com",
-                hashed_password=get_password_hash("Qwerty2123"),
-                full_name="Ehtesham Ul Haque",
+                email="qwerty123@gmail.com",
+                hashed_password=get_password_hash("12345@123"),
+                full_name="Admin User",
                 is_active=True,
                 is_superuser=True,
                 is_verified=True,
