@@ -25,21 +25,30 @@ async def seed_all():
     async with async_session_factory() as db:
         # ── 1. Default admin user ──
         result = await db.execute(select(User).where(User.email == "qwerty123@gmail.com"))
-        if not result.scalar_one_or_none():
-            admin = User(
-                email="qwerty123@gmail.com",
-                hashed_password=get_password_hash("12345@123"),
-                full_name="Admin User",
-                is_active=True,
-                is_superuser=True,
-                is_verified=True,
-            )
-            db.add(admin)
-            await db.flush()
-            admin_id = admin.id
+        existing = result.scalar_one_or_none()
+        if not existing:
+            old = await db.execute(select(User).where(User.email == "ethethamulhaque736@gmail.com"))
+            old_user = old.scalar_one_or_none()
+            if old_user:
+                old_user.email = "qwerty123@gmail.com"
+                old_user.hashed_password = get_password_hash("12345@123")
+                old_user.full_name = "Admin User"
+                await db.flush()
+                admin_id = old_user.id
+            else:
+                admin = User(
+                    email="qwerty123@gmail.com",
+                    hashed_password=get_password_hash("12345@123"),
+                    full_name="Admin User",
+                    is_active=True,
+                    is_superuser=True,
+                    is_verified=True,
+                )
+                db.add(admin)
+                await db.flush()
+                admin_id = admin.id
         else:
-            user = result.scalar_one_or_none()
-            admin_id = user.id
+            admin_id = existing.id
 
         # ── 2. Seed transactions ──
         txn_count = (await db.execute(select(func.count(Transaction.id)))).scalar() or 0
