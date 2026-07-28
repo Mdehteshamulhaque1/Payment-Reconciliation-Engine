@@ -1,17 +1,17 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/💳-Payment_Reconciliation_Engine-06B6D4?style=for-the-badge&labelColor=0d1117&color=06B6D4" alt="PayFlow" />
+<img src="https://img.shields.io/badge/💳-PayFlow_%7C_Payment_Reconciliation_Engine-1e40af?style=for-the-badge&labelColor=0d1117&color=1e40af" alt="PayFlow" />
 
 <br />
 
-# 💳 Payment Reconciliation Engine
+# ⚡ PayFlow — Payment Reconciliation Engine
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=28&duration=3000&pause=1000&color=06B6D4&center=true&vCenter=true&multiline=true&repeat=true&width=700&height=100&lines=Automated+Transaction+Reconciliation;Fraud+Detection+%26+Settlement+Tracking;Multi-Gateway+Payment+Platform" alt="Typing SVG" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=28&duration=3000&pause=1000&color=1E40AF&center=true&vCenter=true&multiline=true&repeat=true&width=700&height=100&lines=Automated+Transaction+Reconciliation;Fraud+Detection+%26+Settlement+Tracking;Multi-Gateway+Payment+Platform" alt="Typing SVG" />
 
 <br />
 
 <a href="https://github.com/Mdehteshamulhaque1/Payment-Reconciliation-Engine">
-  <img src="https://img.shields.io/badge/Version-2.0-06B6D4?style=for-the-badge&labelColor=0d1117" alt="Version" />
+  <img src="https://img.shields.io/badge/Version-2.0.0-1e40af?style=for-the-badge&labelColor=0d1117" alt="Version" />
 </a>
 <a href="#license">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge&labelColor=0d1117" alt="License" />
@@ -27,26 +27,26 @@
 
 <div align="center">
 
-![SVG ⚡](https://img.shields.io/badge/⚡-Python_3.11+-3776AB?style=flat-square&logo=python&logoColor=white)
-![SVG ⚡](https://img.shields.io/badge/⚡-FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
-![SVG ⚡](https://img.shields.io/badge/⚡-React_18-61DAFB?style=flat-square&logo=react&logoColor=black)
-![SVG ⚡](https://img.shields.io/badge/⚡-TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![SVG ⚡](https://img.shields.io/badge/⚡-MySQL_8-4479A1?style=flat-square&logo=mysql&logoColor=white)
-![SVG ⚡](https://img.shields.io/badge/⚡-Redis-DC382D?style=flat-square&logo=redis&logoColor=white)
-![SVG ⚡](https://img.shields.io/badge/⚡-Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
-![SVG ⚡](https://img.shields.io/badge/⚡-Celery-37814A?style=flat-square&logo=celery&logoColor=white)
+![Python 3.14](https://img.shields.io/badge/Python_3.14-3776AB?style=flat-square&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
+![React 18](https://img.shields.io/badge/React_18-61DAFB?style=flat-square&logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Celery](https://img.shields.io/badge/Celery-37814A?style=flat-square&logo=celery&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=flat-square&logo=framer&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
+![Render](https://img.shields.io/badge/Render-46E3B7?style=flat-square&logo=render&logoColor=white)
 
 </div>
 
 <br />
 
-<img src="https://raw.githubusercontent.com/Mdehteshamulhaque1/Payment-Reconciliation-Engine/main/frontend/public/hero-dashboard.png" width="100%" alt="Dashboard Preview" />
-
-<br />
-
 ---
 
-**Payment Reconciliation Engine** is a production-grade fintech platform that automates transaction reconciliation across multiple payment gateways, detects fraud in real-time, tracks settlements with double-entry ledger accounting, and provides a live operational dashboard.
+**PayFlow** is a production-grade fintech platform that automates transaction reconciliation across **12+ payment gateways**, detects fraud in real-time with 7 configurable rules, tracks settlements with double-entry ledger accounting, and provides a live operational dashboard with an interactive walkthrough demo.
 
 ---
 
@@ -57,6 +57,7 @@
 - [Overview](#overview)
 - [The Problem](#the-problem)
 - [Key Features](#key-features)
+- [Live Demo](#live-demo)
 - [Architecture](#architecture)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
@@ -66,8 +67,10 @@
 - [Fraud Detection](#fraud-detection)
 - [Gateway Integrations](#gateway-integrations)
 - [Dashboard](#dashboard)
+- [Python-Focused Architecture](#python-focused-architecture)
 - [Testing](#testing)
 - [Deployment](#deployment)
+- [Current Status](#current-status)
 - [Author](#author)
 - [License](#license)
 
@@ -75,15 +78,25 @@
 
 ## Overview
 
-**Payment Reconciliation Engine** is a full-stack fintech platform that automates the reconciliation of payment transactions across multiple gateways, detects fraud in real-time, tracks settlements with double-entry ledger accounting, and provides a live operational dashboard.
+**PayFlow** is a full-stack fintech platform that automates payment reconciliation across **12+ payment gateways**, detects fraud in real-time, tracks settlements with double-entry ledger accounting, and provides a live operational dashboard.
 
-Built for businesses processing payments through **Stripe, Razorpay, PayPal, UPI, and bank transfers**, it eliminates slow, error-prone manual reconciliation and replaces it with automated, rule-driven matching with confidence scoring.
+Built for businesses processing payments through **Stripe, Razorpay, PayPal, PhonePe, GPay, PayU, CCAvenue, Worldpay, Adyen, Square, Braintree, Checkout.com, UPI, and bank transfers**, it eliminates slow, error-prone manual reconciliation and replaces it with automated, rule-driven matching with confidence scoring.
 
-**Target Users:**
-- Finance and accounting teams at e-commerce / SaaS companies
-- Payment operations engineers monitoring gateway health
-- Risk and fraud analysts investigating suspicious transactions
-- Business stakeholders needing reconciliation accuracy and cash-flow visibility
+### Deployed URLs
+
+| Service | URL |
+|---|---|
+| **Frontend (Vercel)** | `https://payment-reconciliation-engine.vercel.app` |
+| **Backend API (Render)** | `https://payflow-backend-n4by.onrender.com` |
+| **Swagger Docs** | `https://payflow-backend-n4by.onrender.com/docs` |
+| **Prometheus Metrics** | `https://payflow-backend-n4by.onrender.com/metrics` |
+
+### Login Credentials
+
+| Field | Value |
+|---|---|
+| Email | `qwerty123@gmail.com` |
+| Password | `12345@123` |
 
 ---
 
@@ -100,8 +113,9 @@ Businesses processing payments across multiple channels face critical operationa
 | Delayed settlement confirmations | Cash-flow visibility gaps |
 | API timeouts / gateway failures | Lost or unverified transactions |
 | Undetected fraud patterns | Revenue loss, often discovered days later |
+| Fragmented gateway dashboards | No single source of truth across 12+ providers |
 
-**This engine solves all of them** through automated multi-source reconciliation, real-time fraud detection, and a centralized dashboard.
+**PayFlow solves all of them** through automated multi-source reconciliation, real-time fraud detection, and a centralized command center dashboard.
 
 ---
 
@@ -112,13 +126,13 @@ Businesses processing payments across multiple channels face critical operationa
 <td width="50%" valign="top">
 
 ### 🔄 Automated Reconciliation
-> Compares **4 sources** (internal DB, gateway, settlement, bank) for every transaction, classifies discrepancies, and assigns confidence scores.
+> Compares **4 sources** (internal DB, gateway, settlement, bank) for every transaction across 12+ gateways, classifies 8 discrepancy types, and assigns confidence scores (0.0–1.0).
 
 </td>
 <td width="50%" valign="top">
 
 ### 🛡️ Fraud Detection
-> **7 configurable rules** (velocity, large amounts, duplicates, refund abuse, unusual hours) with cumulative risk scoring.
+> **7 configurable rules** (velocity, large amounts, duplicates, refund abuse, unusual hours, round amounts, repeated failures) with cumulative risk scoring that auto-creates fraud cases above 0.5 threshold.
 
 </td>
 </tr>
@@ -126,27 +140,41 @@ Businesses processing payments across multiple channels face critical operationa
 <td width="50%" valign="top">
 
 ### 💰 Settlement Tracking
-> Full lifecycle management with automatic fee calculation, bank record matching, and double-entry ledger accounting.
+> Full lifecycle management (pending → processing → settled/failed) with automatic fee calculation, bank record matching, and double-entry ledger accounting.
 
 </td>
 <td width="50%" valign="top">
 
 ### ⚡ Real-Time Dashboard
-> Executive KPIs, payment flow visualization, live transaction stream, and gateway health monitoring.
+> Executive KPIs with animated counters, payment flow visualization, live WebSocket transaction stream, gateway health monitoring with inline SVG brand logos, and a Command Palette (Ctrl+K).
 
 </td>
 </tr>
 <tr>
 <td width="50%" valign="top">
 
-### 🔌 5 Gateway Integrations
-> Stripe, Razorpay, PayPal, UPI, Bank Transfer — with webhook processing, HMAC verification, and health monitoring.
+### 🔌 12+ Gateway Integrations
+> Stripe, Razorpay, PayPal, PhonePe, GPay, PayU, CCAvenue, Worldpay, Adyen, Square, Braintree, Checkout.com, UPI, Bank Transfer — with webhook processing, HMAC verification, and health monitoring.
+
+</td>
+<td width="50%" valign="top">
+
+### 🎮 Interactive Demo Walkthrough
+> 14-step **auto-playing walkthrough** with video-player controls (play/pause/skip/progress bar) — simulates every page with mock UI. Launches from "Watch Demo" or feature card clicks on the landing page.
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+### 🐍 Python-First Architecture
+> Pure Python utilities package (`@timer`, `@retry`, `@cached` decorators, `Protocol` for structural subtyping, context managers, formatters, validators) — zero external dependencies. Configured with `ruff`, `mypy`, and `pre-commit`.
 
 </td>
 <td width="50%" valign="top">
 
 ### 📊 Prometheus Metrics
-> **40+ metrics** covering HTTP requests, transactions, reconciliation, fraud, webhooks, and Celery tasks.
+> **40+ metrics** (`pre_*` prefix) covering HTTP requests, transactions, reconciliation, fraud, webhooks, WebSockets, Celery tasks, and gateway health — served at `/metrics` for Prometheus scraping.
 
 </td>
 </tr>
@@ -154,115 +182,71 @@ Businesses processing payments across multiple channels face critical operationa
 
 ---
 
-<div align="center">
+## Live Demo
 
-### 🏗️ System Overview
+### Interactive Walkthrough
+Click **"Watch Demo"** on the landing page hero to launch a 14-step auto-playing walkthrough that demonstrates every feature of PayFlow — no login required.
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                         FRONTEND (React)                            │
-│   Landing Page  │  Dashboard  │  Transactions  │  Reconciliation   │
-│           React Query  +  Zustand  +  Framer Motion                │
-└───────────────────────────────┬─────────────────────────────────────┘
-                                │  HTTP /api/v1  +  WebSocket
-┌───────────────────────────────▼─────────────────────────────────────┐
-│                       API GATEWAY (FastAPI)                          │
-│   Auth  │  Transactions  │  Gateways  │  Webhooks  │  Settlements  │
-│              JWT Auth  │  Rate Limiting  │  Request Logging          │
-└───────────────────────────────┬─────────────────────────────────────┘
-                                │
-┌───────────────────────────────▼─────────────────────────────────────┐
-│                       SERVICE LAYER                                  │
-│  Reconciliation Engine  │  Fraud Detector  │  Settlement Service    │
-│  Gateway Service  │  Ledger Service  │  Webhook Service  │  Rules  │
-└───────────────────────────────┬─────────────────────────────────────┘
-                                │
-┌───────────────────────────────▼─────────────────────────────────────┐
-│                       DATA LAYER                                     │
-│   SQLAlchemy 2.0 (Async)  │  MySQL 8  │  Redis 7  │  Celery        │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
-</div>
-
----
-
-<div align="center">
-
-### 📈 Project Stats
-
-<img src="https://img.shields.io/badge/Backend-30%20Models-06B6D4?style=for-the-badge&labelColor=0d1117" alt="Models" />
-<img src="https://img.shields.io/badge/API-70%2B%20Endpoints-5B5CEB?style=for-the-badge&labelColor=0d1117" alt="Endpoints" />
-<img src="https://img.shields.io/badge/Services-13%20Services-22C55E?style=for-the-badge&labelColor=0d1117" alt="Services" />
-<img src="https://img.shields.io/badge/Tests-35%20Tests-F59E0B?style=for-the-badge&labelColor=0d1117" alt="Tests" />
-<img src="https://img.shields.io/badge/Metrics-40%2B-EC4899?style=for-the-badge&labelColor=0d1117" alt="Metrics" />
-<img src="https://img.shields.io/badge/Gateways-5-A855F7?style=for-the-badge&labelColor=0d1117" alt="Gateways" />
-
-</div>
-
-### Core Engine
-- **Automated Reconciliation** — Compares 4 sources (internal DB, gateway, settlement, bank) for every transaction, classifies discrepancies, and assigns confidence scores
-- **Fraud Detection** — 7 configurable rule-based checks (velocity, large amounts, duplicates, refund abuse, unusual hours) with cumulative risk scoring
-- **Settlement Tracking** — Full lifecycle management with automatic fee calculation and bank record matching
-- **Double-Entry Ledger** — Complete accounting journal with trial balance, reversals, and per-account tracking
-- **Gateway Health Monitoring** — Real-time latency, uptime, and failure rate tracking across all gateways
-
-### Integrations
-- **5 Payment Gateways** — Stripe, Razorpay, PayPal, UPI, Bank Transfer (simulator pattern for dev/testing)
-- **Webhook Processing** — HMAC signature verification per gateway, idempotency checks, retry logic, dead letter queue
-- **Real-Time Updates** — WebSocket channels for transactions, fraud alerts, settlements, gateway status, and dashboard
-
-### Frontend
-- **Premium Marketing Pages** — Landing page, pricing, docs, API docs, about, contact
-- **Command Center Dashboard** — Executive KPIs, payment flow visualization, live transaction stream, gateway health cards, top failures
-- **Full CRUD Operations** — Transactions, gateways, reconciliation, settlements, ledger, fraud, reports, notifications
-- **Multi-Theme Support** — Light, dim, and dark themes with animated transitions
-
-### Infrastructure
-- **Prometheus Metrics** — 40+ metrics covering HTTP requests, transactions, reconciliation, fraud, webhooks, gateways, Celery tasks
-- **Grafana Dashboards** — Pre-configured monitoring dashboards
-- **Docker Compose** — One-command deployment for all services
-- **Background Processing** — Celery tasks for batch reconciliation, settlement processing, fraud scanning, report generation, cleanup
+### Try the Live App
+1. Visit the deployed frontend
+2. Login with `qwerty123@gmail.com` / `12345@123`
+3. Explore the dashboard, transactions, fraud detection, reconciliation, and more
 
 ---
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                        FRONTEND (React)                         │
-│  Landing Page │ Dashboard │ Transactions │ Reconciliation │ ... │
-│         React Query + Zustand + Framer Motion + Recharts        │
-└──────────────────────────┬──────────────────────────────────────┘
-                           │ HTTP /api/v1 + WebSocket
-┌──────────────────────────▼──────────────────────────────────────┐
-│                     API GATEWAY (FastAPI)                        │
-│  Auth │ Transactions │ Gateways │ Webhooks │ Settlements │ ...  │
-│              JWT Auth │ Rate Limiting │ Request Logging          │
-└──────────────────────────┬──────────────────────────────────────┘
-                           │
-┌──────────────────────────▼──────────────────────────────────────┐
-│                     SERVICE LAYER                                │
-│  Reconciliation Engine │ Fraud Detector │ Settlement Service     │
-│  Gateway Service │ Ledger Service │ Webhook Service │ Rules     │
-└──────────────────────────┬──────────────────────────────────────┘
-                           │
-┌──────────────────────────▼──────────────────────────────────────┐
-│                     DATA LAYER                                   │
-│  SQLAlchemy 2.0 (Async) │ MySQL 8 │ Redis 7 │ Celery Workers   │
-└─────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          FRONTEND (React + Vite + TS)                        │
+│  LandingPage │ Dashboard │ Transactions │ Fraud │ Reconciliation │ ...     │
+│  Zustand (state) + TanStack Query (server) + Framer Motion (animation)     │
+│  Recharts (charts) + Radix UI (accessibility) + cmdk (command palette)     │
+└──────────────────────────────────┬──────────────────────────────────────────┘
+                                   │ HTTP /api/v1 + WebSocket (ws)
+┌──────────────────────────────────▼──────────────────────────────────────────┐
+│                         API GATEWAY (FastAPI)                                │
+│  Auth │ Transactions │ Gateways │ Webhooks │ Settlements │ Fraud │ ...     │
+│  JWT Auth │ Rate Limiting │ Request ID │ Security Headers │ Structured Log │
+└──────────────────────────────────┬──────────────────────────────────────────┘
+                                   │
+┌──────────────────────────────────▼──────────────────────────────────────────┐
+│                             SERVICE LAYER                                    │
+│  ReconciliationEngine │ FraudDetectionEngine │ SettlementService            │
+│  GatewayService │ LedgerService │ WebhookService │ AuthService │ RuleEngine │
+│  AnalyticsService │ ReportingService │ SearchService │ NotificationService  │
+└──────────────────────────────────┬──────────────────────────────────────────┘
+                                   │
+┌──────────────────────────────────▼──────────────────────────────────────────┐
+│                         REPOSITORY / DATA LAYER                              │
+│  BaseRepository[T] │ TransactionRepo │ FraudRepo │ SettlementRepo           │
+│  ReconciliationRepo — generic CRUD with domain-specific query methods       │
+└──────────────────────────────────┬──────────────────────────────────────────┘
+                                   │
+┌──────────────────────────────────▼──────────────────────────────────────────┐
+│                        INFRASTRUCTURE LAYER                                  │
+│  Gateways (12+ simulators) │ Webhooks (3 parsers) │ Metrics (prometheus)    │
+│  Realtime (WebSocket pub/sub) │ Redis (cache) │ Celery (background tasks)  │
+└──────────────────────────────────┬──────────────────────────────────────────┘
+                                   │
+┌──────────────────────────────────▼──────────────────────────────────────────┐
+│                             DATA STORES                                      │
+│  PostgreSQL (primary) │ Redis (cache/broker) │ SQLite (test in-memory)      │
+│  30 SQLAlchemy 2.0 async models │ Alembic migrations │ 70+ API endpoints    │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 **Request Flow:**
 ```
-Frontend Component
+Frontend (React)
   -> React Query Hook (useTransactions, useFraud, etc.)
-    -> API Module (api/transactions.ts)
-      -> Fetch Client (adds JWT, handles 401 refresh)
+    -> API Module (client.ts — fetch-based with JWT refresh interceptor)
+      -> Fetch Client (adds Bearer token, handles 401 → refresh loop)
         -> /api/v1/{endpoint}
-          -> FastAPI Router
-            -> Service Layer
-              -> SQLAlchemy AsyncSession -> MySQL
+          -> FastAPI Router (auth, validation)
+            -> Service Layer (business logic)
+              -> Repository (data access)
+                -> SQLAlchemy AsyncSession → PostgreSQL
 ```
 
 ---
@@ -274,9 +258,9 @@ Frontend Component
 |---|---|---|
 | React | 18 | UI library with hooks and concurrent features |
 | TypeScript | 5.7 | Type-safe development, strict mode |
-| Vite | 5 | Build tool and dev server |
-| Tailwind CSS | 3.4 | Utility-first styling |
-| Framer Motion | 12 | Page transitions and micro-animations |
+| Vite | 5 | Build tool and dev server (port 3004) |
+| Tailwind CSS | 3.4 | Utility-first styling with CSS variables theming |
+| Framer Motion | 12 | Page transitions, scroll animations, micro-interactions |
 | Zustand | 5 | Lightweight state management (auth, theme, dev stores) |
 | TanStack React Query | 5 | Server state management, caching, deduplication |
 | Recharts | 2 | Data visualization (area, bar, donut, radar charts) |
@@ -285,21 +269,24 @@ Frontend Component
 | React Hook Form | 7 | Form state management |
 | Zod | 4 | Schema validation |
 | cmdk | 1 | Command palette (Ctrl+K) |
+| lucide-react | latest | Icon library |
 
 ### Backend
 | Technology | Version | Purpose |
 |---|---|---|
-| Python | 3.11+ | Core language |
-| FastAPI | 0.115 | Async REST API framework |
+| Python | 3.14 | Core language (async-native) |
+| FastAPI | 0.115 | Async REST API framework with OpenAPI |
 | SQLAlchemy | 2.0 | Async ORM with session management |
-| Pydantic | 2 | Data validation and settings |
-| MySQL | 8.0 | Primary relational database |
+| Pydantic | 2 | Data validation and settings management |
+| PostgreSQL | 16 | Primary relational database (Render managed) |
 | Redis | 7 | Caching and Celery message broker |
-| Celery | 5 | Background task queue |
+| Celery | 5 | Background task queue (reconciliation, settlements, reports, cleanup) |
 | python-jose | latest | JWT token creation and verification |
-| passlib + bcrypt | latest | Password hashing |
+| bcrypt + passlib | latest | Password hashing |
 | structlog | latest | Structured logging |
-| prometheus_client | latest | Metrics collection |
+| prometheus_client | latest | Metrics collection (40+ metrics, `pre_*` prefix) |
+| Ruff | 0.5+ | Python linter and formatter |
+| mypy | 1.10+ | Static type checking |
 
 ### Infrastructure
 | Technology | Purpose |
@@ -308,6 +295,8 @@ Frontend Component
 | Prometheus | Metrics scraping and storage |
 | Grafana | Monitoring dashboards and visualization |
 | Alembic | Database migrations |
+| Vercel | Frontend hosting (React/Vite) |
+| Render | Backend hosting (FastAPI + PostgreSQL) |
 
 ---
 
@@ -317,88 +306,79 @@ Frontend Component
 Payment-Reconciliation-Engine/
 ├── backend/
 │   ├── app/
-│   │   ├── api/v1/                  # 18 API route modules
-│   │   │   ├── auth.py              # Signup, login, token refresh
-│   │   │   ├── transactions.py      # CRUD, cancel, refund, retry
-│   │   │   ├── gateways.py          # Gateway list, simulate, health
-│   │   │   ├── webhooks.py          # Stripe/Razorpay/PayPal webhooks
-│   │   │   ├── settlements.py       # Settlement list, summaries, process
-│   │   │   ├── reconciliation.py    # Run batches, results, resolve
-│   │   │   ├── fraud.py             # Scan, cases, resolve, dashboard
-│   │   │   ├── ledger.py            # Double-entry entries, trial balance
-│   │   │   ├── analytics.py         # Dashboard KPIs, comparisons
-│   │   │   ├── reports.py           # Generate, list, CSV export
-│   │   │   ├── notifications.py     # Notification CRUD
-│   │   │   ├── rules.py             # Reconciliation rules CRUD
-│   │   │   ├── search.py            # Global search
-│   │   │   ├── websocket.py         # Real-time channel pub/sub
-│   │   │   ├── admin.py             # Admin operations
-│   │   │   ├── audit.py             # Audit log viewing
-│   │   │   ├── monitoring.py        # System monitoring
-│   │   │   └── exceptions.py        # Exception management
-│   │   ├── core/                    # Config, security, Celery, Redis
-│   │   ├── db/                      # Session management, seed data
-│   │   ├── models/                  # 30 SQLAlchemy models
-│   │   ├── schemas/                 # 9 Pydantic schema modules
+│   │   ├── api/v1/                  # 18 API route modules (auth, transactions, fraud, etc.)
+│   │   ├── core/                    # Config, security, Celery, Redis, exceptions, logging
+│   │   ├── db/                      # Base engine, session factory, seed data, migrations
+│   │   ├── models/                  # 30 SQLAlchemy async models (User, Transaction, etc.)
+│   │   ├── schemas/                 # 9 Pydantic v2 schema modules (request/response validation)
 │   │   ├── services/                # 13 business logic services
-│   │   │   ├── reconciliation_engine.py  # Core reconciliation logic
-│   │   │   ├── fraud_detector.py         # 7-rule fraud detection
-│   │   │   ├── settlement_service.py     # Settlement lifecycle
+│   │   │   ├── reconciliation_engine.py  # Core 4-source reconciliation engine
+│   │   │   ├── fraud_detector.py         # 7-rule fraud detection engine
+│   │   │   ├── settlement_service.py     # Settlement lifecycle management
 │   │   │   ├── ledger_service.py         # Double-entry accounting
-│   │   │   ├── gateway_service.py        # Gateway operations
-│   │   │   ├── webhook_service.py        # Webhook processing
-│   │   │   ├── transaction_service.py    # Transaction management
-│   │   │   ├── analytics_service.py      # Dashboard analytics
-│   │   │   ├── rule_engine.py            # Rule evaluation
-│   │   │   ├── reporting_service.py      # Report generation
-│   │   │   ├── search_service.py         # Global search
-│   │   │   ├── notification_service.py   # Notifications
-│   │   │   └── auth_service.py           # Authentication
-│   │   ├── repositories/            # Data access layer (4 repos)
+│   │   │   ├── gateway_service.py        # Gateway operations & health
+│   │   │   ├── webhook_service.py        # Webhook processing pipeline
+│   │   │   ├── transaction_service.py    # Transaction CRUD & lifecycle
+│   │   │   ├── analytics_service.py      # Dashboard KPIs & aggregations
+│   │   │   ├── rule_engine.py            # Configurable rule evaluation
+│   │   │   ├── reporting_service.py      # Report generation & CSV export
+│   │   │   ├── search_service.py         # Global search across entities
+│   │   │   ├── notification_service.py   # Multi-channel notifications
+│   │   │   └── auth_service.py           # Authentication & authorization
+│   │   ├── repositories/            # 5 repository classes (generic CRUD + domain queries)
+│   │   ├── middleware/              # Rate limiter, request ID, request logging, security headers
 │   │   ├── infrastructure/
-│   │   │   ├── gateways/            # 5 gateway simulators
-│   │   │   ├── webhooks/            # 3 webhook parsers
-│   │   │   ├── metrics/             # Prometheus metrics (40+)
-│   │   │   └── realtime/            # WebSocket broadcaster
-│   │   ├── middleware/              # Rate limiter, request logging
-│   │   ├── tasks/                   # Celery background tasks
-│   │   └── main.py                  # FastAPI entrypoint
-│   ├── tests/                       # 35 tests (pytest)
-│   ├── alembic/                     # Database migrations
-│   └── requirements.txt
+│   │   │   ├── gateways/            # 12+ gateway simulators + registry pattern
+│   │   │   ├── webhooks/            # 3 webhook parsers (Stripe, Razorpay, PayPal)
+│   │   │   ├── metrics/             # Prometheus metrics with MetricsCollector
+│   │   │   └── realtime/            # WebSocket ConnectionManager with channel pub/sub
+│   │   ├── tasks/                   # 7 Celery background tasks (reconciliation, fraud, etc.)
+│   │   ├── utils/                   # Pythonic utilities (decorators, protocols, validators, etc.)
+│   │   │   ├── __init__.py          # Public API with __all__ exports
+│   │   │   ├── decorators.py        # @timer, @retry, @cached, @rate_limit
+│   │   │   ├── context_managers.py  # TimerContext, suppress_exceptions, db_timer
+│   │   │   ├── validators.py        # Pure Python validators (currency, amount, email, status)
+│   │   │   ├── formatters.py        # Currency, duration, file size, card masking
+│   │   │   ├── protocols.py         # Repository, PaymentGateway, Cacheable protocols
+│   │   │   └── typing_helpers.py    # TypeAliases (JSON, Headers, Filters) + sentinel
+│   │   └── main.py                  # FastAPI entrypoint with lifespan, CORS, middleware
+│   ├── tests/                       # 35 pytest tests (6 test modules)
+│   ├── alembic/                     # Database migration scripts
+│   ├── pyproject.toml               # Modern Python packaging (ruff, mypy, pytest config)
+│   ├── .pre-commit-config.yaml      # Pre-commit hooks (ruff, mypy, trailing whitespace)
+│   └── requirements.txt             # Production + dev dependencies
 │
 ├── frontend/
 │   ├── src/
-│   │   ├── api/                     # 10 API modules (fetch-based)
+│   │   ├── api/                     # 10 API modules with fetch-based client
 │   │   ├── components/
 │   │   │   ├── layout/              # DashboardLayout, Sidebar, Topbar, MarketingLayout
-│   │   │   ├── ui/                  # 35+ UI components
-│   │   │   ├── effects/             # Aurora, particles, sci-fi effects
-│   │   │   └── auth/                # Protected routes, schemas
+│   │   │   ├── ui/                  # 35+ UI components (Card, Button, Badge, HudStat, etc.)
+│   │   │   ├── demo/                # DemoWalkthrough.tsx — 14-step interactive walkthrough
+│   │   │   ├── effects/             # Aurora, particles, sci-fi ambient effects
+│   │   │   └── auth/                # ProtectedRoute, login/signup schemas
 │   │   ├── pages/
-│   │   │   ├── LandingPage.tsx       # Marketing landing page
-│   │   │   ├── PricingPage.tsx       # Pricing tiers
-│   │   │   ├── DocsPage.tsx          # Documentation
-│   │   │   ├── ApiDocsPage.tsx       # API reference
-│   │   │   ├── AboutPage.tsx         # About page
-│   │   │   ├── ContactPage.tsx       # Contact form
-│   │   │   ├── auth/                 # Login, Signup
-│   │   │   └── app/                  # Dashboard, Transactions, Gateways,
-│   │   │                             # Reconciliation, Settlements, Ledger,
-│   │   │                             # Fraud, Reports, Notifications, Settings
-│   │   ├── hooks/                    # 12 custom hooks
-│   │   ├── store/                    # Zustand stores (auth, theme, dev)
-│   │   ├── types/                    # TypeScript type definitions
-│   │   ├── styles/globals.css        # CSS variables (light/dim/dark)
-│   │   └── App.tsx                   # Route definitions
+│   │   │   ├── LandingPage.tsx      # E-commerce style landing (ScrollReveal, CountUp, etc.)
+│   │   │   ├── PricingPage.tsx      # Pricing tiers with toggle
+│   │   │   ├── DocsPage.tsx         # Technical documentation
+│   │   │   ├── ApiDocsPage.tsx      # API reference
+│   │   │   ├── AboutPage.tsx        # About the team
+│   │   │   ├── ContactPage.tsx      # Contact form
+│   │   │   ├── auth/                # LoginPage (with random dev jokes), SignupPage
+│   │   │   └── app/                 # 10 dashboard pages (Dashboard, Transactions, etc.)
+│   │   ├── hooks/                   # 12 custom React Query hooks
+│   │   ├── store/                   # Zustand stores (auth, theme, dev)
+│   │   ├── types/                   # TypeScript type definitions
+│   │   ├── styles/globals.css       # CSS variables (light blue → deep blue theme, 3 modes)
+│   │   └── App.tsx                  # Route definitions, GatewayLoader splash screen
 │   ├── tailwind.config.js
 │   └── package.json
 │
 ├── monitoring/
-│   ├── prometheus.yml               # Prometheus scrape config
-│   └── grafana/dashboards/          # Pre-built Grafana dashboards
+│   ├── prometheus.yml               # Prometheus scrape configuration
+│   └── grafana/dashboards/          # Pre-built Grafana dashboard JSON
 │
-├── docker-compose.yml               # Full stack orchestration
+├── docker-compose.yml               # Full stack orchestrations
 └── README.md
 ```
 
@@ -408,13 +388,13 @@ Payment-Reconciliation-Engine/
 
 ### Prerequisites
 
-- **Python 3.11+**
+- **Python 3.12+** (3.14 recommended)
 - **Node.js 18+**
-- **MySQL 8.0**
-- **Redis 7** (for Celery)
-- **Docker & Docker Compose** (optional)
+- **PostgreSQL 16** (or SQLite for local dev)
+- **Redis 7** (for Celery tasks)
+- **Docker & Docker Compose** (optional, for containerized setup)
 
-### Option 1: Docker Compose (Recommended)
+### Option 1: Docker Compose (Full Stack)
 
 ```bash
 git clone https://github.com/Mdehteshamulhaque1/Payment-Reconciliation-Engine.git
@@ -455,9 +435,10 @@ npm run dev
 
 ### Dummy Login
 
-For quick testing, use these credentials:
-- **Email:** `ethethamulhaque736@gmail.com`
-- **Password:** `Qwerty2123`
+| Field | Value |
+|---|---|
+| Email | `qwerty123@gmail.com` |
+| Password | `12345@123` |
 
 ---
 
@@ -468,8 +449,8 @@ Base path: `/api/v1`
 ### Authentication
 | Method | Endpoint | Description |
 |---|---|---|
-| POST | `/auth/register` | Create a new account |
 | POST | `/auth/login` | Login, returns JWT access + refresh tokens |
+| POST | `/auth/signup` | Create a new account |
 | POST | `/auth/refresh` | Refresh expired access token |
 | GET | `/auth/me` | Get current user profile |
 | PUT | `/auth/profile` | Update profile |
@@ -480,7 +461,7 @@ Base path: `/api/v1`
 |---|---|---|
 | POST | `/transactions` | Create a new transaction |
 | GET | `/transactions` | List transactions (paginated, filterable) |
-| GET | `/transactions/{id}` | Get transaction details |
+| GET | `/transactions/{id}` | Get transaction details with events |
 | PUT | `/transactions/{id}/cancel` | Cancel a transaction |
 | POST | `/transactions/{id}/refund` | Initiate refund |
 | POST | `/transactions/{id}/retry` | Retry failed transaction |
@@ -523,7 +504,7 @@ Base path: `/api/v1`
 | GET | `/settlements/{id}` | Get settlement details |
 | POST | `/settlements/match-bank` | Match bank records to settlements |
 
-### Fraud
+### Fraud Detection
 | Method | Endpoint | Description |
 |---|---|---|
 | POST | `/fraud/scan/{transaction_id}` | Run fraud detection on a transaction |
@@ -535,9 +516,8 @@ Base path: `/api/v1`
 ### Ledger
 | Method | Endpoint | Description |
 |---|---|---|
-| POST | `/ledger/entries` | Create a ledger entry |
-| GET | `/ledger/entries` | List ledger entries |
-| GET | `/ledger/transaction/{id}` | Entries for a transaction |
+| GET | `/ledger/entries` | List ledger entries (paginated) |
+| GET | `/ledger/transaction/{id}` | Entries for a specific transaction |
 | POST | `/ledger/reverse/{id}` | Reverse a ledger entry |
 | GET | `/ledger/trial-balance` | Get trial balance report |
 
@@ -561,7 +541,10 @@ Base path: `/api/v1`
 | Exceptions | CRUD | Exception record management |
 
 ### WebSocket
-Connect to `ws://localhost:8000/api/v1/ws/realtime` for real-time updates.
+
+```
+ws://localhost:8000/api/v1/ws/realtime
+```
 
 **Channels:**
 - `transactions` — Live transaction feed
@@ -569,6 +552,14 @@ Connect to `ws://localhost:8000/api/v1/ws/realtime` for real-time updates.
 - `settlements` — Settlement status updates
 - `gateway_status` — Gateway health changes
 - `dashboard` — Dashboard KPI updates
+
+### Prometheus Metrics
+
+```
+GET /metrics
+```
+
+Returns 40+ metrics with `pre_` prefix covering HTTP, transactions, reconciliation, fraud, webhooks, WebSockets, Celery tasks, and gateway health.
 
 ---
 
@@ -609,8 +600,8 @@ The fraud detection engine runs **7 configurable rule-based checks**, each contr
 | Rule | Risk Score | Trigger Condition |
 |---|---|---|
 | Large Transaction | +0.40 | Amount exceeds threshold (default: 100,000) |
-| Velocity | +0.30 | 50+ transactions from same merchant in 60 minutes |
 | Duplicate Payment | +0.35 | Same amount/gateway within 300 seconds |
+| Velocity | +0.30 | 50+ transactions from same merchant in 60 minutes |
 | Refund Abuse | +0.25 | Customer with 3+ refunds |
 | Repeated Failures | +0.20 | Merchant with 10+ failed transactions |
 | Round Amount | +0.05 | Amount > 1,000 and is an integer |
@@ -618,7 +609,7 @@ The fraud detection engine runs **7 configurable rule-based checks**, each contr
 
 **When cumulative risk score >= 0.5**, a fraud case is automatically created with:
 - Fraud type (highest severity detected)
-- Full evidence JSON
+- Full evidence JSON with factors, transaction reference, and amount
 - Status: `OPEN` for investigation
 
 Investigators can review cases, filter by status (`open`, `investigating`, `confirmed`, `false_positive`, `resolved`), and resolve with notes.
@@ -626,6 +617,8 @@ Investigators can review cases, filter by status (`open`, `investigating`, `conf
 ---
 
 ## Gateway Integrations
+
+### Simulated Gateways
 
 | Gateway | Simulator | Webhook Support | Signature Verification |
 |---|---|---|---|
@@ -635,13 +628,19 @@ Investigators can review cases, filter by status (`open`, `investigating`, `conf
 | UPI | `UPISimulator` | No | N/A |
 | Bank Transfer | `BankTransferSimulator` | No | N/A |
 
-**Simulator Behavior:**
+### Frontend Gateway Logos
+
+12+ gateway brand logos rendered as inline SVGs on the landing page and login page: **Stripe, PayPal, Razorpay, PhonePe, GPay, Square, PayU, CCAvenue, Worldpay, Adyen, Braintree, Checkout.com** — percentage-based sizing to fill their boxes.
+
+### Simulator Behavior
+
 - Random latency: 100-2000ms (configurable)
 - Failure rate: ~10% (insufficient funds, card declined, network error, etc.)
 - Timeout rate: ~5%
 - Generates unique gateway transaction IDs
 
-**Webhook Processing Pipeline:**
+### Webhook Processing Pipeline
+
 1. Signature verification (gateway-specific)
 2. Idempotency check (external ID deduplication)
 3. Event storage as `WebhookEvent` record
@@ -655,7 +654,23 @@ Investigators can review cases, filter by status (`open`, `investigating`, `conf
 
 The dashboard ("Command Center") provides real-time operational visibility:
 
+### Pages
+
+| Route | Page | Description |
+|---|---|---|
+| `/` | Dashboard | KPIs, live stream, gateway health, flow map |
+| `/transactions` | Transactions | CRUD, search, filter, status management |
+| `/gateways` | Gateways | Gateway list, health, simulate |
+| `/reconciliation` | Reconciliation | Run batches, view results, resolve |
+| `/settlements` | Settlements | List, process, match bank records |
+| `/ledger` | Ledger | Double-entry entries, trial balance |
+| `/fraud` | Fraud | Dashboard, cases, scan, resolve |
+| `/reports` | Reports | Generate, list, CSV export |
+| `/notifications` | Notifications | View, mark read |
+| `/settings` | Settings | Profile, password, API keys |
+
 ### Widgets
+
 - **Executive Hero** — KPI cards: total transactions, amount, success rate, pending settlements, fraud cases, active gateways
 - **Payment Flow Map** — Visual flow: Created → Processing → Settled/Failed with animated transitions
 - **Live Transaction Stream** — Real-time feed via WebSocket with merchant, amount, gateway, and status
@@ -664,10 +679,112 @@ The dashboard ("Command Center") provides real-time operational visibility:
 - **System Health** — Reconciliation accuracy, pending settlements, fraud case count
 
 ### Themes
+
 Three built-in themes with smooth animated transitions:
-- **Light** — Clean white background
-- **Dim** — Dark with reduced contrast
-- **Dark** — Full dark mode with cyan accents
+
+| Theme | Background | Primary Color |
+|---|---|---|
+| **Light** | White (#ffffff) | Blue (#1e40af) |
+| **Dim** | Dark gray (#1a1d29) | Light blue (#60a5fa) |
+| **Dark** | Near black (#0f111a) | Soft blue (#93c5fd) |
+
+All themes use the same light-blue → deep-blue color family for visual consistency.
+
+### Interactive Demo Walkthrough
+
+The 14-step walkthrough covers every page with video-player-style controls:
+- Play/Pause
+- Skip forward/backward
+- Progress bar
+- Step indicator dots
+- 8s auto-advance per step
+
+---
+
+## Python-Focused Architecture
+
+The backend is designed with Python-first patterns throughout, showcasing modern Python features:
+
+### Decorators (`app/utils/decorators.py`)
+
+```python
+from app.utils.decorators import timer, retry, cached, rate_limit
+
+@timer
+async def reconcile(): ...  # auto-logs execution time
+
+@retry(max_attempts=3, delay=1.0, exceptions=(ConnectionError,))
+async def fetch_gateway(): ...  # exponential backoff
+
+@cached(ttl=300, maxsize=128)
+async def get_stats(): ...  # in-memory TTL cache with LRU eviction
+
+@rate_limit(max_calls=10, period=60)
+def call_external_api(): ...  # sliding window rate limiter
+```
+
+### Protocols (`app/utils/protocols.py`)
+
+```python
+from app.utils.protocols import Repository, PaymentGateway, Cacheable
+
+# Structural subtyping — no inheritance required
+repo: Repository[Transaction]
+gateway: PaymentGateway
+cache: Cacheable
+```
+
+### Context Managers (`app/utils/context_managers.py`)
+
+```python
+from app.utils.context_managers import TimerContext, suppress_exceptions
+
+with TimerContext("batch_reconciliation") as t:
+    run_reconciliation()
+print(f"Took {t.elapsed_ms}ms")
+
+with suppress_exceptions(ConnectionError, default=[]):
+    result = await fetch_data()
+```
+
+### Validators (`app/utils/validators.py`)
+
+```python
+from app.utils.validators import validate_currency, validate_amount, validate_status_transition
+
+validate_currency("INR")      # (True, '')
+validate_amount(99999.99)      # (True, '')
+validate_status_transition("created", "pending")  # (True, '')
+```
+
+### Formatters (`app/utils/formatters.py`)
+
+```python
+from app.utils.formatters import format_currency, format_duration
+
+format_currency(1234567.89, "INR")  # "₹12,34,567.89"
+format_duration(3661)               # "1h 1m 1s"
+```
+
+### Developer Tooling
+
+```bash
+# Lint and format
+ruff check app/ --fix
+ruff format app/
+
+# Type check
+mypy app/
+
+# Run pre-commit hooks
+pre-commit run --all-files
+```
+
+Configuration in `pyproject.toml` includes:
+- Ruff: 20+ select rules (pycodestyle, pyflakes, isort, pyupgrade, bugbear, comprehensions)
+- mypy: strict optional, redundant casts, unused ignores
+- pytest: asyncio auto-mode, coverage reporting
+- Coverage: 70% minimum, source-only for `app/`
 
 ---
 
@@ -678,83 +795,68 @@ cd backend
 pytest -v
 ```
 
-**35 tests** covering:
-- Authentication (login, register, token refresh, profile)
-- Transactions (CRUD, cancel, refund, retry, events, validation)
-- Reconciliation engine (matching, discrepancy classification, scoring)
-- Fraud detection (all 7 rules, case creation, resolution)
-- Webhook parsers (Stripe, Razorpay, PayPal signature verification)
-- API endpoints (all major routes)
+**35 tests** across 6 test modules:
 
-Tests use **in-memory SQLite** via `aiosqlite` for fast, isolated execution.
+| Module | Tests | Coverage |
+|---|---|---|
+| `test_basic.py` | 3 | Root, health, docs endpoints |
+| `test_api_endpoints.py` | 4 | Root, health, metrics, docs, OpenAPI |
+| `test_reconciliation_engine.py` | 5 | Exact match, amount mismatch, missing settlement, failed txn, accuracy metrics |
+| `test_fraud_detector.py` | 4 | Normal scan, large amount, case creation, dashboard |
+| `test_webhook_parsers.py` | 14 | Stripe (5), Razorpay (3), PayPal (3), Registry (3) |
+| `api/test_auth.py` | 2 | Signup, login |
+| `api/test_transactions.py` | 2 | Create, list |
+
+All tests use **in-memory SQLite** via `aiosqlite` for fast, isolated execution with `pytest-asyncio`.
 
 ---
 
 ## Deployment
 
-### Docker Compose (Production)
+### Production Architecture
+
+| Service | Platform | URL |
+|---|---|---|
+| Frontend | Vercel | vercel.app domain |
+| Backend | Render | onrender.com domain |
+| Database | Render PostgreSQL | Managed PostgreSQL 16 |
+| Cache | (optional) | Redis / Upstash |
+
+### Environment Variables
+
+Set these on Render (Backend):
+
+```env
+ENVIRONMENT=production
+SECRET_KEY=<generate-a-random-secret>
+DATABASE_URL=postgresql://user:pass@host:5432/payflow
+REDIS_URL=redis://...
+CELERY_BROKER_URL=redis://...
+CORS_ORIGINS=["http://localhost:3004","http://localhost:3000","https://your-vercel-app.vercel.app"]
+```
+
+Set these on Vercel (Frontend):
+
+```env
+VITE_API_URL=https://payflow-backend-n4by.onrender.com
+```
+
+The frontend automatically falls back to the Render backend URL in production if `VITE_API_URL` is not set.
+
+### Docker Compose (Full Stack)
 
 ```bash
 docker-compose up -d --build
 ```
 
-**Services:**
 | Service | Port | Description |
 |---|---|---|
 | frontend | 3004 | React application |
 | backend | 8000 | FastAPI application |
-| db | 3306 | MySQL database |
+| db | 5432 | PostgreSQL database |
 | redis | 6379 | Redis cache/broker |
 | celery-worker | - | Background task worker |
 | celery-beat | - | Periodic task scheduler |
-
-### Environment Variables
-
-Create `backend/.env`:
-
-```env
-# Database
-DATABASE_URL=mysql+aiomysql://user:password@localhost:3306/payflow
-DATABASE_HOST=localhost
-DATABASE_PORT=3306
-DATABASE_NAME=payflow
-DATABASE_USER=root
-DATABASE_PASSWORD=password
-
-# Redis
-REDIS_URL=redis://localhost:6379/0
-
-# JWT
-JWT_SECRET_KEY=your-secret-key
-JWT_ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-REFRESH_TOKEN_EXPIRE_DAYS=7
-
-# Gateway Config
-STRIPE_API_KEY=sk_test_...
-RAZORPAY_KEY_ID=rzp_test_...
-PAYPAL_CLIENT_ID=...
-
-# CORS
-CORS_ORIGINS=["http://localhost:3004"]
-```
-
-### Monitoring
-
-```bash
-cd monitoring
-docker-compose -f docker-compose.monitoring.yml up -d
-```
-
-**Prometheus metrics** available at `http://localhost:8000/metrics` with `pre_` prefix covering:
-- HTTP request count and latency histograms
-- Transaction counts by status/gateway/currency
-- Reconciliation run counts and result breakdowns
-- Fraud case detections by type
-- Gateway health status gauges
-- Celery task duration histograms
-- WebSocket active connections
-- Application version info
 
 ---
 
@@ -762,19 +864,24 @@ docker-compose -f docker-compose.monitoring.yml up -d
 
 | Module | Status |
 |---|---|
-| Authentication (JWT + refresh) | Complete |
-| Transaction Management (CRUD + lifecycle) | Complete |
-| Reconciliation Engine (4-source matching) | Complete |
-| Fraud Detection (7 rules) | Complete |
-| Settlement Tracking + Ledger | Complete |
-| Gateway Simulators (5 gateways) | Complete |
-| Webhook Processing (3 gateways) | Complete |
-| Real-Time WebSocket | Complete |
-| Background Tasks (Celery) | Complete |
-| Frontend Dashboard + Marketing | Complete |
-| Prometheus Metrics (40+) | Complete |
-| Test Suite (35 tests) | Complete |
-| Docker Deployment | Complete |
+| Authentication (JWT + refresh + role-based) | Complete |
+| Transaction Management (CRUD + lifecycle + events) | Complete |
+| Reconciliation Engine (4-source matching, 8 discrepancy types) | Complete |
+| Fraud Detection (7 rules, cumulative scoring, case management) | Complete |
+| Settlement Tracking + Double-Entry Ledger | Complete |
+| Gateway Simulators (5 simulated + 12+ frontend logos) | Complete |
+| Webhook Processing (Stripe, Razorpay, PayPal with retry) | Complete |
+| Real-Time WebSocket (5 channels pub/sub) | Complete |
+| Background Tasks (Celery: reconciliation, settlements, fraud, reports, cleanup) | Complete |
+| Frontend Dashboard + 6 Marketing Pages + Interactive Walkthrough | Complete |
+| Prometheus Metrics (40+ with `pre_` prefix) | Complete |
+| Test Suite (35 tests, in-memory SQLite) | Complete |
+| Python Utils Package (decorators, protocols, validators, etc.) | Complete |
+| Python Tooling (ruff, mypy, pre-commit, pyproject.toml) | Complete |
+| CSS Variable Theming (Light, Dim, Dark — blue family) | Complete |
+| Docker Deployment (full stack compose) | Complete |
+| Vercel Frontend Deployment | Complete |
+| Render Backend + PostgreSQL Deployment | Complete |
 
 ---
 
@@ -783,7 +890,7 @@ docker-compose -f docker-compose.monitoring.yml up -d
 ### 👨‍💻 Author
 
 <a href="https://github.com/Mdehteshamulhaque1">
-  <img src="https://github.com/Mdehteshamulhaque1.png" width="120" style="border-radius:50%; border: 3px solid #06B6D4; box-shadow: 0 0 20px rgba(6,182,212,0.4);" alt="Ehtesham Ul Haque" />
+  <img src="https://github.com/Mdehteshamulhaque1.png" width="120" style="border-radius:50%; border: 3px solid #1e40af; box-shadow: 0 0 20px rgba(30,64,175,0.4);" alt="Ehtesham Ul Haque" />
 </a>
 
 <br />
@@ -815,7 +922,7 @@ docker-compose -f docker-compose.monitoring.yml up -d
 
 ### 📊 Contribution Graph
 
-![Contribution Graph](https://github-readme-activity-graph.vercel.app/graph?username=Mdehteshamulhaque1&bg_color=0d1117&color=06B6D4&line=06B6D4&point=FFFFFF&area=true&area_color=06B6D4&hide_border=true)
+![Contribution Graph](https://github-readme-activity-graph.vercel.app/graph?username=Mdehteshamulhaque1&bg_color=0d1117&color=1e40af&line=1e40af&point=FFFFFF&area=true&area_color=1e40af&hide_border=true)
 
 <br />
 
@@ -827,15 +934,13 @@ If you find this project useful, please give it a ⭐ on GitHub!
 
 <br />
 
-<img src="https://raw.githubusercontent.com/Mdehteshamulhaque1/Payment-Reconciliation-Engine/main/frontend/public/hero-dashboard.png" width="100%" alt="Dashboard" />
-
-<br />
-
 ---
 
 **Made with ❤️ by Ehtesham Ul Haque**
 
-<img src="https://raw.githubusercontent.com/Mdehteshamulhaque1/Payment-Reconciliation-Engine/main/frontend/public/favicon.svg" width="30" alt="PayFlow" /> **PayFlow** — *Automating Payment Reconciliation*
+<br />
+
+**PayFlow** — *Automating Payment Reconciliation for the Modern Fintech Stack*
 
 <br />
 
@@ -849,6 +954,8 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 <div align="center">
 
-![Visitors](https://komarev.com/ghpvc/?username=Mdehteshamulhaque1&color=06B6D4&style=for-the-badge&label=PROFILE+VISITORS)
+![Visitors](https://komarev.com/ghpvc/?username=Mdehteshamulhaque1&color=1e40af&style=for-the-badge&label=PROFILE+VISITORS)
+
+</div>
 
 </div>
