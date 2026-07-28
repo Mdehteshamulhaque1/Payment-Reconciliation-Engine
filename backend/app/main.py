@@ -101,18 +101,15 @@ app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(RateLimiterMiddleware, max_requests=settings.RATE_LIMIT_PER_MINUTE, window_seconds=60)
 
 cors_origins = list(settings.CORS_ORIGINS)
+
+allow_origin_regex: str | None = None
 if settings.ENVIRONMENT == "production":
-    cors_origins.extend([
-        "https://payment-reconciliation-engine.vercel.app",
-        "https://payment-reconciliation-engine-git-main.vercel.app",
-        "https://payflow-backend.vercel.app",
-        "https://payflow-backend-git-main.vercel.app",
-    ])
-    cors_origins = [o for o in cors_origins if o and ".vercel.app" in o]
+    allow_origin_regex = r"https?://.*\.vercel\.app"
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_origins if cors_origins else ["*"],
+    allow_origin_regex=allow_origin_regex,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
