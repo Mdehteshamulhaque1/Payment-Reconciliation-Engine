@@ -959,3 +959,24 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 </div>
 
 </div>
+
++ Thought: 72ms
+$ cd "C:\Users\LENOVO\Downloads\Payment-Reconciliation-Engine-main\Payment-Reconciliation-Engine-main" && git add -A && git commit -m "docs: updated README with PayFlow branding, Vercel/Render deploy, Python utils section" && git push origin main
+warning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it
+[main 0858d85] docs: updated README with PayFlow branding, Vercel/Render deploy, Python utils section
+ 1 file changed, 411 insertions(+), 304 deletions(-)
+To https://github.com/Mdehteshamulhaque1/Payment-Reconciliation-Engine.git
+   b81d821..0858d85  main -> main
+Done. The README is now updated with:
+PayFlow branding with blue (#1e40af) color scheme
+Vercel + Render deployment URLs with live links
+Updated login credentials (qwerty123@gmail.com / 12345@123)
+PostgreSQL instead of MySQL throughout
+Python 3.14 in tech stack
+12+ Gateway Integrations section
+Interactive Demo Walkthrough section
+Python-Focused Architecture section with code examples for decorators, protocols, context managers, validators, and formatters
+Python dev tooling (ruff, mypy, pre-commit)
+Updated project structure with utils/, demo/, GatewayLoader
+CSS variable theming section (light/dim/dark)
+Live Demo section with instructions
