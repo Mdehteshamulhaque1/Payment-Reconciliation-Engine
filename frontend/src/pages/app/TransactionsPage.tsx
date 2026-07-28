@@ -148,6 +148,7 @@ export default function TransactionsPage() {
           }}
           className='space-y-4'
         >
+          <div className='max-h-[55vh] overflow-y-auto space-y-4 pr-1'>
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
             <label className='mb-1.5 block text-sm font-medium'>Transaction Reference *</label>
             <input name='transaction_ref' required placeholder='TXN-001' className='w-full rounded-xl border border-border bg-card px-3 py-2 text-sm outline-none focus:border-primary font-mono' />
@@ -180,6 +181,7 @@ export default function TransactionsPage() {
               {gateways?.map((g) => (<option key={g.id} value={g.id}>{g.display_name}</option>))}
             </select>
           </motion.div>
+          </div>
           <div className='flex justify-end gap-2 pt-2'>
             <Button type='button' variant='outline' onClick={() => setShowCreate(false)}>Cancel</Button>
             <Button type='submit' loading={createMutation.isPending}>Create</Button>

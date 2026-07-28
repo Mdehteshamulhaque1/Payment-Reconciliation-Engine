@@ -63,7 +63,7 @@ export default function LoginPage() {
   const loginMutation = useLogin()
   const loginJoke = useMemo(() => getRandomJoke(), [])
 
-  const from = (location.state as { from?: Location })?.from?.pathname || '/home'
+  const from = (location.state as { from?: Location })?.from?.pathname || '/'
 
   const {
     register,
