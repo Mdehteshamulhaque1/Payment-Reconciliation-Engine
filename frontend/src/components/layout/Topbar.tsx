@@ -1,22 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useLocation, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Search, Bell, Moon, Sun, Monitor, Menu, PanelLeftClose, PanelLeft, LogOut, User, Settings, Clock, Wifi, Shield, Code, ChevronRight } from 'lucide-react'
+import { Search, Bell, Moon, Sun, Monitor, Menu, PanelLeftClose, PanelLeft, LogOut, User, Settings, Clock, Wifi, Shield, Code, ChevronRight, BarChart3 } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { useThemeStore } from '@/store/themeStore'
 import { useDevStore } from '@/store/devStore'
 import { Button } from '@/components/ui/Button'
 import { Dropdown } from '@/components/ui/Dropdown'
-import { AnimatedLogo } from '@/components/ui/AnimatedLogo'
-
-const navLinks = [
-  { label: 'Home', path: '/home' },
-  { label: 'Features', path: '/home#features' },
-  { label: 'Docs', path: '/docs' },
-  { label: 'API', path: '/api-docs' },
-  { label: 'About', path: '/about' },
-  { label: 'Contact', path: '/contact' },
-]
 
 const themeIcons: Record<string, React.ReactNode> = {
   light: <Sun size={14} />, dim: <Moon size={14} />, dark: <Monitor size={14} />,
@@ -27,7 +17,6 @@ interface TopbarProps {
 }
 
 export function Topbar({ onMenuToggle, onCollapseToggle, collapsed }: TopbarProps) {
-  const location = useLocation()
   const user = useAuthStore((s) => s.user)
   const logout = useAuthStore((s) => s.logout)
   const { theme, cycleTheme } = useThemeStore()
@@ -59,25 +48,38 @@ export function Topbar({ onMenuToggle, onCollapseToggle, collapsed }: TopbarProp
           <motion.button whileTap={{ scale: 0.9 }} onClick={onCollapseToggle} className="hidden lg:flex rounded-lg p-2 text-[var(--muted)] hover:bg-[color-mix(in_srgb,var(--accent-cyan)_8%,transparent)] hover:text-[var(--accent-cyan)] transition-colors">
             {collapsed ? <PanelLeft size={18} /> : <PanelLeftClose size={18} />}
           </motion.button>
-          <Link to="/home" className="flex items-center gap-2">
-            <AnimatedLogo size="sm" showText={false} animate={false} />
-            <span className="text-lg font-bold tracking-tight text-[var(--text)] hidden sm:inline" style={{ fontFamily: 'Outfit' }}>PayFlow</span>
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--accent-cyan)]" style={{ boxShadow: '0 0 12px color-mix(in srgb, var(--primary) 20%, transparent)' }}>
+              <BarChart3 size={16} className="text-white" />
+            </div>
+            <div className="flex flex-col leading-tight">
+              <span className="text-sm font-bold tracking-tight text-[var(--text)]" style={{ fontFamily: 'Outfit' }}>PayFlow</span>
+              <span className="text-[9px] font-mono text-[var(--muted)] uppercase tracking-wider">Reconciliation Engine</span>
+            </div>
           </Link>
+
+          <div className="hidden lg:flex items-center gap-1 ml-4 pl-4 border-l border-[var(--border)]">
+            <div className="flex items-center gap-1.5 rounded-md bg-[color-mix(in_srgb,var(--success)_8%,transparent)] px-2 py-1">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--success)] opacity-75" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--success)]" />
+              </span>
+              <span className="text-[9px] font-mono font-semibold text-[var(--success)] uppercase tracking-wider">Connected</span>
+            </div>
+          </div>
         </div>
 
-        <nav className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-[#1e40af] hover:bg-[#1e40af]/10"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-
         <div className="flex items-center gap-2">
+          <div className="hidden xl:flex items-center rounded-lg border border-[color-mix(in_srgb,var(--primary)_8%,var(--border))] bg-[color-mix(in_srgb,var(--primary)_3%,transparent)] px-2.5 py-1">
+            <span className="text-[9px] font-mono text-[var(--muted)] mr-2">{formattedDate}</span>
+            <div className="flex items-center gap-1 text-[10px] font-mono text-[var(--primary)]">
+              <Clock size={10} />
+              <motion.span key={formattedTime} initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.15 }}>
+                {formattedTime}
+              </motion.span>
+            </div>
+          </div>
+
           <div className="hidden lg:flex items-center gap-1 mr-1">
             <div className="flex items-center gap-1 rounded-md px-2 py-1 text-[9px] font-mono text-[var(--muted)]">
               <Wifi size={10} className="text-[var(--success)]" /><span>LIVE</span>
@@ -85,13 +87,6 @@ export function Topbar({ onMenuToggle, onCollapseToggle, collapsed }: TopbarProp
             <div className="flex items-center gap-1 rounded-md px-2 py-1 text-[9px] font-mono text-[var(--muted)]">
               <Shield size={10} className="text-[var(--accent-cyan)]" /><span>TLS</span>
             </div>
-          </div>
-
-          <div className="hidden lg:flex items-center gap-1.5 rounded-lg border border-[color-mix(in_srgb,var(--primary)_8%,var(--border))] bg-[color-mix(in_srgb,var(--primary)_3%,transparent)] px-2.5 py-1 text-[10px] font-mono text-[var(--primary)]">
-            <Clock size={10} />
-            <motion.span key={formattedTime} initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.15 }}>
-              {formattedTime}
-            </motion.span>
           </div>
 
           <motion.button
