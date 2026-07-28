@@ -125,9 +125,9 @@ export default function SignupPage() {
           <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--success)] opacity-75" /><span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--success)]" /></span>
           <span className="text-[10px] font-mono text-[var(--muted)] uppercase tracking-wider">System Online</span>
         </div>
-        <div className="h-3 w-px bg-[var(--border)]" />
+        <span className="text-[var(--muted)] text-[8px]">●</span>
         <span className="text-[10px] font-mono text-[var(--muted)]">v2.0.0</span>
-        <div className="h-3 w-px bg-[var(--border)]" />
+        <span className="text-[var(--muted)] text-[8px]">●</span>
         <span className="text-[10px] font-mono text-[var(--muted)]">AES-256</span>
       </motion.div>
     </div>

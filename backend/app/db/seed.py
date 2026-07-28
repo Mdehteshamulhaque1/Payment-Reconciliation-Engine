@@ -1,10 +1,20 @@
+"""Database seed script — populates the database with demo data.
+
+Creates a default admin user, sample transactions across all statuses,
+settlements, ledger entries, reconciliation results, fraud cases,
+notifications, and reports for development and demonstration purposes.
+
+Usage:
+    python -m app.db.seed
+"""
+
 import asyncio
 from datetime import datetime, timedelta, timezone
 
 from sqlalchemy import func, select
 
-from app.db.base import Base
-from app.db.session import async_session_factory, engine, import_all_models
+from app.db.base import Base, engine, async_session_factory
+from app.db.session import import_all_models
 from app.core.security import get_password_hash
 
 from app.models.user import User

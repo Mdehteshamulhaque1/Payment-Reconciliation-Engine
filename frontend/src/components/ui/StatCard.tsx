@@ -5,11 +5,11 @@ import type { StatCardProps } from '@/types'
 import { AnimatedNumber } from './AnimatedNumber'
 
 const colorMap: Record<string, { glow: string; bg: string; text: string; border: string }> = {
-  primary: { glow: 'rgba(91, 92, 235, 0.2)', bg: 'rgba(91, 92, 235, 0.1)', text: 'var(--primary)', border: 'var(--primary)' },
-  success: { glow: 'rgba(34, 197, 94, 0.2)', bg: 'rgba(34, 197, 94, 0.1)', text: 'var(--success)', border: 'var(--success)' },
-  warning: { glow: 'rgba(245, 158, 11, 0.2)', bg: 'rgba(245, 158, 11, 0.1)', text: 'var(--warning)', border: 'var(--warning)' },
-  danger: { glow: 'rgba(239, 68, 68, 0.2)', bg: 'rgba(239, 68, 68, 0.1)', text: 'var(--danger)', border: 'var(--danger)' },
-  info: { glow: 'rgba(59, 130, 246, 0.2)', bg: 'rgba(59, 130, 246, 0.1)', text: 'var(--info)', border: 'var(--info)' },
+  primary: { glow: 'color-mix(in srgb, var(--primary) 20%, transparent)', bg: 'color-mix(in srgb, var(--primary) 10%, transparent)', text: 'var(--primary)', border: 'var(--primary)' },
+  success: { glow: 'color-mix(in srgb, var(--success) 20%, transparent)', bg: 'color-mix(in srgb, var(--success) 10%, transparent)', text: 'var(--success)', border: 'var(--success)' },
+  warning: { glow: 'color-mix(in srgb, var(--warning) 20%, transparent)', bg: 'color-mix(in srgb, var(--warning) 10%, transparent)', text: 'var(--warning)', border: 'var(--warning)' },
+  danger: { glow: 'color-mix(in srgb, var(--danger) 20%, transparent)', bg: 'color-mix(in srgb, var(--danger) 10%, transparent)', text: 'var(--danger)', border: 'var(--danger)' },
+  info: { glow: 'color-mix(in srgb, var(--info) 20%, transparent)', bg: 'color-mix(in srgb, var(--info) 10%, transparent)', text: 'var(--info)', border: 'var(--info)' },
 }
 
 export function StatCard({
@@ -38,7 +38,7 @@ export function StatCard({
         'hover:shadow-[0_0_30px_' + c.glow + ']',
         'hover:border-[color-mix(in_srgb,' + c.border + '_35%,transparent)]',
       )}
-      style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.12)' }}
+      style={{ boxShadow: '0 4px 20px color-mix(in srgb, var(--text) 8%, transparent)' }}
     >
       {/* Top accent line */}
       <div className="absolute top-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${c.border}, transparent)`, opacity: 0.4 }} />

@@ -9,7 +9,7 @@ interface SpotlightCardProps {
   spotlightColor?: string
 }
 
-export function SpotlightCard({ children, className, spotlightColor = 'rgba(0, 240, 255, 0.08)' }: SpotlightCardProps) {
+export function SpotlightCard({ children, className, spotlightColor = 'color-mix(in srgb, var(--accent-cyan) 8%, transparent)' }: SpotlightCardProps) {
   const ref = useRef<HTMLDivElement>(null)
   const { x, y } = useMousePosition(ref)
 

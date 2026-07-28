@@ -66,7 +66,7 @@ export function Card({
       onMouseLeave={() => setMouse((m) => ({ ...m, active: false }))}
       className={cn(base, variants[variant], glow && 'hover:shadow-glow-cyan', gradientBorder && 'gradient-border', className)}
       style={{
-        boxShadow: variant === 'hud' ? undefined : '0 4px 20px rgba(0,0,0,0.12)',
+        boxShadow: variant === 'hud' ? undefined : '0 4px 20px color-mix(in srgb, var(--text) 8%, transparent)',
         animation: stagger ? `fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${index * 0.08}s both` : undefined,
       }}
       {...props}
@@ -76,7 +76,7 @@ export function Card({
         className="pointer-events-none absolute inset-0 rounded-[inherit] z-[1] transition-opacity duration-300"
         style={{
           opacity: mouse.active ? 1 : 0,
-          background: `radial-gradient(500px circle at ${mouse.x}% ${mouse.y}%, rgba(0, 240, 255, 0.04), transparent 40%)`,
+          background: `radial-gradient(500px circle at ${mouse.x}% ${mouse.y}%, color-mix(in srgb, var(--accent-cyan) 4%, transparent), transparent 40%)`,
         }}
       />
       {/* Shimmer sweep */}

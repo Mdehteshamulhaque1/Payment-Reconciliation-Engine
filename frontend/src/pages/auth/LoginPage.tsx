@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -19,11 +19,49 @@ const floatingElements = [
   { icon: ArrowRight, x: '15%', y: '80%', delay: 2, duration: 9 },
 ]
 
+const loginJokes = [
+  ' your code is deploying itself, you just need to log in',
+  ' your bugs are afraid of you, log in and prove them right',
+  ' your git history is a horror movie, but at least login works',
+  ' sudo make me a sandwich — or just log in like a normal human',
+  ' 404: motivation not found, but your dashboard is',
+  ' you had me at "session expired"',
+  ' i was told there would be cake after login',
+  ' this login form has more validation than your ex',
+  ' error: too much awesome to handle without logging in',
+  ' your coffee is getting cold, log in faster',
+  ' the dashboard misses you, stop ghosting it',
+  ' life is short, login fast',
+  ' this joke took 3 renders to appear, worth the wait',
+  ' plot twist: the real treasure was the auth token all along',
+  ' i would tell you a udp joke but you might not receive it',
+  ' SQL: SELECT * FROM jokes WHERE funny = true — 0 rows returned',
+  ' why do programmers prefer dark mode? because light attracts bugs',
+  ' there is no place like 127.0.0.1',
+  ' i am not a bug, i am a undocumented feature',
+  ' runtime error: joke.exe has stopped being funny',
+  ' docker ps shows your motivation container is restarting',
+  ' your code compiles, so log in and celebrate',
+  ' this joke is brought to you by caffeine and desperation',
+  ' git commit -m "fixed login joke" — it was never funny to begin with',
+  ' breaking: local developer logs in, world remains unchanged',
+  ' the best error message is the one that never shows up',
+  ' how many developers does it take to log in? just you, you got this',
+  ' i would make a js joke but it is too callback-heavy',
+  ' while(true) { login(); } — eventually it works',
+  ' your password manager has trust issues, log in manually',
+]
+
+function getRandomJoke(): string {
+  return loginJokes[Math.floor(Math.random() * loginJokes.length)]
+}
+
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
   const loginMutation = useLogin()
+  const loginJoke = useMemo(() => getRandomJoke(), [])
 
   const from = (location.state as { from?: Location })?.from?.pathname || '/'
 
@@ -56,7 +94,7 @@ export default function LoginPage() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.15]"
           style={{
-            backgroundImage: `url("https://images.unsplash.com/photo-1551434678-e076c223a692?w=1920&q=80")`,
+            backgroundImage: `url("https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1920&q=80")`,
             filter: 'saturate(0.5) brightness(0.6)',
           }}
         />
@@ -136,7 +174,7 @@ export default function LoginPage() {
               Welcome back
             </h1>
             <p className="mt-1.5 text-sm text-[var(--muted)] font-mono">
-              // sign in to your dashboard
+              {loginJoke}
             </p>
           </motion.div>
 
@@ -203,12 +241,12 @@ export default function LoginPage() {
             className="mt-6 pt-5 border-t border-[var(--border)]"
           >
             <p className="text-center text-[10px] font-mono uppercase tracking-widest text-[var(--muted)] mb-3">Supported Gateways</p>
-            <div className="flex items-center justify-center gap-4 opacity-50">
-              <svg viewBox="0 0 40 40" width={28} height={28} fill="none"><rect width="40" height="40" rx="8" fill="#635BFF"/><path d="M18.5 16.5c0-.83.68-1.15 1.76-1.15 1.57 0 3.53.48 5.1 1.44V11.3A13.7 13.7 0 0020.26 10c-3.18 0-5.32 1.66-5.32 4.45 0 4.31 5.93 3.63 5.93 5.48 0 .92-.79 1.24-1.9 1.24-1.66 0-3.8-.68-5.48-1.6v5.42a14.8 14.8 0 005.48 1.03c3.23 0 5.5-1.6 5.5-4.43-.02-4.66-5.99-3.84-5.99-5.56z" fill="white"/></svg>
-              <svg viewBox="0 0 40 40" width={28} height={28} fill="none"><rect width="40" height="40" rx="8" fill="#003087"/><path d="M24.5 11h-4.1c-.5 0-1 .3-1.1.8l-1.6 10.2-.4 2.3c0 .2.1.4.3.4h3.1c.4 0 .8-.3.9-.7l.4-2.5c.1-.4.4-.7.8-.7h.6c3.3 0 5.8-1.7 6.5-4.8.3-1.3.1-2.3-.5-3-.7-.8-1.9-1.2-3.5-1.2l.1.2z" fill="#0070E0"/><path d="M21.3 15h-4.1c-.5 0-1 .3-1.1.8l-1.6 10.2-.4 2.3c0 .2.1.4.3.4h3.8c.4 0 .7-.3.8-.6l.4-2.5c.1-.4.4-.7.8-.7h.6c3.3 0 5.8-1.7 6.5-4.8.3-1.3.1-2.3-.5-3-.6-.8-1.8-1.2-3.4-1.2l-.5 2.3z" fill="#009CDE"/></svg>
-              <svg viewBox="0 0 40 40" width={28} height={28} fill="none"><rect width="40" height="40" rx="8" fill="#072654"/><path d="M12 14h5.5l1.5 5.5h.1l2-5.5h5.2l-4.8 12h-4.8L12 14z" fill="#3395FF"/><path d="M20.5 20.5h4l2.5 5.5h-4.2l-.4-1h-2.4l.4 1h.1z" fill="#3395FF"/><circle cx="30" cy="20" r="2.5" fill="#00D4AA"/></svg>
-              <svg viewBox="0 0 40 40" width={28} height={28} fill="none"><rect width="40" height="40" rx="8" fill="#097969"/><text x="5" y="27" fontFamily="Arial,sans-serif" fontWeight="bold" fontSize="15" fill="white">UPI</text></svg>
-              <svg viewBox="0 0 40 40" width={28} height={28} fill="none"><rect width="40" height="40" rx="8" fill="#5F259F"/><text x="7" y="27" fontFamily="Arial,sans-serif" fontWeight="bold" fontSize="15" fill="white">Pe</text><circle cx="30" cy="14" r="3" fill="#00D4AA"/></svg>
+            <div className="flex items-center justify-center gap-3">
+              <svg viewBox="0 0 40 40" width={32} height={32} fill="none"><rect width="40" height="40" rx="10" fill="#635BFF"/><path d="M18.5 16.5c0-.83.68-1.15 1.76-1.15 1.57 0 3.53.48 5.1 1.44V11.3A13.7 13.7 0 0020.26 10c-3.18 0-5.32 1.66-5.32 4.45 0 4.31 5.93 3.63 5.93 5.48 0 .92-.79 1.24-1.9 1.24-1.66 0-3.8-.68-5.48-1.6v5.42a14.8 14.8 0 005.48 1.03c3.23 0 5.5-1.6 5.5-4.43-.02-4.66-5.99-3.84-5.99-5.56z" fill="white"/></svg>
+              <svg viewBox="0 0 40 40" width={32} height={32} fill="none"><rect width="40" height="40" rx="10" fill="#003087"/><path d="M24.5 11h-4.1c-.5 0-1 .3-1.1.8l-1.6 10.2-.4 2.3c0 .2.1.4.3.4h3.1c.4 0 .8-.3.9-.7l.4-2.5c.1-.4.4-.7.8-.7h.6c3.3 0 5.8-1.7 6.5-4.8.3-1.3.1-2.3-.5-3-.7-.8-1.9-1.2-3.5-1.2l.1.2z" fill="#0070E0"/><path d="M21.3 15h-4.1c-.5 0-1 .3-1.1.8l-1.6 10.2-.4 2.3c0 .2.1.4.3.4h3.8c.4 0 .7-.3.8-.6l.4-2.5c.1-.4.4-.7.8-.7h.6c3.3 0 5.8-1.7 6.5-4.8.3-1.3.1-2.3-.5-3-.6-.8-1.8-1.2-3.4-1.2l-.5 2.3z" fill="#009CDE"/></svg>
+              <svg viewBox="0 0 40 40" width={32} height={32} fill="none"><rect width="40" height="40" rx="10" fill="#072654"/><path d="M12 14h5.5l1.5 5.5h.1l2-5.5h5.2l-4.8 12h-4.8L12 14z" fill="#3395FF"/><path d="M20.5 20.5h4l2.5 5.5h-4.2l-.4-1h-2.4l.4 1h.1z" fill="#3395FF"/><circle cx="30" cy="20" r="2.5" fill="#00D4AA"/></svg>
+              <svg viewBox="0 0 40 40" width={32} height={32} fill="none"><rect width="40" height="40" rx="10" fill="#097969"/><text x="5" y="27" fontFamily="Arial,sans-serif" fontWeight="bold" fontSize="15" fill="white">UPI</text></svg>
+              <svg viewBox="0 0 40 40" width={32} height={32} fill="none"><rect width="40" height="40" rx="10" fill="#5F259F"/><text x="7" y="27" fontFamily="Arial,sans-serif" fontWeight="bold" fontSize="15" fill="white">Pe</text><circle cx="30" cy="14" r="3" fill="#00D4AA"/></svg>
             </div>
           </motion.div>
 
@@ -254,9 +292,9 @@ export default function LoginPage() {
           </span>
           <span className="text-[10px] font-mono text-[var(--muted)] uppercase tracking-wider">System Online</span>
         </div>
-        <div className="h-3 w-px bg-[var(--border)]" />
+        <span className="text-[var(--muted)] text-[8px]">●</span>
         <span className="text-[10px] font-mono text-[var(--muted)]">v2.0.0</span>
-        <div className="h-3 w-px bg-[var(--border)]" />
+        <span className="text-[var(--muted)] text-[8px]">●</span>
         <span className="text-[10px] font-mono text-[var(--muted)]">AES-256</span>
       </motion.div>
     </div>

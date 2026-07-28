@@ -1,5 +1,11 @@
-"""Real Celery background tasks — reconciliation, settlement, fraud, reports, cleanup."""
+"""Real Celery background tasks — reconciliation, settlement, fraud, reports, cleanup.
 
+Each task wraps an async operation using _run_async() to bridge the sync Celery
+worker with async SQLAlchemy/Redis. Tasks are configured with retry logic,
+time limits, and structured logging.
+"""
+
+import asyncio
 import json
 import structlog
 from datetime import datetime, timedelta, timezone
@@ -9,21 +15,33 @@ from app.core.celery_app import celery_app
 logger = structlog.get_logger("tasks.celery")
 
 
+def _run_async(coro):
+    """Run an async coroutine from sync Celery task."""
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        loop = None
+    if loop and loop.is_running():
+        import concurrent.futures
+        with concurrent.futures.ThreadPoolExecutor() as pool:
+            return pool.submit(asyncio.run, coro).result()
+    return asyncio.run(coro)
+
+
 def _get_sync_session():
     from sqlalchemy import create_engine
     from sqlalchemy.orm import Session
     from app.core.config import get_settings
     settings = get_settings()
-    uri = settings.sqlalchemy_database_uri.replace("+aiosqlite", "").replace("+pymysql", "+pymysql")
+    uri = settings.sqlalchemy_database_uri.replace("+asyncpg", "").replace("+aiosqlite", "")
     if settings.is_sqlite:
-        uri = settings.sqlalchemy_database_uri.replace("aiosqlite", "pysqlite")
+        uri = uri.replace("aiosqlite", "pysqlite")
     engine = create_engine(uri)
     return Session(engine)
 
 
 @celery_app.task(name="reconcile_batch", bind=True, max_retries=3, default_retry_delay=60)
 def reconcile_batch_task(self, batch_id: str | None = None, merchant_id: int | None = None) -> dict:
-    import asyncio
     from app.core.logging import setup_logging
     setup_logging()
 
@@ -37,7 +55,7 @@ def reconcile_batch_task(self, batch_id: str | None = None, merchant_id: int | N
             return result
 
     try:
-        result = asyncio.get_event_loop().run_until_complete(_run())
+        result = _run_async(_run())
         logger.info("reconcile_batch_completed", batch_id=batch_id, result=result)
         return result
     except Exception as exc:
@@ -47,14 +65,12 @@ def reconcile_batch_task(self, batch_id: str | None = None, merchant_id: int | N
 
 @celery_app.task(name="process_settlements", bind=True, max_retries=3)
 def process_settlements_task(self) -> dict:
-    import asyncio
     from app.core.logging import setup_logging
     setup_logging()
 
     async def _run():
         from app.db.base import async_session_factory
         from app.models.settlement import Settlement, SettlementStatus
-        from app.models.bank_record import BankRecord
         from sqlalchemy import select
 
         async with async_session_factory() as db:
@@ -73,7 +89,7 @@ def process_settlements_task(self) -> dict:
             return {"processed": processed, "total_pending": len(pending)}
 
     try:
-        result = asyncio.get_event_loop().run_until_complete(_run())
+        result = _run_async(_run())
         logger.info("settlements_processed", result=result)
         return result
     except Exception as exc:
@@ -83,13 +99,13 @@ def process_settlements_task(self) -> dict:
 
 @celery_app.task(name="generate_report", bind=True, max_retries=2)
 def generate_report_task(self, report_id: int) -> dict:
-    import asyncio
     from app.core.logging import setup_logging
     setup_logging()
 
     async def _run():
         from app.db.base import async_session_factory
         from app.models.report import Report, ReportStatus
+        from app.models.transaction import Transaction
         from sqlalchemy import select
 
         async with async_session_factory() as db:
@@ -102,7 +118,6 @@ def generate_report_task(self, report_id: int) -> dict:
             await db.commit()
 
             txn_result = await db.execute(select(Transaction).limit(10000))
-            from app.models.transaction import Transaction
             transactions = list(txn_result.scalars().all())
 
             import csv, io, os, tempfile
@@ -124,7 +139,7 @@ def generate_report_task(self, report_id: int) -> dict:
             return {"report_id": report_id, "status": "completed", "filepath": filepath, "rows": len(transactions)}
 
     try:
-        return asyncio.get_event_loop().run_until_complete(_run())
+        return _run_async(_run())
     except Exception as exc:
         logger.error("report_generation_failed", report_id=report_id, error=str(exc))
         raise self.retry(exc=exc)
@@ -132,7 +147,6 @@ def generate_report_task(self, report_id: int) -> dict:
 
 @celery_app.task(name="send_notification")
 def send_notification_task(notification_id: int) -> dict:
-    import asyncio
     from app.core.logging import setup_logging
     setup_logging()
 
@@ -151,12 +165,11 @@ def send_notification_task(notification_id: int) -> dict:
             await db.commit()
             return {"notification_id": notification_id, "status": "sent"}
 
-    return asyncio.get_event_loop().run_until_complete(_run())
+    return _run_async(_run())
 
 
 @celery_app.task(name="scan_fraud")
 def scan_fraud_task(transaction_id: int) -> dict:
-    import asyncio
     from app.core.logging import setup_logging
     setup_logging()
 
@@ -167,12 +180,11 @@ def scan_fraud_task(transaction_id: int) -> dict:
         async with async_session_factory() as db:
             return await scan_transaction(db, transaction_id)
 
-    return asyncio.get_event_loop().run_until_complete(_run())
+    return _run_async(_run())
 
 
 @celery_app.task(name="cleanup_expired_tokens")
 def cleanup_expired_tokens_task(self) -> dict:
-    import asyncio
     from app.core.logging import setup_logging
     setup_logging()
 
@@ -191,12 +203,11 @@ def cleanup_expired_tokens_task(self) -> dict:
             await db.commit()
             return {"deleted": result.rowcount}
 
-    return asyncio.get_event_loop().run_until_complete(_run())
+    return _run_async(_run())
 
 
 @celery_app.task(name="cleanup_webhook_dlq")
 def cleanup_webhook_dlq_task(self) -> dict:
-    import asyncio
     from app.core.logging import setup_logging
     setup_logging()
 
@@ -216,12 +227,11 @@ def cleanup_webhook_dlq_task(self) -> dict:
             await db.commit()
             return {"deleted_old_failures": result.rowcount}
 
-    return asyncio.get_event_loop().run_until_complete(_run())
+    return _run_async(_run())
 
 
 @celery_app.task(name="monitor_gateway_health")
 def monitor_gateway_health_task(self) -> dict:
-    import asyncio
     from app.core.logging import setup_logging
     setup_logging()
 
@@ -248,4 +258,4 @@ def monitor_gateway_health_task(self) -> dict:
             await db.commit()
             return {"gateways_checked": checked}
 
-    return asyncio.get_event_loop().run_until_complete(_run())
+    return _run_async(_run())

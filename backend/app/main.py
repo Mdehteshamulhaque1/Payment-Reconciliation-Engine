@@ -9,7 +9,7 @@ from app.core.exceptions import register_exception_handlers
 from app.core.logging import setup_logging
 from app.db.base import async_session_factory
 from app.db.session import check_db_health, init_db
-from app.middleware import RateLimiterMiddleware, RequestIDMiddleware, RequestLoggingMiddleware
+from app.middleware import RateLimiterMiddleware, RequestIDMiddleware, RequestLoggingMiddleware, SecurityHeadersMiddleware
 from app.infrastructure.metrics import metrics, ACTIVE_CONNECTIONS
 from app.infrastructure.realtime.broadcaster import ws_manager
 
@@ -20,6 +20,13 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
     settings = get_settings()
     metrics.update_app_info(version=settings.APP_VERSION, environment=settings.ENVIRONMENT)
+
+    if settings.SECRET_KEY in ("change-me", "dev-secret-key-change-in-production"):
+        import structlog
+        structlog.get_logger("startup").warning(
+            "secret_key_weak",
+            message="SECRET_KEY is set to a default value — change it in production!",
+        )
 
     try:
         from app.infrastructure.metrics import REGISTRY
@@ -90,6 +97,7 @@ app = FastAPI(
 
 app.add_middleware(RequestIDMiddleware)
 app.add_middleware(RequestLoggingMiddleware)
+app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(RateLimiterMiddleware, max_requests=settings.RATE_LIMIT_PER_MINUTE, window_seconds=60)
 
 cors_origins = list(settings.CORS_ORIGINS)
@@ -104,7 +112,7 @@ if settings.ENVIRONMENT == "production":
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=cors_origins if cors_origins else ["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -1,3 +1,10 @@
+"""Database engine and session factory — SQLAlchemy async configuration.
+
+Provides the async engine, session factory, and declarative base class
+used by all models. Configures connection pooling based on the database
+driver (SQLite vs PostgreSQL).
+"""
+
 from sqlalchemy.ext.asyncio import AsyncAttrs, AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
 

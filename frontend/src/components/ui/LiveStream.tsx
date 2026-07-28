@@ -6,11 +6,11 @@ import { useGateways } from '@/hooks/useGateways'
 import { formatCurrency } from '@/lib/utils'
 
 const statusConfig: Record<string, { color: string; bg: string; icon: typeof CheckCircle }> = {
-  success: { color: 'var(--success)', bg: 'rgba(34,197,94,0.1)', icon: CheckCircle },
-  failed: { color: 'var(--danger)', bg: 'rgba(239,68,68,0.1)', icon: XCircle },
-  pending: { color: 'var(--warning)', bg: 'rgba(245,158,11,0.1)', icon: Clock },
-  processing: { color: 'var(--accent-cyan)', bg: 'rgba(0,240,255,0.1)', icon: RefreshCw },
-  created: { color: 'var(--muted)', bg: 'rgba(150,150,150,0.1)', icon: ArrowRight },
+  success: { color: 'var(--success)', bg: 'color-mix(in srgb, var(--success) 10%, transparent)', icon: CheckCircle },
+  failed: { color: 'var(--danger)', bg: 'color-mix(in srgb, var(--danger) 10%, transparent)', icon: XCircle },
+  pending: { color: 'var(--warning)', bg: 'color-mix(in srgb, var(--warning) 10%, transparent)', icon: Clock },
+  processing: { color: 'var(--accent-cyan)', bg: 'color-mix(in srgb, var(--accent-cyan) 10%, transparent)', icon: RefreshCw },
+  created: { color: 'var(--muted)', bg: 'color-mix(in srgb, var(--muted) 10%, transparent)', icon: ArrowRight },
 }
 
 export function LiveStream() {

@@ -55,13 +55,13 @@ export function AnimatedLogo({ size = 'md', className, showText = true, animate 
         <motion.div
           className="absolute inset-2 rounded-full flex items-center justify-center"
           style={{
-            background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(139, 92, 246, 0.15))',
-            boxShadow: '0 0 30px rgba(0, 240, 255, 0.2), inset 0 0 20px rgba(139, 92, 246, 0.1)',
+            background: 'linear-gradient(135deg, color-mix(in srgb, var(--accent-cyan) 15%, transparent), color-mix(in srgb, var(--accent-violet) 15%, transparent))',
+            boxShadow: '0 0 30px color-mix(in srgb, var(--accent-cyan) 20%, transparent), inset 0 0 20px color-mix(in srgb, var(--accent-violet) 10%, transparent)',
           }}
           animate={animate ? { boxShadow: [
-            '0 0 20px rgba(0, 240, 255, 0.2), inset 0 0 15px rgba(139, 92, 246, 0.1)',
-            '0 0 40px rgba(0, 240, 255, 0.35), inset 0 0 25px rgba(139, 92, 246, 0.2)',
-            '0 0 20px rgba(0, 240, 255, 0.2), inset 0 0 15px rgba(139, 92, 246, 0.1)',
+            '0 0 20px color-mix(in srgb, var(--accent-cyan) 20%, transparent), inset 0 0 15px color-mix(in srgb, var(--accent-violet) 10%, transparent)',
+            '0 0 40px color-mix(in srgb, var(--accent-cyan) 35%, transparent), inset 0 0 25px color-mix(in srgb, var(--accent-violet) 20%, transparent)',
+            '0 0 20px color-mix(in srgb, var(--accent-cyan) 20%, transparent), inset 0 0 15px color-mix(in srgb, var(--accent-violet) 10%, transparent)',
           ] } : undefined}
           transition={animate ? { duration: 3, repeat: Infinity, ease: 'easeInOut' } : undefined}
         >

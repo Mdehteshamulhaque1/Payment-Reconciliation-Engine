@@ -8,8 +8,8 @@ import { useDashboardStats, useGatewayComparison, useTopFailures } from '@/hooks
 import { Activity, GitCompareArrows, Wallet, AlertTriangle } from 'lucide-react'
 
 const cardStyle = {
-  background: 'rgba(15,18,35,0.95)',
-  border: '1px solid rgba(6,182,212,0.1)',
+  background: 'color-mix(in srgb, var(--surface) 88%, transparent)',
+  border: '1px solid color-mix(in srgb, var(--accent-cyan) 12%, var(--border))',
 }
 
 export default function DashboardPage() {
@@ -26,14 +26,14 @@ export default function DashboardPage() {
         breadcrumb={[{ label: 'Home', href: '/' }]}
         actions={
           <div className='flex items-center gap-2'>
-            <div className='flex items-center gap-1.5 rounded-full px-3 py-1' style={{ border: '1px solid rgba(34,197,94,0.2)', background: 'rgba(34,197,94,0.05)' }}>
+            <div className='flex items-center gap-1.5 rounded-full px-3 py-1' style={{ border: '1px solid color-mix(in srgb, var(--success) 20%, transparent)', background: 'color-mix(in srgb, var(--success) 5%, transparent)' }}>
               <span className='relative flex h-1.5 w-1.5'>
                 <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--success)] opacity-75' />
                 <span className='relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--success)]' />
               </span>
               <span className='text-[10px] font-mono font-medium text-[var(--success)]'>LIVE</span>
             </div>
-            <div className='flex items-center gap-1.5 rounded-full px-3 py-1' style={{ border: '1px solid rgba(6,182,212,0.15)', background: 'rgba(6,182,212,0.05)' }}>
+            <div className='flex items-center gap-1.5 rounded-full px-3 py-1' style={{ border: '1px solid color-mix(in srgb, var(--accent-cyan) 15%, transparent)', background: 'color-mix(in srgb, var(--accent-cyan) 5%, transparent)' }}>
               <Cpu size={10} className='text-[var(--accent-cyan)]' />
               <span className='text-[10px] font-mono font-medium text-[var(--accent-cyan)]'>SYS OK</span>
             </div>
@@ -77,10 +77,10 @@ export default function DashboardPage() {
                     <span className='text-xs text-[var(--text)] truncate'>{f.reason || 'Unknown'}</span>
                     <span className='text-[10px] font-mono text-[var(--muted)] ml-2 shrink-0'>{f.count}</span>
                   </div>
-                  <div className='h-1.5 rounded-full overflow-hidden' style={{ background: 'rgba(255,255,255,0.06)' }}>
+                  <div className='h-1.5 rounded-full overflow-hidden' style={{ background: 'color-mix(in srgb, var(--text) 6%, transparent)' }}>
                     <div
                       className='h-full rounded-full transition-all duration-1000'
-                      style={{ width: `${f.percentage}%`, background: 'linear-gradient(90deg, var(--danger), rgba(245,158,11,0.6))' }}
+                      style={{ width: `${f.percentage}%`, background: 'linear-gradient(90deg, var(--danger), color-mix(in srgb, var(--warning) 60%, transparent))' }}
                     />
                   </div>
                 </div>
@@ -99,7 +99,7 @@ export default function DashboardPage() {
             {gatewayComp?.slice(0, 5).map((gw) => (
               <div key={gw.gateway_name} className='flex items-center gap-3'>
                 <span className='text-xs text-[var(--text)] truncate w-20 shrink-0'>{gw.gateway_name}</span>
-                <div className='flex-1 h-2 rounded-full overflow-hidden' style={{ background: 'rgba(255,255,255,0.06)' }}>
+                <div className='flex-1 h-2 rounded-full overflow-hidden' style={{ background: 'color-mix(in srgb, var(--text) 6%, transparent)' }}>
                   <div
                     className='h-full rounded-full transition-all duration-1000'
                     style={{ width: `${gw.success_rate}%`, background: 'linear-gradient(90deg, var(--success), var(--accent-cyan))' }}

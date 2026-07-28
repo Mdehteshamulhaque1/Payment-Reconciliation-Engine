@@ -33,7 +33,7 @@ const variantStyles: Record<ButtonVariant, string> = {
   outline: cn(
     'border border-[var(--border)] bg-transparent text-[var(--text)]',
     'hover:border-[var(--accent-cyan)] hover:bg-[color-mix(in_srgb,var(--accent-cyan)_5%,transparent)]',
-    'hover:-translate-y-0.5 hover:shadow-[0_0_20px_rgba(0,240,255,0.06)]',
+    'hover:-translate-y-0.5 hover:shadow-[0_0_20px_color-mix(in_srgb,var(--accent-cyan)_6%,transparent)]',
     'active:translate-y-0 active:scale-[0.97]',
   ),
   ghost: cn(
@@ -44,7 +44,7 @@ const variantStyles: Record<ButtonVariant, string> = {
   danger: cn(
     'bg-gradient-to-r from-[var(--danger)] to-[var(--danger-strong)] text-white',
     'shadow-lg hover:shadow-xl hover:-translate-y-0.5',
-    'hover:shadow-[0_8px_30px_rgba(239,68,68,0.2)]',
+    'hover:shadow-[0_8px_30px_color-mix(in_srgb,var(--danger)_20%,transparent)]',
     'active:translate-y-0 active:scale-[0.97]',
     'glass-sweep',
   ),
@@ -96,7 +96,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             'disabled:cursor-not-allowed',
             variantStyles[variant],
             sizeStyles[size],
-            success && 'bg-[var(--success)] !shadow-[0_0_20px_rgba(34,197,94,0.2)]',
+            success && 'bg-[var(--success)] !shadow-[0_0_20px_color-mix(in_srgb,var(--success)_20%,transparent)]',
             className,
           )}
           {...props}

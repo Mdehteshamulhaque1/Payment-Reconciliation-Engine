@@ -1,3 +1,10 @@
+"""Database session management — model registration, initialization, health checks.
+
+Provides the import_all_models() function that ensures all SQLAlchemy models
+are registered with the Base metadata before table creation. Also provides
+init_db() for creating tables and check_db_health() for connectivity verification.
+"""
+
 from sqlalchemy import text
 
 from app.core.config import get_settings

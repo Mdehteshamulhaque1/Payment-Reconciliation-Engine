@@ -14,7 +14,7 @@ import DashboardLayout from '@/components/layout/DashboardLayout'
 import { ToastProvider } from '@/components/effects/Toast'
 import { CommandPalette } from '@/components/ui/CommandPalette'
 import { DevPanel } from '@/components/ui/DevPanel'
-import { Skeleton } from '@/components/ui/Skeleton'
+import { GatewayLoader } from '@/components/ui/GatewayLoader'
 
 const MarketingLayout = lazy(() => import('@/components/layout/MarketingLayout'))
 const LoginPage = lazy(() => import('@/pages/auth/LoginPage'))
@@ -47,21 +47,9 @@ const queryClient = new QueryClient({
   },
 })
 
-/** Skeleton loader shown while lazy-loaded page chunks are fetching */
+/** Gateway logo loader shown while lazy-loaded page chunks are fetching */
 function PageLoader() {
-  return (
-    <div className='flex h-[60vh] items-center justify-center'>
-      <div className='space-y-3 w-48'>
-        <div className='flex items-center gap-2 mb-4'>
-          <div className='h-2 w-2 rounded-full bg-[var(--accent-cyan)] animate-pulse' />
-          <span className='text-[10px] font-mono text-[var(--muted)] uppercase tracking-widest'>Loading</span>
-        </div>
-        <Skeleton className='h-6 w-full rounded-lg' />
-        <Skeleton className='h-4 w-3/4 rounded-lg' />
-        <Skeleton className='h-4 w-1/2 rounded-lg' />
-      </div>
-    </div>
-  )
+  return <GatewayLoader />
 }
 
 /** Redirects unauthenticated users to /login; renders DashboardLayout for authenticated users */

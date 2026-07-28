@@ -63,7 +63,7 @@ export function Topbar({ onMenuToggle, onCollapseToggle, collapsed }: TopbarProp
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="flex items-center justify-between gap-3 rounded-2xl border border-[color-mix(in_srgb,var(--accent-cyan)_10%,var(--border))] bg-[color-mix(in_srgb,var(--surface)_85%,transparent)] backdrop-blur-xl px-4 py-2.5 shadow-hud relative overflow-hidden"
+        className="flex items-center justify-between gap-3 rounded-2xl border border-[color-mix(in_srgb,var(--accent-cyan)_10%,var(--border))] bg-[color-mix(in_srgb,var(--surface)_85%,transparent)] backdrop-blur-xl px-4 py-2.5 shadow-hud relative"
       >
         <div className="absolute top-0 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-[var(--accent-cyan)] to-transparent opacity-20" />
 
@@ -116,13 +116,13 @@ export function Topbar({ onMenuToggle, onCollapseToggle, collapsed }: TopbarProp
           <motion.button
             whileTap={{ scale: 0.9 }}
             onClick={toggleDevMode}
-            className={`rounded-lg p-2 transition-colors ${devMode ? 'bg-[color-mix(in_srgb,var(--accent-neon)_15%,transparent)] text-[var(--accent-neon)]' : 'text-[var(--muted)] hover:bg-[color-mix(in_srgb,var(--accent-cyan)_8%,transparent)] hover:text-[var(--accent-cyan)]'}`}
+            className={`rounded-lg p-2 transition-colors ${devMode ? 'bg-[color-mix(in_srgb,var(--primary)_15%,transparent)] text-[var(--primary)]' : 'text-[var(--muted)] hover:bg-[color-mix(in_srgb,var(--primary)_8%,transparent)] hover:text-[var(--primary)]'}`}
             title={`Developer Mode: ${devMode ? 'ON' : 'OFF'}`}
           >
             <Code size={14} />
           </motion.button>
 
-          <div className="hidden lg:flex items-center gap-1.5 rounded-lg border border-[color-mix(in_srgb,var(--accent-cyan)_8%,var(--border))] bg-[color-mix(in_srgb,var(--accent-cyan)_3%,transparent)] px-2.5 py-1 text-[10px] font-mono text-[var(--accent-cyan)]">
+          <div className="hidden lg:flex items-center gap-1.5 rounded-lg border border-[color-mix(in_srgb,var(--primary)_8%,var(--border))] bg-[color-mix(in_srgb,var(--primary)_3%,transparent)] px-2.5 py-1 text-[10px] font-mono text-[var(--primary)]">
             <Clock size={10} />
             <motion.span key={formattedTime} initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.15 }}>
               {formattedTime}
@@ -143,14 +143,14 @@ export function Topbar({ onMenuToggle, onCollapseToggle, collapsed }: TopbarProp
           >
             <Button variant="ghost" size="sm" className="relative rounded-lg h-8 w-8 p-0" onClick={handleBellClick}>
               <Bell size={14} />
-              <span className="absolute -top-0.5 -right-0.5 h-3.5 min-w-[14px] flex items-center justify-center rounded-full bg-[var(--accent-cyan)] px-1 text-[7px] font-bold text-[var(--bg1)] animate-badge-pulse" style={{ boxShadow: '0 0 8px rgba(0, 240, 255, 0.4)' }}>3</span>
+              <span className="absolute -top-0.5 -right-0.5 h-3.5 min-w-[14px] flex items-center justify-center rounded-full bg-[var(--primary)] px-1 text-[7px] font-bold text-white" style={{ boxShadow: '0 0 8px color-mix(in srgb, var(--primary) 30%, transparent)' }}>3</span>
             </Button>
           </motion.div>
 
           <Dropdown
             trigger={
               <button className="flex items-center gap-2 rounded-lg px-2 py-1.5 transition-all hover:bg-[color-mix(in_srgb,var(--accent-cyan)_5%,transparent)] group">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg text-[10px] font-bold text-[var(--bg1)] font-mono" style={{ background: 'linear-gradient(135deg, var(--accent-cyan), var(--primary))', boxShadow: '0 0 12px rgba(0, 240, 255, 0.2)' }}>
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg text-[10px] font-bold text-white font-mono" style={{ background: 'linear-gradient(135deg, var(--primary), var(--accent-cyan))', boxShadow: '0 0 12px color-mix(in srgb, var(--primary) 20%, transparent)' }}>
                   {user?.full_name?.[0]?.toUpperCase() || 'U'}
                 </div>
                 <span className="hidden lg:block text-xs font-medium text-[var(--text)]">{user?.full_name || 'User'}</span>

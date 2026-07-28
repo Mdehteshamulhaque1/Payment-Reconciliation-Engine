@@ -37,8 +37,8 @@ export function TransactionJourney({ transaction }: TransactionJourneyProps) {
 
           let color = 'var(--muted)'
           let bgColor = 'var(--surface)'
-          if (isPast) { color = 'var(--success)'; bgColor = 'rgba(34,197,94,0.1)' }
-          if (isCurrent) { color = 'var(--accent-cyan)'; bgColor = 'rgba(0,240,255,0.1)' }
+          if (isPast) { color = 'var(--success)'; bgColor = 'color-mix(in srgb, var(--success) 10%, transparent)' }
+          if (isCurrent) { color = 'var(--accent-cyan)'; bgColor = 'color-mix(in srgb, var(--accent-cyan) 10%, transparent)' }
 
           return (
             <div key={step.key} className="flex items-center">
@@ -54,7 +54,7 @@ export function TransactionJourney({ transaction }: TransactionJourneyProps) {
                   className="flex h-10 w-10 items-center justify-center rounded-full border-2"
                   style={{
                     borderColor: isFailed && i === currentIdx ? 'var(--danger)' : color,
-                    background: isFailed && i === currentIdx ? 'rgba(239,68,68,0.1)' : bgColor,
+                    background: isFailed && i === currentIdx ? 'color-mix(in srgb, var(--danger) 10%, transparent)' : bgColor,
                   }}
                 >
                   {isFailed && i === currentIdx ? (

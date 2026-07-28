@@ -34,11 +34,11 @@ export function HudCard({ children, className, delay = 0, glowColor = 'var(--acc
         'bg-[color-mix(in_srgb,var(--surface)_85%,transparent)] backdrop-blur-xl',
         'transition-all duration-300',
         'hover:border-[color-mix(in_srgb,var(--accent-cyan)_30%,transparent)]',
-        'hover:shadow-[0_0_30px_rgba(0,240,255,0.08)]',
+        'hover:shadow-[0_0_30px_color-mix(in_srgb,var(--accent-cyan)_8%,transparent)]',
         className,
       )}
       style={{
-        boxShadow: '0 4px 24px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.04)',
+        boxShadow: '0 4px 24px color-mix(in srgb, var(--text) 10%, transparent), inset 0 1px 0 color-mix(in srgb, var(--text) 4%, transparent)',
       }}
     >
       {/* Mouse-follow glow */}

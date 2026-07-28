@@ -94,8 +94,8 @@ function SidebarContent({ collapsed, onCollapseToggle }: { collapsed: boolean; o
                         layoutId="sidebar-active"
                         className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[2px] rounded-full"
                         style={{
-                          background: 'linear-gradient(180deg, var(--accent-cyan), var(--primary))',
-                          boxShadow: '0 0 10px rgba(0, 240, 255, 0.4)',
+                          background: 'linear-gradient(180deg, var(--primary), var(--accent-cyan))',
+                          boxShadow: '0 0 10px color-mix(in srgb, var(--primary) 30%, transparent)',
                         }}
                         transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                       />
