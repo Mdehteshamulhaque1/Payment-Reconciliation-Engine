@@ -1,4 +1,6 @@
-const BASE_URL = (import.meta.env.VITE_API_URL || '') + '/api/v1'
+const RENDER_BACKEND = 'https://payflow-backend-n4by.onrender.com'
+const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? RENDER_BACKEND : '')
+const BASE_URL = API_URL + '/api/v1'
 const TOKEN_KEY = 'pf_token'
 
 function getToken(): string | null {
