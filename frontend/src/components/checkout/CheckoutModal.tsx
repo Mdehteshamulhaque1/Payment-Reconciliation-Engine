@@ -28,9 +28,10 @@ const upiApps = [
 ]
 
 const internationalGateways = [
-  { id: 'stripe', name: 'Stripe', color: '#635BFF', icon: 'St' },
-  { id: 'paypal', name: 'PayPal', color: '#003087', icon: 'PP' },
-  { id: 'square', name: 'Square', color: '#4A90D9', icon: 'Sq' },
+  { id: 'stripe', name: 'Stripe', color: '#635BFF', icon: 'St', url: 'https://stripe.com' },
+  { id: 'paypal', name: 'PayPal', color: '#003087', icon: 'PP', url: 'https://paypal.com' },
+  { id: 'razorpay', name: 'Razorpay', color: '#3395FF', icon: 'Rz', url: 'https://razorpay.com' },
+  { id: 'square', name: 'Square', color: '#4A90D9', icon: 'Sq', url: 'https://squareup.com' },
 ]
 
 export default function CheckoutModal({ open, onClose, plan, planIcon: PlanIcon }: CheckoutModalProps) {
@@ -398,24 +399,35 @@ export default function CheckoutModal({ open, onClose, plan, planIcon: PlanIcon 
                       >
                         <p className="text-[10px] font-mono uppercase tracking-widest text-[var(--muted)] text-center">Choose payment method</p>
                         {internationalGateways.map((gw) => (
-                          <button
+                          <div
                             key={gw.id}
-                            onClick={() => setSelectedInternational(gw.id)}
-                            className={`flex items-center gap-4 w-full rounded-xl border p-4 transition-all ${
+                            className={`flex items-center gap-4 w-full rounded-xl border p-4 transition-all cursor-pointer ${
                               selectedInternational === gw.id
                                 ? 'border-[var(--accent-cyan)] bg-[color-mix(in_srgb,var(--accent-cyan)_8%,transparent)]'
                                 : 'border-border bg-card hover:border-[var(--muted)]'
                             }`}
+                            onClick={() => setSelectedInternational(gw.id)}
                           >
                             <div className="flex h-10 w-10 items-center justify-center rounded-full text-white text-xs font-bold" style={{ backgroundColor: gw.color }}>
                               {gw.icon}
                             </div>
                             <div className="text-left flex-1">
-                              <p className="text-sm font-medium text-[var(--text)]">{gw.name}</p>
+                              <div className="flex items-center gap-2">
+                                <p className="text-sm font-medium text-[var(--text)]">{gw.name}</p>
+                                <a
+                                  href={gw.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="text-[10px] font-mono text-[var(--accent-cyan)] hover:underline"
+                                >
+                                  Visit ↗
+                                </a>
+                              </div>
                               <p className="text-[10px] text-[var(--muted)] font-mono">Pay with {gw.name}</p>
                             </div>
                             {selectedInternational === gw.id && <CheckCircle2 size={18} className="text-[var(--accent-cyan)]" />}
-                          </button>
+                          </div>
                         ))}
                         <Button
                           onClick={() => handlePay()}

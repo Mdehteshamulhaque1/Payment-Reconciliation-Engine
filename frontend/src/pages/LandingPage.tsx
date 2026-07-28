@@ -406,7 +406,7 @@ export default function LandingPage() {
             <Reveal delay={0.25}>
               <div className="mt-8 flex flex-wrap justify-center gap-4">
                 <MagneticButton>
-                  <Link to="/signup">
+                  <Link to="/pricing">
                     <Button variant="primary" size="lg" className="min-w-[200px]" style={{ background: `linear-gradient(135deg, ${BLUE}, ${BLUE_LIGHT})`, boxShadow: `0 4px 20px ${BLUE}40`, fontWeight: 700 }}>Start Free Trial <ArrowRight size={16} className="ml-2" /></Button>
                   </Link>
                 </MagneticButton>
