@@ -1,13 +1,13 @@
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CreditCard, Smartphone, Globe, CheckCircle2, Loader2, Shield, Lock, Zap, Building2, QrCode, Copy, ExternalLink } from 'lucide-react'
-import QRCode from 'qrcode'
+import { CreditCard, Smartphone, Globe, CheckCircle2, Loader2, Shield, Lock, Zap, Building2, QrCode, Copy } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { useTrialCheckout } from '@/hooks/useCheckout'
 import { showToast } from '@/components/effects/Toast'
 
 const UPI_ID = '6200563841@ptaxis'
 const UPI_PAYLOAD = `upi://pay?pa=${UPI_ID}&pn=PayFlow&am=1.00&cu=INR&tn=Free Trial Activation`
+const QR_API = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=10&data=${encodeURIComponent(UPI_PAYLOAD)}`
 
 interface CheckoutModalProps {
   open: boolean
@@ -32,20 +32,6 @@ const internationalGateways = [
   { id: 'paypal', name: 'PayPal', color: '#003087', icon: 'PP' },
   { id: 'square', name: 'Square', color: '#4A90D9', icon: 'Sq' },
 ]
-
-function QrCanvas({ data, size = 180 }: { data: string; size?: number }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  useEffect(() => {
-    if (canvasRef.current) {
-      QRCode.toCanvas(canvasRef.current, data, { width: size, margin: 2, color: { dark: '#0a0a0f', light: '#ffffff' } })
-    }
-  }, [data, size])
-  return (
-    <div className="flex items-center justify-center p-4 rounded-2xl bg-white">
-      <canvas ref={canvasRef} width={size} height={size} className="rounded-xl" />
-    </div>
-  )
-}
 
 export default function CheckoutModal({ open, onClose, plan, planIcon: PlanIcon }: CheckoutModalProps) {
   const [tab, setTab] = useState<Tab>('qr')
@@ -248,7 +234,9 @@ export default function CheckoutModal({ open, onClose, plan, planIcon: PlanIcon 
                       >
                         <div className="text-center">
                           <p className="text-[10px] font-mono uppercase tracking-widest text-[var(--muted)] mb-3">Scan with any UPI app</p>
-                          <QrCanvas data={UPI_PAYLOAD} size={190} />
+                          <div className="flex items-center justify-center p-4 rounded-2xl bg-white">
+                            <img src={QR_API} alt="UPI QR Code" width={200} height={200} className="rounded-xl" />
+                          </div>
                         </div>
 
                         <div className="rounded-xl border border-border bg-card p-4 text-center">
