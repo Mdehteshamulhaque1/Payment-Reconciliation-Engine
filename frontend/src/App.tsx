@@ -63,7 +63,7 @@ function ProtectedRoute() {
 /** Redirects authenticated users away from login/signup to the dashboard */
 function PublicRoute() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
-  if (isAuthenticated) return <Navigate to='/' replace />
+  if (isAuthenticated) return <Navigate to='/home' replace />
   return <Outlet />
 }
 
