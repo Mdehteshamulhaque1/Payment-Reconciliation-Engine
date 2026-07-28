@@ -34,6 +34,7 @@ export function Modal({ open, onOpenChange, onClose, title, description, childre
                 transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                 className={cn(
                   'fixed left-1/2 top-1/2 z-[101] w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-[color-mix(in_srgb,var(--accent-cyan)_15%,var(--border))] bg-[color-mix(in_srgb,var(--surface-strong)_95%,var(--bg2))] p-6 backdrop-blur-xl',
+                  'max-h-[85vh] overflow-y-auto',
                   'shadow-hud-lg',
                   maxWidth,
                   className,
