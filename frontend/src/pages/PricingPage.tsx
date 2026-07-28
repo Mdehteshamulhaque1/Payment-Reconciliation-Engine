@@ -1,7 +1,10 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { CheckCircle2, X, ArrowRight, Sparkles, Zap, Building2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import CheckoutModal from '@/components/checkout/CheckoutModal'
+import { useAuthStore } from '@/store/authStore'
 
 const plans = [
   {
@@ -70,6 +73,18 @@ const fadeUp = {
 }
 
 export default function PricingPage() {
+  const [checkoutPlan, setCheckoutPlan] = useState<string | null>(null)
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
+  const navigate = useNavigate()
+
+  const handleStartTrial = (planName: string) => {
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: { pathname: '/pricing' } } })
+      return
+    }
+    setCheckoutPlan(planName)
+  }
+
   return (
     <div className="overflow-hidden">
       {/* Hero */}
@@ -128,15 +143,22 @@ export default function PricingPage() {
 
               <p className="text-sm text-[var(--muted)] mb-6 leading-relaxed">{plan.desc}</p>
 
-              <Link to="/signup">
+              {plan.price === 'Custom' ? (
+                <Link to="/contact">
+                  <Button variant="outline" size="lg" className="w-full mb-6">
+                    Contact Sales <ArrowRight size={14} className="ml-2" />
+                  </Button>
+                </Link>
+              ) : (
                 <Button
                   variant={plan.highlight ? 'primary' : 'outline'}
                   size="lg"
                   className="w-full mb-6"
+                  onClick={() => handleStartTrial(plan.name)}
                 >
-                  {plan.price === 'Custom' ? 'Contact Sales' : 'Get Started'} <ArrowRight size={14} className="ml-2" />
+                  Start Free Trial <ArrowRight size={14} className="ml-2" />
                 </Button>
-              </Link>
+              )}
 
               <div className="space-y-3">
                 {plan.features.map((feat) => (
@@ -189,6 +211,12 @@ export default function PricingPage() {
           </div>
         </div>
       </section>
+      <CheckoutModal
+        open={checkoutPlan !== null}
+        onClose={() => setCheckoutPlan(null)}
+        plan={checkoutPlan || ''}
+        planIcon={plans.find(p => p.name === checkoutPlan)?.icon}
+      />
     </div>
   )
 }

@@ -18,10 +18,12 @@ from app.api.v1.audit import router as audit_router
 from app.api.v1.monitoring import router as monitoring_router
 from app.api.v1.exceptions import router as exceptions_router
 from app.api.v1.websocket import router as websocket_router
+from app.api.v1.checkout import router as checkout_router
 
 router = APIRouter()
 
 router.include_router(auth_router)
+router.include_router(checkout_router)
 router.include_router(transactions_router)
 router.include_router(gateways_router)
 router.include_router(webhooks_router)
