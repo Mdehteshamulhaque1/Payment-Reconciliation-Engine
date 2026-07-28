@@ -7,13 +7,12 @@ import { AnimatedLogo } from '@/components/ui/AnimatedLogo'
 import { Button } from '@/components/ui/Button'
 
 const navLinks = [
-  { label: 'Home', path: '/home', color: '#5B5CEB' },
-  { label: 'Features', path: '/home#features', color: '#06B6D4' },
-  { label: 'Pricing', path: '/pricing', color: '#22C55E' },
-  { label: 'Docs', path: '/docs', color: '#F59E0B' },
-  { label: 'API', path: '/api-docs', color: '#EF4444' },
-  { label: 'About', path: '/about', color: '#A855F7' },
-  { label: 'Contact', path: '/contact', color: '#EC4899' },
+  { label: 'Home', path: '/home', color: '#1e40af' },
+  { label: 'Features', path: '/home#features', color: '#1e40af' },
+  { label: 'Docs', path: '/docs', color: '#1e40af' },
+  { label: 'API', path: '/api-docs', color: '#1e40af' },
+  { label: 'About', path: '/about', color: '#1e40af' },
+  { label: 'Contact', path: '/contact', color: '#1e40af' },
 ]
 
 function PublicHeader() {
@@ -125,7 +124,6 @@ function PublicFooter() {
             <ul className="space-y-2">
               {[
                 { label: 'Features', to: '/home#features' },
-                { label: 'Pricing', to: '/pricing' },
                 { label: 'Docs', to: '/docs' },
                 { label: 'API Reference', to: '/api-docs' },
               ].map((item) => (
