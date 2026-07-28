@@ -102,14 +102,10 @@ app.add_middleware(RateLimiterMiddleware, max_requests=settings.RATE_LIMIT_PER_M
 
 cors_origins = list(settings.CORS_ORIGINS)
 
-allow_origin_regex: str | None = None
-if settings.ENVIRONMENT == "production":
-    allow_origin_regex = r"https?://.*\.vercel\.app"
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_origins if cors_origins else ["*"],
-    allow_origin_regex=allow_origin_regex,
+    allow_origin_regex=r"https?://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
