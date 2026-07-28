@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Search, Bell, Moon, Sun, Monitor, Menu, PanelLeftClose, PanelLeft, LogOut, User, Settings, Clock, Wifi, Shield, Code } from 'lucide-react'
+import { Search, Bell, Moon, Sun, Monitor, Menu, PanelLeftClose, PanelLeft, LogOut, User, Settings, Clock, Wifi, Shield, Code, ChevronRight } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { useThemeStore } from '@/store/themeStore'
 import { useDevStore } from '@/store/devStore'
@@ -9,19 +9,14 @@ import { Button } from '@/components/ui/Button'
 import { Dropdown } from '@/components/ui/Dropdown'
 import { AnimatedLogo } from '@/components/ui/AnimatedLogo'
 
-const routeMap: Record<string, { title: string; description: string }> = {
-  '/': { title: 'Dashboard', description: 'System overview' },
-  '/dashboard': { title: 'Dashboard', description: 'System overview' },
-  '/transactions': { title: 'Transactions', description: 'Transaction monitor' },
-  '/gateways': { title: 'Gateways', description: 'Gateway health matrix' },
-  '/reconciliation': { title: 'Reconciliation', description: 'Record matching engine' },
-  '/settlements': { title: 'Settlements', description: 'Settlement tracker' },
-  '/ledger': { title: 'Ledger', description: 'Financial journal' },
-  '/fraud': { title: 'Fraud Detection', description: 'Threat analysis' },
-  '/reports': { title: 'Reports', description: 'Intelligence reports' },
-  '/notifications': { title: 'Notifications', description: 'Event log' },
-  '/settings': { title: 'Settings', description: 'System configuration' },
-}
+const navLinks = [
+  { label: 'Home', path: '/home' },
+  { label: 'Features', path: '/home#features' },
+  { label: 'Docs', path: '/docs' },
+  { label: 'API', path: '/api-docs' },
+  { label: 'About', path: '/about' },
+  { label: 'Contact', path: '/contact' },
+]
 
 const themeIcons: Record<string, React.ReactNode> = {
   light: <Sun size={14} />, dim: <Moon size={14} />, dark: <Monitor size={14} />,
@@ -39,9 +34,6 @@ export function Topbar({ onMenuToggle, onCollapseToggle, collapsed }: TopbarProp
   const { devMode, toggleDevMode, setDevPanelOpen } = useDevStore()
   const [time, setTime] = useState(new Date())
   const [bellAnimating, setBellAnimating] = useState(false)
-  // searchFocused tracked inline for animation
-
-  const route = routeMap[location.pathname] || { title: 'PayFlow', description: '' }
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000)
@@ -58,52 +50,35 @@ export function Topbar({ onMenuToggle, onCollapseToggle, collapsed }: TopbarProp
   const formattedDate = time.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
 
   return (
-    <header className="sticky top-2 z-20 mx-2 lg:mx-0">
-      <motion.div
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="flex items-center justify-between gap-3 rounded-2xl border border-[color-mix(in_srgb,var(--accent-cyan)_10%,var(--border))] bg-[color-mix(in_srgb,var(--surface)_85%,transparent)] backdrop-blur-xl px-4 py-2.5 shadow-hud relative"
-      >
-        <div className="absolute top-0 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-[var(--accent-cyan)] to-transparent opacity-20" />
-
-        <div className="flex items-center gap-3 min-w-0">
+    <header className="sticky top-0 z-50 border-b border-[color-mix(in_srgb,var(--accent-cyan)_8%,var(--border))] bg-[color-mix(in_srgb,var(--surface)_85%,transparent)] backdrop-blur-xl">
+      <div className="mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-3">
           <motion.button whileTap={{ scale: 0.9 }} onClick={onMenuToggle} className="rounded-lg p-2 text-[var(--muted)] hover:bg-[color-mix(in_srgb,var(--accent-cyan)_8%,transparent)] hover:text-[var(--accent-cyan)] transition-colors lg:hidden">
             <Menu size={18} />
           </motion.button>
           <motion.button whileTap={{ scale: 0.9 }} onClick={onCollapseToggle} className="hidden lg:flex rounded-lg p-2 text-[var(--muted)] hover:bg-[color-mix(in_srgb,var(--accent-cyan)_8%,transparent)] hover:text-[var(--accent-cyan)] transition-colors">
             {collapsed ? <PanelLeft size={18} /> : <PanelLeftClose size={18} />}
           </motion.button>
-          <Link to="/home" className="no-underline flex-shrink-0">
+          <Link to="/home" className="flex items-center gap-2">
             <AnimatedLogo size="sm" showText={false} animate={false} />
+            <span className="text-lg font-bold tracking-tight text-[var(--text)] hidden sm:inline" style={{ fontFamily: 'Outfit' }}>PayFlow</span>
           </Link>
-          <div className="min-w-0">
-            <div className="flex items-center gap-2">
-              <h2 className="text-sm font-semibold text-[var(--text)] truncate" style={{ fontFamily: 'Outfit' }}>{route.title}</h2>
-              <span className="hidden sm:inline-block h-1 w-1 rounded-full bg-[var(--accent-cyan)] opacity-50" />
-              <p className="hidden sm:block text-[10px] text-[var(--muted)] truncate font-mono uppercase tracking-wider">{route.description}</p>
-            </div>
-          </div>
         </div>
 
-        {/* Search — opens command palette */}
-        <motion.div
-          animate={{ boxShadow: '0 0 0 rgba(0,0,0,0)' }}
-          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-          className="hidden md:flex items-center gap-2 rounded-lg border border-[color-mix(in_srgb,var(--accent-cyan)_10%,var(--border))] bg-[color-mix(in_srgb,var(--bg3)_50%,transparent)] px-3 py-1.5 min-w-[180px] max-w-[280px] flex-1 mx-4 group cursor-pointer"
-          onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true }))}
-        >
-          <Search size={13} className="text-[var(--muted)] group-hover:text-[var(--accent-cyan)] transition-colors" />
-          <input
-            placeholder="Search commands..."
-            className="flex-1 bg-transparent text-xs font-mono text-[var(--muted)] outline-none placeholder:text-[var(--muted)] pointer-events-none"
-            readOnly
-          />
-          <kbd className="pointer-events-none rounded border border-[var(--border)] bg-[var(--surface)] px-1.5 py-0.5 text-[9px] font-mono font-medium text-[var(--muted)]">⌘K</kbd>
-        </motion.div>
+        <nav className="hidden md:flex items-center gap-1">
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-[#1e40af] hover:bg-[#1e40af]/10"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
 
-        <div className="flex items-center gap-1">
-          <div className="hidden lg:flex items-center gap-2 mr-2">
+        <div className="flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-1 mr-1">
             <div className="flex items-center gap-1 rounded-md px-2 py-1 text-[9px] font-mono text-[var(--muted)]">
               <Wifi size={10} className="text-[var(--success)]" /><span>LIVE</span>
             </div>
@@ -112,7 +87,13 @@ export function Topbar({ onMenuToggle, onCollapseToggle, collapsed }: TopbarProp
             </div>
           </div>
 
-          {/* Dev Mode toggle */}
+          <div className="hidden lg:flex items-center gap-1.5 rounded-lg border border-[color-mix(in_srgb,var(--primary)_8%,var(--border))] bg-[color-mix(in_srgb,var(--primary)_3%,transparent)] px-2.5 py-1 text-[10px] font-mono text-[var(--primary)]">
+            <Clock size={10} />
+            <motion.span key={formattedTime} initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.15 }}>
+              {formattedTime}
+            </motion.span>
+          </div>
+
           <motion.button
             whileTap={{ scale: 0.9 }}
             onClick={toggleDevMode}
@@ -121,15 +102,6 @@ export function Topbar({ onMenuToggle, onCollapseToggle, collapsed }: TopbarProp
           >
             <Code size={14} />
           </motion.button>
-
-          <div className="hidden lg:flex items-center gap-1.5 rounded-lg border border-[color-mix(in_srgb,var(--primary)_8%,var(--border))] bg-[color-mix(in_srgb,var(--primary)_3%,transparent)] px-2.5 py-1 text-[10px] font-mono text-[var(--primary)]">
-            <Clock size={10} />
-            <motion.span key={formattedTime} initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.15 }}>
-              {formattedTime}
-            </motion.span>
-            <span className="text-[var(--border-strong)]">·</span>
-            <span className="text-[var(--muted)]">{formattedDate}</span>
-          </div>
 
           <motion.div whileTap={{ scale: 0.9, rotate: 15 }}>
             <Button variant="ghost" size="sm" onClick={cycleTheme} className="rounded-lg h-8 w-8 p-0" title={`Theme: ${theme}`}>
@@ -168,7 +140,7 @@ export function Topbar({ onMenuToggle, onCollapseToggle, collapsed }: TopbarProp
             <Dropdown.Item icon={<LogOut size={14} />} onClick={logout} danger>Sign out</Dropdown.Item>
           </Dropdown>
         </div>
-      </motion.div>
+      </div>
     </header>
   )
 }

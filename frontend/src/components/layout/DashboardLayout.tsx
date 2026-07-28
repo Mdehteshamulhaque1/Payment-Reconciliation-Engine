@@ -37,7 +37,7 @@ export default function DashboardLayout() {
         mobileOpen={mobileOpen}
         onMobileClose={() => setMobileOpen(false)}
       />
-      <div className="relative z-10 flex min-h-screen flex-1 flex-col lg:p-2 lg:pl-0">
+      <div className="relative z-10 flex min-h-screen flex-1 flex-col">
         <Topbar
           onMenuToggle={() => setMobileOpen((o) => !o)}
           onCollapseToggle={handleCollapseToggle}
