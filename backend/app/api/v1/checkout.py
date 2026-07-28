@@ -1,8 +1,7 @@
 import random
-import string
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -46,7 +45,6 @@ async def trial_checkout(
 
     transaction = Transaction(
         transaction_ref=txn_ref,
-        merchant_id=user.id,
         amount=payload.amount,
         currency=payload.currency,
         transaction_type="payment",
@@ -57,7 +55,7 @@ async def trial_checkout(
     await db.flush()
 
     simulator = get_gateway_simulator(payload.gateway)
-    result = await simulator.process_payment(payload.amount, payload.currency)
+    result = simulator.process_payment(payload.amount, payload.currency)
 
     if result.success:
         transaction.status = TransactionStatus.SUCCESS
