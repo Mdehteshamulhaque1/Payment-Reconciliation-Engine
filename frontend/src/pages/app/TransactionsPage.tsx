@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { Plus, Search, Eye, XCircle, RotateCcw, RefreshCw, ShieldAlert } from 'lucide-react'
+import { Plus, Search, Eye, XCircle, RotateCcw, RefreshCw, ShieldAlert, ShieldCheck } from 'lucide-react'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { DataTable } from '@/components/ui/DataTable'
 import { StatusChip } from '@/components/ui/StatusChip'
@@ -33,6 +33,7 @@ export default function TransactionsPage() {
   const [search, setSearch] = useState('')
   const [showCreate, setShowCreate] = useState(false)
   const [selectedTxn, setSelectedTxn] = useState<Transaction | null>(null)
+  const [scanResults, setScanResults] = useState<Record<number, Record<string, unknown>>>({})
 
   const { data, isLoading } = useTransactions({
     page, size: 15,
@@ -41,11 +42,24 @@ export default function TransactionsPage() {
   })
   const { data: gateways } = useGateways()
   const scanFraudMutation = useScanFraud()
-  const [scanResult, setScanResult] = useState<Record<string, unknown> | null>(null)
   const createMutation = useCreateTransaction()
   const cancelMutation = useCancelTransaction()
   const refundMutation = useRefundTransaction()
   const retryMutation = useRetryTransaction()
+
+  const autoScan = useCallback((txnId: number) => {
+    scanFraudMutation.mutate(txnId, {
+      onSuccess: (res) => {
+        setScanResults(prev => ({ ...prev, [txnId]: res as unknown as Record<string, unknown> }))
+        if (res.is_suspicious) {
+          showToast('warning', `FRAUD ALERT! Risk score: ${res.risk_score} — ${res.fraud_type?.replace(/_/g, ' ') || 'Suspicious'}`, { duration: 8000 })
+        } else {
+          showToast('success', `Transaction verified safe (score: ${res.risk_score})`)
+        }
+      },
+      onError: () => {},
+    })
+  }, [scanFraudMutation])
 
   const columns = [
     { key: 'transaction_ref', label: 'Reference', sortable: true, render: (t: Transaction) => (
@@ -56,6 +70,24 @@ export default function TransactionsPage() {
     { key: 'amount', label: 'Amount', sortable: true, render: (t: Transaction) => (
       <span className='font-medium'>{formatCurrency(t.amount, t.currency)}</span>
     )},
+    { key: 'fraud_risk', label: 'Fraud Risk', render: (t: Transaction) => {
+      const sr = scanResults[t.id]
+      if (!sr) return <span className='text-xs text-muted-foreground'>—</span>
+      if (sr.is_suspicious) {
+        return (
+          <div className='flex items-center gap-1.5'>
+            <ShieldAlert size={12} className='text-danger' />
+            <span className='text-xs text-danger font-medium'>Risk {sr.risk_score}</span>
+          </div>
+        )
+      }
+      return (
+        <div className='flex items-center gap-1.5'>
+          <ShieldCheck size={12} className='text-success' />
+          <span className='text-xs text-success'>Safe</span>
+        </div>
+      )
+    }},
     { key: 'status', label: 'Status', render: (t: Transaction) => <StatusChip status={t.status} pulse={t.status === 'processing'} /> },
     { key: 'gateway_id', label: 'Gateway', render: (t: Transaction) => gateways?.find(g => g.id === t.gateway_id)?.display_name ?? '—' },
     { key: 'created_at', label: 'Date', sortable: true, render: (t: Transaction) => (
@@ -145,7 +177,12 @@ export default function TransactionsPage() {
                 gateway_id: fd.get('gateway_id') ? Number(fd.get('gateway_id')) : undefined,
               },
               {
-                onSuccess: () => { showToast('success', 'Transaction created'); setShowCreate(false) },
+                onSuccess: (createdTxn) => {
+                  showToast('success', 'Transaction created')
+                  setShowCreate(false)
+                  const id = (createdTxn as unknown as Record<string, unknown>)?.id as number
+                  if (id) autoScan(id)
+                },
                 onError: (err) => showToast('error', err.message),
               }
             )
@@ -191,7 +228,7 @@ export default function TransactionsPage() {
         </form>
       </Modal>
 
-      <Modal open={!!selectedTxn} onClose={() => { setSelectedTxn(null); setScanResult(null) }} title='Transaction Details'>
+      <Modal open={!!selectedTxn} onClose={() => { setSelectedTxn(null) }} title='Transaction Details'>
         {selectedTxn && (
           <div className='space-y-4'>
             <div className='grid grid-cols-2 gap-3 text-sm'>
@@ -212,65 +249,60 @@ export default function TransactionsPage() {
             </div>
             {selectedTxn.location && <LocationCard location={selectedTxn.location} />}
 
-            <div className='border-t border-border/50 pt-3'>
-              <Button
-                size='sm'
-                variant={scanResult?.is_suspicious ? 'danger' : 'outline'}
-                onClick={() => {
-                  scanFraudMutation.mutate(selectedTxn.id, {
-                    onSuccess: (res) => {
-                      setScanResult(res as unknown as Record<string, unknown>)
-                      if (res.is_suspicious) showToast('warning', `Fraud detected! Score: ${res.risk_score}`)
-                      else showToast('success', `No fraud detected (score: ${res.risk_score})`)
-                    },
-                    onError: (err) => showToast('error', err.message),
-                  })
-                }}
-                loading={scanFraudMutation.isPending}
-              >
-                <ShieldAlert size={14} className='mr-1' /> Scan for Fraud
-              </Button>
-            </div>
+            {(() => {
+              const sr = scanResults[selectedTxn.id]
+              if (!sr) return null
+              return (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`rounded-xl border p-3 space-y-2 text-sm ${
+                    sr.is_suspicious
+                      ? 'border-danger/30 bg-danger/5'
+                      : 'border-success/30 bg-success/5'
+                  }`}
+                >
+                  <div className='flex items-center gap-2 font-semibold'>
+                    {sr.is_suspicious ? <ShieldAlert className='w-4 h-4 text-danger' /> : <ShieldCheck className='w-4 h-4 text-success' />}
+                    {sr.is_suspicious ? 'Fraud Detected' : 'Transaction Verified Safe'}
+                  </div>
+                  <div className='grid grid-cols-2 gap-x-4 gap-y-1 text-xs'>
+                    <span className='text-muted-foreground'>Risk Score:</span>
+                    <span className='font-mono font-medium'>{Number(sr.risk_score).toFixed(4)}</span>
+                    <span className='text-muted-foreground'>ML Score:</span>
+                    <span className='font-mono'>{Number(sr.ml_risk_score || 0).toFixed(4)}</span>
+                    <span className='text-muted-foreground'>Fraud Type:</span>
+                    <span className='capitalize font-medium'>{(sr.fraud_type as string)?.replace(/_/g, ' ') || '—'}</span>
+                    <span className='text-muted-foreground'>Case ID:</span>
+                    <span className='font-mono'>{(sr.case_id as string) || 'Not filed'}</span>
+                  </div>
+                  {(sr.factors as string[])?.length > 0 && (
+                    <div className='space-y-1'>
+                      <span className='text-xs text-muted-foreground font-medium'>Why this was flagged:</span>
+                      <ul className='list-disc list-inside text-xs space-y-0.5'>
+                        {(sr.factors as string[]).slice(0, 8).map((f, i) => <li key={i} className='text-foreground/80'>{f}</li>)}
+                      </ul>
+                    </div>
+                  )}
+                  {sr.ml_explanation && (
+                    <div className='text-xs text-muted-foreground border-t border-border/50 pt-2 mt-2'>
+                      <span className='font-medium'>AI Analysis:</span>{' '}
+                      {((sr.ml_explanation as Record<string, unknown>)?.explanation_summary as string) || 'ML model analyzed this transaction'}
+                    </div>
+                  )}
+                  {!sr.is_suspicious && (
+                    <div className='text-xs text-success border-t border-border/50 pt-2 mt-2'>
+                      This transaction passed all security checks. No risk detected.
+                    </div>
+                  )}
+                </motion.div>
+              )
+            })()}
 
-            {scanResult && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                className={`rounded-xl border p-3 space-y-2 text-sm ${
-                  scanResult.is_suspicious
-                    ? 'border-danger/30 bg-danger/5'
-                    : 'border-success/30 bg-success/5'
-                }`}
-              >
-                <div className='flex items-center gap-2 font-semibold'>
-                  <ShieldAlert className='w-4 h-4' />
-                  {scanResult.is_suspicious ? 'Fraud Detected' : 'No Fraud Detected'}
-                </div>
-                <div className='grid grid-cols-2 gap-x-4 gap-y-1 text-xs'>
-                  <span className='text-muted-foreground'>Risk Score:</span>
-                  <span className='font-mono'>{Number(scanResult.risk_score).toFixed(4)}</span>
-                  <span className='text-muted-foreground'>ML Score:</span>
-                  <span className='font-mono'>{Number(scanResult.ml_risk_score || 0).toFixed(4)}</span>
-                  <span className='text-muted-foreground'>Fraud Type:</span>
-                  <span className='capitalize'>{(scanResult.fraud_type as string)?.replace(/_/g, ' ') || '—'}</span>
-                  <span className='text-muted-foreground'>Case ID:</span>
-                  <span className='font-mono'>{(scanResult.case_id as string) || '—'}</span>
-                </div>
-                {(scanResult.factors as string[])?.length > 0 && (
-                  <div className='space-y-1'>
-                    <span className='text-xs text-muted-foreground font-medium'>Factors:</span>
-                    <ul className='list-disc list-inside text-xs space-y-0.5'>
-                      {(scanResult.factors as string[]).slice(0, 5).map((f, i) => <li key={i}>{f}</li>)}
-                    </ul>
-                  </div>
-                )}
-                {scanResult.ml_explanation && (
-                  <div className='text-xs text-muted-foreground'>
-                    <span className='font-medium'>AI Explanation:</span>{' '}
-                    {((scanResult.ml_explanation as Record<string, unknown>)?.explanation_summary as string) || 'See Fraud page for details'}
-                  </div>
-                )}
-              </motion.div>
+            {!scanResults[selectedTxn.id] && (
+              <div className='border-t border-border/50 pt-3'>
+                <p className='text-xs text-muted-foreground mb-2'>This transaction was automatically scanned for fraud upon creation.</p>
+              </div>
             )}
           </div>
         )}
