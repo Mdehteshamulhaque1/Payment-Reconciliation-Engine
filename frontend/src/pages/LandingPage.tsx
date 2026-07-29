@@ -255,8 +255,6 @@ const quickLinks = {
   ],
 }
 
-const techStack = ['Python', 'FastAPI', 'React', 'TypeScript', 'Tailwind CSS', 'PostgreSQL', 'Redis', 'Celery', 'Docker', 'Prometheus', 'Grafana']
-
 /* ═══════════ COMPONENTS ═══════════ */
 
 interface FloatingInputProps {
@@ -409,51 +407,7 @@ export function LandingPageContent() {
               </p>
             </Reveal>
 
-            <Reveal delay={0.25}>
-              <div className="mt-8 flex flex-wrap justify-center gap-4">
-                <MagneticButton>
-                  <Link to="/pricing">
-                    <Button variant="primary" size="lg" className="min-w-[200px]" style={{ background: `linear-gradient(135deg, ${BLUE}, ${BLUE_LIGHT})`, boxShadow: `0 4px 20px ${BLUE}40`, fontWeight: 700 }}>Start Free Trial <ArrowRight size={16} className="ml-2" /></Button>
-                  </Link>
-                </MagneticButton>
-                <MagneticButton>
-                    <Button variant="secondary" size="lg" className="min-w-[200px]" style={{ borderColor: BLUE, color: BLUE }}
-                      onClick={() => { setDemoStep(0); setDemoOpen(true); }}>
-                      <Play size={14} className="mr-2" /> Watch Demo
-                    </Button>
-                </MagneticButton>
-              </div>
-            </Reveal>
 
-            <Reveal delay={0.35}>
-              <div className="mt-8 flex items-center justify-center gap-6 flex-wrap">
-                {['No credit card required', '14-day free trial', 'Cancel anytime'].map((text) => (
-                  <motion.div key={text} className="flex items-center gap-1.5 text-xs font-mono" style={{ color: '#4a6fa5' }}
-                    whileHover={{ scale: 1.05, color: BLUE }}>
-                    <CheckCircle2 size={12} className="text-[#057642]" /> {text}
-                  </motion.div>
-                ))}
-              </div>
-            </Reveal>
-
-            <Reveal delay={0.45}>
-              <div className="mt-10 flex items-center justify-center gap-3">
-                <div className="flex -space-x-2">
-                  {['PS', 'AC', 'MS', 'JW', 'SK'].map((a, i) => (
-                    <motion.div key={a}
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold text-white border-2 border-white"
-                      style={{ background: `linear-gradient(135deg, ${BLUE_LIGHT}, ${BLUE})`, zIndex: 5 - i }}
-                      initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.5 + i * 0.1 }}>
-                      {a}
-                    </motion.div>
-                  ))}
-                </div>
-                <div>
-                  <div className="flex gap-0.5">{Array.from({ length: 5 }).map((_, i) => <Star key={i} size={12} className="fill-yellow-400 text-yellow-400" />)}</div>
-                  <p className="text-[11px] font-mono mt-0.5" style={{ color: '#4a6fa5' }}>500+ teams love PayFlow</p>
-                </div>
-              </div>
-            </Reveal>
           </div>
 
           {/* Scroll indicator */}
@@ -964,21 +918,7 @@ export function LandingPageContent() {
             </div>
           </Reveal>
 
-          <Reveal>
-            <div className="mb-16 text-center">
-              <p className="text-xs font-mono uppercase tracking-widest mb-3" style={{ color: '#94a3b8' }}>Technology Stack</p>
-              <h3 className="text-2xl font-extrabold mb-8" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>Powered by Modern Technology</h3>
-              <div className="flex flex-wrap justify-center gap-3">
-                {techStack.map((tech) => (
-                  <motion.span key={tech} className="px-5 py-3 rounded-xl text-xs font-mono font-medium cursor-default"
-                    style={{ color: '#4a6fa5', border: '1px solid var(--border)', background: '#ffffff' }}
-                    whileHover={{ y: -3, color: BLUE, borderColor: `${BLUE}20`, boxShadow: `0 4px 16px ${BLUE}08` }}>
-                    {tech}
-                  </motion.span>
-                ))}
-              </div>
-            </div>
-          </Reveal>
+
 
           <Reveal>
             <div className="mb-16 py-12 px-10 rounded-2xl text-center" style={{ border: '1px solid var(--border)', background: '#f0f5ff' }}>
