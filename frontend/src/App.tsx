@@ -86,9 +86,10 @@ export default function App() {
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route element={<MarketingLayout />}>
-                <Route path='/' element={<LandingPage />} />
+                <Route path='/home' element={<LandingPage />} />
               </Route>
-              <Route element={<DashboardLayout />}>{/* no default dashboard — all dashboard features are on the landing page */}
+              <Route element={<DashboardLayout />}>
+                <Route path='/' element={<LandingPage />} />
                 <Route path='/transactions' element={<TransactionsPage />} />
                 <Route path='/gateways' element={<GatewaysPage />} />
                 <Route path='/reconciliation' element={<ReconciliationPage />} />

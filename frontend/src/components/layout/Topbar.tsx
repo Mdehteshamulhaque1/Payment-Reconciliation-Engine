@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Bell, Moon, Sun, Monitor, Menu, PanelLeftClose, PanelLeft, User, Settings, Clock, Wifi, Shield, Code, BarChart3 } from 'lucide-react'
+import { Bell, Moon, Sun, Monitor, User, Settings, Clock, Wifi, Shield, Code, BarChart3 } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { useThemeStore } from '@/store/themeStore'
 import { useDevStore } from '@/store/devStore'
@@ -12,11 +12,7 @@ const themeIcons: Record<string, React.ReactNode> = {
   light: <Sun size={14} />, dim: <Moon size={14} />, dark: <Monitor size={14} />,
 }
 
-interface TopbarProps {
-  onMenuToggle: () => void; onCollapseToggle: () => void; collapsed: boolean
-}
-
-export function Topbar({ onMenuToggle, onCollapseToggle, collapsed }: TopbarProps) {
+export function Topbar() {
   const user = useAuthStore((s) => s.user)
   const { theme, cycleTheme } = useThemeStore()
   const { devMode, toggleDevMode, setDevPanelOpen } = useDevStore()
@@ -41,12 +37,6 @@ export function Topbar({ onMenuToggle, onCollapseToggle, collapsed }: TopbarProp
     <header className="sticky top-0 z-50 border-b border-[color-mix(in_srgb,var(--accent-cyan)_8%,var(--border))] bg-[color-mix(in_srgb,var(--surface)_85%,transparent)] backdrop-blur-xl">
       <div className="mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3">
-          <motion.button whileTap={{ scale: 0.9 }} onClick={onMenuToggle} className="rounded-lg p-2 text-[var(--muted)] hover:bg-[color-mix(in_srgb,var(--accent-cyan)_8%,transparent)] hover:text-[var(--accent-cyan)] transition-colors lg:hidden">
-            <Menu size={18} />
-          </motion.button>
-          <motion.button whileTap={{ scale: 0.9 }} onClick={onCollapseToggle} className="hidden lg:flex rounded-lg p-2 text-[var(--muted)] hover:bg-[color-mix(in_srgb,var(--accent-cyan)_8%,transparent)] hover:text-[var(--accent-cyan)] transition-colors">
-            {collapsed ? <PanelLeft size={18} /> : <PanelLeftClose size={18} />}
-          </motion.button>
           <Link to="/" className="flex items-center gap-2.5 group">
             <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--accent-cyan)]" style={{ boxShadow: '0 0 12px color-mix(in srgb, var(--primary) 20%, transparent)' }}>
               <BarChart3 size={16} className="text-white" />

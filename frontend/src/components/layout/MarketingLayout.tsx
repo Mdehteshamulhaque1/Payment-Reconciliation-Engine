@@ -4,6 +4,7 @@ import { Menu, X, ChevronRight } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import { AnimatedLogo } from '@/components/ui/AnimatedLogo'
 import { Button } from '@/components/ui/Button'
+import { ChatBot } from '@/components/chat/ChatBot'
 
 const navLinks = [
   { label: 'Home', path: '/', color: '#1e40af' },
@@ -160,6 +161,7 @@ export default function MarketingLayout({ children }: MarketingLayoutProps) {
 
   return (
     <div className="min-h-screen bg-[var(--bg1)] flex flex-col">
+      <ChatBot />
       <PublicHeader />
       <main className="flex-1">
         {children || <Outlet />}

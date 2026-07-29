@@ -1,8 +1,9 @@
-import { useState, useCallback, type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Sidebar } from './Sidebar'
 import { Topbar } from './Topbar'
+import { ChatBot } from '@/components/chat/ChatBot'
 
 const pageVariants = {
   initial: { opacity: 0, y: 12, filter: 'blur(4px)' },
@@ -21,46 +22,26 @@ interface DashboardLayoutProps {
 }
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const [collapsed, setCollapsed] = useState(() => localStorage.getItem('pf-sidebar-collapsed') === '1')
   const location = useLocation()
 
-  const handleCollapseToggle = useCallback(() => {
-    setCollapsed((c) => {
-      const next = !c
-      localStorage.setItem('pf-sidebar-collapsed', next ? '1' : '0')
-      return next
-    })
-  }, [])
-
   return (
-    <div className="flex min-h-screen bg-[var(--bg1)]">
-      <Sidebar
-        collapsed={collapsed}
-        onCollapseToggle={handleCollapseToggle}
-        mobileOpen={mobileOpen}
-        onMobileClose={() => setMobileOpen(false)}
-      />
-      <div className="relative z-10 flex min-h-screen flex-1 flex-col">
-        <Topbar
-          onMenuToggle={() => setMobileOpen((o) => !o)}
-          onCollapseToggle={handleCollapseToggle}
-          collapsed={collapsed}
-        />
-        <main className="flex-1 overflow-y-auto p-4 lg:p-6">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={location.pathname}
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              {children || <Outlet />}
-            </motion.div>
-          </AnimatePresence>
-        </main>
-      </div>
+    <div className="flex min-h-screen flex-col bg-[var(--bg1)]">
+      <Topbar />
+      <Sidebar />
+      <ChatBot />
+      <main className="flex-1 overflow-y-auto p-4 lg:p-6">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname}
+            variants={pageVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            {children || <Outlet />}
+          </motion.div>
+        </AnimatePresence>
+      </main>
     </div>
   )
 }

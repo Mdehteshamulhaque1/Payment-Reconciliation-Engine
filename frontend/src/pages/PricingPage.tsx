@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { CheckCircle2, X, ArrowRight, Sparkles, Zap, Building2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import CheckoutModal from '@/components/checkout/CheckoutModal'
-import { useAuthStore } from '@/store/authStore'
 
 const plans = [
   {
@@ -74,14 +73,8 @@ const fadeUp = {
 
 export default function PricingPage() {
   const [checkoutPlan, setCheckoutPlan] = useState<string | null>(null)
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
-  const navigate = useNavigate()
 
   const handleStartTrial = (planName: string) => {
-    if (!isAuthenticated) {
-      navigate('/login', { state: { from: { pathname: '/pricing' } } })
-      return
-    }
     setCheckoutPlan(planName)
   }
 

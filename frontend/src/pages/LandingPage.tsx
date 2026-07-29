@@ -1,22 +1,17 @@
 import { useState, useRef, useEffect, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useInView, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring } from 'framer-motion'
+import { motion, useInView, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion'
 import {
-  ArrowRight, Zap, Shield, BarChart3, Layers, Workflow, Globe,
-  CheckCircle2, Star, TrendingUp, Clock, Users, CreditCard,
-  GitBranch, Mail, Phone, Send, Calendar,
-  CheckCircle, Github, Linkedin, Twitter, Newspaper, MapPin, ChevronDown,
+  ArrowRight, ArrowRightLeft, Zap, Shield, BarChart3, Layers, Workflow, Globe,
+  CheckCircle2, TrendingUp, Clock, Users, CreditCard,
+  GitBranch,
   Sparkles, Target, Play, ArrowDown, Rocket,
-  Cpu, Activity, GitCompareArrows, Wallet, AlertTriangle,
+  Activity, Wallet, Network,
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { DemoWalkthrough } from '@/components/demo/DemoWalkthrough'
-import { AnimatedLogo } from '@/components/ui/AnimatedLogo'
-import { ExecutiveHero } from '@/components/ui/ExecutiveHero'
-import { FlowMap } from '@/components/ui/FlowMap'
-import { LiveStream } from '@/components/ui/LiveStream'
-import { GatewayHealthCenter } from '@/components/ui/GatewayHealthCenter'
-import { useDashboardStats, useGatewayComparison, useTopFailures } from '@/hooks/useAnalytics'
+import { Footer } from '@/components/layout/Footer'
+import { useDashboardStats } from '@/hooks/useAnalytics'
 
 /* ═══════════ ANIMATION HELPERS ═══════════ */
 
@@ -202,190 +197,23 @@ const steps = [
   { num: '02', title: 'Import Transactions', desc: 'Auto-sync or upload CSV/JSON bank statements and gateway settlement reports.', icon: Layers },
   { num: '03', title: 'Auto-Reconcile', desc: 'AI engine matches transactions, flags discrepancies, and suggests resolutions.', icon: Zap },
   { num: '04', title: 'Resolve & Settle', desc: 'Review exceptions, approve matches, and generate settlement reports.', icon: CheckCircle2 },
+
 ]
-
-const testimonials = [
-  { name: 'Priya Sharma', role: 'Head of Finance, NeoBank', text: 'Cut our reconciliation time from 6 hours to 12 minutes. The AI matching is incredibly accurate.', rating: 5, avatar: 'PS' },
-  { name: 'Alex Chen', role: 'CTO, PayGateway', text: 'Finally a reconciliation tool that handles multi-currency properly. Game changer for our ops team.', rating: 5, avatar: 'AC' },
-  { name: 'Maria Santos', role: 'VP Finance, CryptoFlow', text: 'The real-time dashboard gives us instant visibility across 8 payment gateways. Incredible product.', rating: 5, avatar: 'MS' },
-  { name: 'James Wilson', role: 'CEO, TradeHub', text: 'We replaced three separate tools with PayFlow. The ROI was visible within the first month.', rating: 5, avatar: 'JW' },
-  { name: 'Sarah Kim', role: 'Finance Director, ShopEase', text: 'The fraud detection module caught suspicious transactions we completely missed before.', rating: 5, avatar: 'SK' },
-  { name: 'David Patel', role: 'CTO, WalletPay', text: 'Integration took less than a day. The API documentation is crystal clear and SDKs are well maintained.', rating: 5, avatar: 'DP' },
-]
-
-const pricingPlans = [
-  { name: 'Starter', desc: 'For small businesses', monthly: 49, yearly: 39, features: ['2 Payment Gateways', '10,000 Transactions/mo', 'Basic Reconciliation', 'Email Support', 'Standard Reports', 'Single User'], cta: 'Start Free Trial', popular: false },
-  { name: 'Professional', desc: 'For growing businesses', monthly: 149, yearly: 119, features: ['5 Payment Gateways', '100,000 Transactions/mo', 'AI-Powered Matching', 'Priority Support', 'Advanced Analytics', '5 Team Members', 'Fraud Detection', 'API Access'], cta: 'Start Free Trial', popular: true },
-  { name: 'Enterprise', desc: 'For large-scale operations', monthly: 499, yearly: 399, features: ['Unlimited Gateways', 'Unlimited Transactions', 'Custom AI Models', '24/7 Dedicated Support', 'White-Label Reports', 'Unlimited Users', 'Advanced Fraud Suite', 'Custom Integrations', 'SLA Guarantee', 'On-Premise Option'], cta: 'Contact Sales', popular: false },
-]
-
-const faqs = [
-  { q: 'How long does it take to set up PayFlow?', a: 'Most customers are up and running within 15 minutes. Simply connect your payment gateways using our OAuth flow, and our system will automatically start importing and matching transactions.' },
-  { q: 'What payment gateways do you support?', a: 'We support 12+ major payment gateways including Stripe, PayPal, Razorpay, PayU, CCAvenue, PhonePe, GPay, Worldpay, Adyen, Square, Braintree, and Checkout.com.' },
-  { q: 'How accurate is the AI matching engine?', a: 'Our AI matching engine achieves 99.7% accuracy out of the box. It uses machine learning trained on millions of transactions to handle even the most complex matching scenarios.' },
-  { q: 'Is my financial data secure?', a: 'Absolutely. We are SOC2 compliant with end-to-end encryption, role-based access control, and complete audit trails. Your data is encrypted at rest and in transit using AES-256 and TLS 1.3.' },
-  { q: 'Can I try PayFlow before purchasing?', a: 'Yes! We offer a 14-day free trial with full access to all features in your selected plan. No credit card required to start.' },
-  { q: 'Do you offer custom integrations?', a: 'Yes, our Enterprise plan includes custom integrations. We can connect to any payment gateway or banking system using our flexible API and webhook system.' },
-]
-
-const contactCards = [
-  { icon: MapPin, title: 'Office', lines: ['Noida Sector 16', 'Noida, Uttar Pradesh', 'India'] },
-  { icon: Mail, title: 'Email', lines: ['ehteshamulhaque736@gmail.com'] },
-  { icon: Phone, title: 'Phone', lines: ['+91-XXXXXXXXXX'] },
-  { icon: Clock, title: 'Business Hours', lines: ['Monday – Friday', '9:00 AM – 6:00 PM IST'] },
-]
-
-const socialLinks = [
-  { icon: Github, label: 'GitHub', href: '#' },
-  { icon: Linkedin, label: 'LinkedIn', href: '#' },
-  { icon: Twitter, label: 'Twitter / X', href: '#' },
-  { icon: Mail, label: 'Email', href: 'mailto:ehteshamulhaque736@gmail.com' },
-]
-
-const quickLinks = {
-  Product: [
-    { label: 'Features', to: '/#features' }, { label: 'Pricing', to: '/pricing' }, { label: 'Dashboard', to: '/dashboard' },
-    { label: 'Reconciliation', to: '/reconciliation' }, { label: 'Fraud Detection', to: '/fraud' }, { label: 'Reports', to: '/reports' },
-  ],
-  Resources: [
-    { label: 'Documentation', to: '/docs' }, { label: 'API Reference', to: '/api-docs' }, { label: 'GitHub', to: '#' },
-    { label: 'Blog', to: '/about' }, { label: 'Changelog', to: '#' },
-  ],
-  Company: [
-    { label: 'About', to: '/about' }, { label: 'Contact', to: '/contact' }, { label: 'Careers', to: '/about' },
-    { label: 'Privacy Policy', to: '#' }, { label: 'Terms & Conditions', to: '#' },
-  ],
-}
-
-/* ═══════════ COMPONENTS ═══════════ */
-
-interface FloatingInputProps {
-  label: string; type?: string; required?: boolean; value: string
-  onChange: (val: string) => void; isTextarea?: boolean; rows?: number
-}
-
-function FloatingInput({ label, type = 'text', required, value, onChange, isTextarea, rows = 4 }: FloatingInputProps) {
-  const [focused, setFocused] = useState(false)
-  const hasValue = value.length > 0
-  const isActive = focused || hasValue
-  const inputStyle: React.CSSProperties = {
-    width: '100%', padding: '24px 16px 8px', borderRadius: '12px', fontSize: '14px',
-    outline: 'none', transition: 'all 0.3s ease', color: '#0c1b3a',
-    background: '#ffffff', border: focused ? `2px solid ${BLUE}` : '1.5px solid rgba(30,64,175,0.12)',
-    boxShadow: focused ? `0 0 0 3px ${BLUE}18, 0 2px 8px rgba(30,64,175,0.08)` : '0 1px 3px rgba(30,64,175,0.05)',
-  }
-  return (
-    <div style={{ position: 'relative' }}>
-      {isTextarea ? (
-        <textarea required={required} rows={rows} value={value} onChange={(e) => onChange(e.target.value)}
-          onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} style={{ ...inputStyle, resize: 'none' }} />
-      ) : (
-        <input type={type} required={required} value={value} onChange={(e) => onChange(e.target.value)}
-          onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} style={inputStyle} />
-      )}
-      <label style={{
-        position: 'absolute', left: '16px', transition: 'all 0.3s', pointerEvents: 'none',
-        fontFamily: 'JetBrains Mono, monospace', top: isActive ? '8px' : '50%',
-        fontSize: isActive ? '10px' : '14px', textTransform: isActive ? 'uppercase' as const : undefined,
-        letterSpacing: isActive ? '0.1em' : undefined, color: isActive ? BLUE : '#94a3b8',
-        transform: isActive ? 'none' : 'translateY(-50%)',
-      }}>
-        {label} {required && <span style={{ color: '#dc2626' }}>*</span>}
-      </label>
-    </div>
-  )
-}
-
-function FaqItem({ q, a }: { q: string; a: string }) {
-  const [open, setOpen] = useState(false)
-  return (
-    <motion.div className="rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border)', background: '#ffffff' }}
-      whileHover={{ boxShadow: `0 4px 20px ${BLUE}12` }} layout>
-      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between p-6 text-left" style={{ color: '#0c1b3a' }}>
-        <span className="text-base font-semibold pr-4">{q}</span>
-        <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.3 }}>
-          <ChevronDown size={18} style={{ color: BLUE }} />
-        </motion.div>
-      </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3, ease: 'easeInOut' }}>
-            <div className="px-6 pb-6 text-sm leading-relaxed" style={{ color: '#4a6fa5' }}>{a}</div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
-  )
-}
-
-/* ═══════════ MAIN ═══════════ */
-
-const cardStyle = {
-  background: 'color-mix(in srgb, var(--surface) 88%, transparent)',
-  border: '1px solid color-mix(in srgb, var(--accent-cyan) 12%, var(--border))',
-}
-
-function HealthRow({ icon: Icon, label, value, color }: { icon: typeof Activity; label: string; value: string | number; color: string }) {
-  return (
-    <div className='flex items-center justify-between'>
-      <div className='flex items-center gap-2'>
-        <Icon size={14} style={{ color }} />
-        <span className='text-xs text-[var(--muted)]'>{label}</span>
-      </div>
-      <span className='text-sm font-mono font-bold text-[var(--text)]'>{value}</span>
-    </div>
-  )
-}
 
 export function LandingPageContent() {
   const { data: dashboardStats } = useDashboardStats()
-  const { data: gatewayComp } = useGatewayComparison()
-  const { data: topFailures } = useTopFailures()
-  const [contactForm, setContactForm] = useState({ name: '', company: '', email: '', phone: '', subject: '', message: '' })
-  const [contactSubmitted, setContactSubmitted] = useState(false)
-  const [contactLoading, setContactLoading] = useState(false)
-  const [contactErrors, setContactErrors] = useState<Record<string, boolean>>({})
-  const [newsletterEmail, setNewsletterEmail] = useState('')
-  const [newsletterSubmitted, setNewsletterSubmitted] = useState(false)
-  const [newsletterLoading, setNewsletterLoading] = useState(false)
-  const [annual, setAnnual] = useState(false)
   const [videoModal, setVideoModal] = useState<{ title: string; videoId: string; duration: string } | null>(null)
   const [demoOpen, setDemoOpen] = useState(false)
   const [demoStep, setDemoStep] = useState(0)
-  const formRef = useRef<HTMLFormElement>(null)
   const { scrollYProgress } = useScroll()
   const heroY = useTransform(scrollYProgress, [0, 0.3], [0, -80])
   const heroOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0])
 
-  const validateContact = () => {
-    const errors: Record<string, boolean> = {}
-    if (!contactForm.name.trim()) errors.name = true
-    if (!contactForm.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactForm.email)) errors.email = true
-    if (!contactForm.subject.trim()) errors.subject = true
-    if (!contactForm.message.trim()) errors.message = true
-    setContactErrors(errors)
-    return Object.keys(errors).length === 0
-  }
-
-  const handleContactSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!validateContact()) return
-    setContactLoading(true)
-    setTimeout(() => { setContactLoading(false); setContactSubmitted(true) }, 1500)
-  }
-
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setNewsletterLoading(true)
-    setTimeout(() => { setNewsletterLoading(false); setNewsletterSubmitted(true) }, 1200)
-  }
-
   return (
-    <div style={{ background: '#e8f0fe' }}>
+    <div style={{ background: 'var(--bg1)' }}>
 
       {/* ═══════ HERO ═══════ */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #dbeafe 0%, #e8f0fe 60%, #f0f5ff 100%)' }}>
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, var(--bg2) 0%, var(--bg1) 60%, var(--bg2) 100%)' }}>
         <FloatingOrb size={500} color="rgba(30,64,175,0.08)" top="-15%" left="15%" delay={0} />
         <FloatingOrb size={400} color="rgba(59,130,246,0.06)" top="5%" left="75%" delay={2} />
         <FloatingOrb size={300} color="rgba(14,165,233,0.05)" top="55%" left="5%" delay={4} />
@@ -400,7 +228,7 @@ export function LandingPageContent() {
           <div className="text-center">
             <Reveal delay={0}>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.08]" style={{ fontFamily: 'Outfit, system-ui' }}>
-                <span style={{ color: '#0c1b3a' }}>Reconcile</span>{' '}
+                <span style={{ color: 'var(--text)' }}>Reconcile</span>{' '}
                 <motion.span className="inline-block"
                   style={{ background: `linear-gradient(135deg, ${BLUE}, ${BLUE_LIGHT}, ${BLUE})`, backgroundSize: '200% 200%', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
                   animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
@@ -408,7 +236,7 @@ export function LandingPageContent() {
                   Every Transaction
                 </motion.span>{' '}
                 <br />
-                <span style={{ color: '#0c1b3a' }}>Automatically</span>
+                <span style={{ color: 'var(--text)' }}>Automatically</span>
               </h1>
               <motion.div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono mt-6"
                 style={{ border: `1px solid ${BLUE}20`, background: `${BLUE}08`, color: BLUE }}
@@ -421,7 +249,7 @@ export function LandingPageContent() {
             </Reveal>
 
             <Reveal delay={0.15}>
-              <p className="mt-6 text-lg leading-relaxed max-w-2xl mx-auto" style={{ color: '#4a6fa5' }}>
+              <p className="mt-6 text-lg leading-relaxed max-w-2xl mx-auto" style={{ color: 'var(--muted)' }}>
                 Automate payment reconciliation across 12+ gateways with AI-powered matching.
                 Detect fraud, track settlements, and close books 10x faster.
               </p>
@@ -433,17 +261,17 @@ export function LandingPageContent() {
           {/* Scroll indicator */}
           <motion.div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
             animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }}>
-            <span className="text-[10px] font-mono uppercase tracking-widest" style={{ color: '#94a3b8' }}>Scroll to explore</span>
+            <span className="text-[10px] font-mono uppercase tracking-widest" style={{ color: 'var(--muted)' }}>Scroll to explore</span>
             <ArrowDown size={14} style={{ color: BLUE }} />
           </motion.div>
         </motion.div>
       </section>
 
       {/* ═══════ SOCIAL PROOF ═══════ */}
-      <section className="py-12" style={{ background: '#ffffff', borderBottom: '1px solid var(--border)' }}>
+      <section className="py-12" style={{ background: 'var(--bg3)', borderBottom: '1px solid var(--border)' }}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <p className="text-center text-xs font-mono uppercase tracking-widest mb-8" style={{ color: '#94a3b8' }}>
+            <p className="text-center text-xs font-mono uppercase tracking-widest mb-8" style={{ color: 'var(--muted)' }}>
               Trusted by 500+ fintech teams worldwide
             </p>
           </Reveal>
@@ -451,8 +279,8 @@ export function LandingPageContent() {
             {gatewayLogos.map((gw, i) => (
               <Reveal key={gw.name} delay={i * 0.04}>
                 <motion.div className="flex items-center justify-center h-14 rounded-xl cursor-default overflow-hidden"
-                  style={{ border: '1px solid rgba(30,64,175,0.06)', background: '#f0f5ff' }}
-                  whileHover={{ y: -3, borderColor: `${gw.color}30`, boxShadow: `0 4px 16px ${gw.color}12`, background: '#ffffff' }}
+                  style={{ border: '1px solid rgba(30,64,175,0.06)', background: 'var(--bg2)' }}
+                  whileHover={{ y: -3, borderColor: `${gw.color}30`, boxShadow: `0 4px 16px ${gw.color}12`, background: 'var(--bg3)' }}
                   transition={{ duration: 0.2 }}>
                   <gw.Logo />
                 </motion.div>
@@ -462,140 +290,57 @@ export function LandingPageContent() {
         </div>
       </section>
 
-      {/* ═══════ COMMAND CENTER DASHBOARD ═══════ */}
-      <section className="py-20 sm:py-28 px-4" style={{ background: '#ffffff' }}>
-        <div className="mx-auto max-w-7xl">
+      {/* ═══════ AT A GLANCE ═══════ */}
+      <section className="py-20 sm:py-24 px-4" style={{ background: 'var(--bg3)' }}>
+        <div className="mx-auto max-w-5xl">
           <Reveal>
-            <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-              <div>
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono mb-4"
-                  style={{ border: `1px solid ${BLUE}18`, background: `${BLUE}08`, color: BLUE }}>
-                  <BarChart3 size={12} /> Command Center
-                </div>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>
-                  Live Operations
-                </h2>
-                <p className="mt-2 max-w-2xl text-lg" style={{ color: '#4a6fa5' }}>
-                  Real-time payment operations with live transaction data across all gateways.
-                </p>
-              </div>
-              <div className='flex items-center gap-2'>
-                <div className='flex items-center gap-1.5 rounded-full px-3 py-1' style={{ border: '1px solid color-mix(in srgb, var(--success) 20%, transparent)', background: 'color-mix(in srgb, var(--success) 5%, transparent)' }}>
-                  <span className='relative flex h-1.5 w-1.5'>
-                    <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--success)] opacity-75' />
-                    <span className='relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--success)]' />
-                  </span>
-                  <span className='text-[10px] font-mono font-medium text-[var(--success)]'>LIVE</span>
-                </div>
-                <div className='flex items-center gap-1.5 rounded-full px-3 py-1' style={{ border: '1px solid color-mix(in srgb, var(--accent-cyan) 15%, transparent)', background: 'color-mix(in srgb, var(--accent-cyan) 5%, transparent)' }}>
-                  <Cpu size={10} className='text-[var(--accent-cyan)]' />
-                  <span className='text-[10px] font-mono font-medium text-[var(--accent-cyan)]'>SYS OK</span>
-                </div>
-              </div>
+            <div className="text-center mb-10">
+              <h2 className="text-3xl sm:text-4xl font-black mb-3" style={{ fontFamily: 'Outfit', color: 'var(--text)' }}>
+                At a Glance
+              </h2>
+              <p className="text-base max-w-lg mx-auto" style={{ color: 'var(--muted)' }}>
+                Key metrics from your payment operations.
+              </p>
             </div>
           </Reveal>
-
           <Reveal delay={0.1}>
-            <div style={{ borderRadius: '20px', border: `1px solid ${BLUE}12`, overflow: 'hidden', background: '#f8faff' }}>
-              <ExecutiveHero />
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.15}>
-            <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 my-6'>
-              <div style={{ borderRadius: '20px', border: `1px solid ${BLUE}12`, overflow: 'hidden', background: '#f8faff' }}>
-                <FlowMap />
-              </div>
-              <div className='grid grid-cols-1 gap-6'>
-                <div style={{ borderRadius: '20px', border: `1px solid ${BLUE}12`, overflow: 'hidden', background: '#f8faff' }}>
-                  <LiveStream />
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { label: 'Transactions', value: (dashboardStats?.total_transactions ?? 0).toLocaleString(), icon: ArrowRightLeft, color: BLUE },
+                { label: 'Volume', value: `$${(dashboardStats?.total_amount ?? 0).toLocaleString()}`, icon: Wallet, color: '#059669' },
+                { label: 'Success Rate', value: `${(dashboardStats?.success_rate ?? 0).toFixed(1)}%`, icon: Activity, color: '#6366f1' },
+                { label: 'Gateways', value: `${dashboardStats?.active_gateways ?? 0}`, icon: Network, color: '#0891b2' },
+              ].map((kpi) => (
+                <div key={kpi.label} className="text-center p-6 rounded-xl" style={{ background: 'var(--bg3)', border: `1px solid ${BLUE}08` }}>
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-3" style={{ background: `${kpi.color}0c` }}>
+                    <kpi.icon size={16} style={{ color: kpi.color }} />
+                  </div>
+                  <p className="text-2xl font-bold font-mono" style={{ color: 'var(--text)' }}>{kpi.value}</p>
+                  <p className="text-xs mt-1" style={{ color: 'var(--muted)' }}>{kpi.label}</p>
                 </div>
-                <div style={{ borderRadius: '20px', border: `1px solid ${BLUE}12`, overflow: 'hidden', background: '#f8faff' }}>
-                  <GatewayHealthCenter />
-                </div>
-              </div>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.2}>
-            <div className='grid grid-cols-1 gap-5 lg:grid-cols-3'>
-              <div className='relative rounded-2xl p-5' style={cardStyle}>
-                <h3 className='text-sm font-semibold mb-4' style={{ fontFamily: 'Outfit' }}>System Health</h3>
-                <div className='space-y-3'>
-                  <HealthRow icon={GitCompareArrows} label='Reconciliation Accuracy' value={`${(dashboardStats?.reconciliation_accuracy ?? 0).toFixed(1)}%`} color='var(--success)' />
-                  <HealthRow icon={Wallet} label='Pending Settlements' value={dashboardStats?.pending_settlements ?? 0} color='var(--warning)' />
-                  <HealthRow icon={AlertTriangle} label='Fraud Cases' value={dashboardStats?.fraud_cases ?? 0} color='var(--danger)' />
-                  <HealthRow icon={Activity} label='Total Settlements' value={dashboardStats?.total_settlements ?? 0} color='var(--accent-cyan)' />
-                </div>
-              </div>
-
-              <div className='relative rounded-2xl p-5' style={cardStyle}>
-                <h3 className='text-sm font-semibold mb-4' style={{ fontFamily: 'Outfit' }}>Top Failures</h3>
-                <div className='space-y-3'>
-                  {topFailures?.slice(0, 5).map((f, i) => (
-                    <div key={i} className='flex items-center gap-3'>
-                      <div className='flex-1 min-w-0'>
-                        <div className='flex items-center justify-between mb-1'>
-                          <span className='text-xs text-[var(--text)] truncate'>{f.reason || 'Unknown'}</span>
-                          <span className='text-[10px] font-mono text-[var(--muted)] ml-2 shrink-0'>{f.count}</span>
-                        </div>
-                        <div className='h-1.5 rounded-full overflow-hidden' style={{ background: 'color-mix(in srgb, var(--text) 6%, transparent)' }}>
-                          <div
-                            className='h-full rounded-full transition-all duration-1000'
-                            style={{ width: `${f.percentage}%`, background: 'linear-gradient(90deg, var(--danger), color-mix(in srgb, var(--warning) 60%, transparent))' }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                  {(!topFailures || topFailures.length === 0) && (
-                    <p className='text-xs text-[var(--muted)] font-mono text-center py-4'>No failure data</p>
-                  )}
-                </div>
-              </div>
-
-              <div className='relative rounded-2xl p-5' style={cardStyle}>
-                <h3 className='text-sm font-semibold mb-4' style={{ fontFamily: 'Outfit' }}>Gateway Performance</h3>
-                <div className='space-y-3'>
-                  {gatewayComp?.slice(0, 5).map((gw) => (
-                    <div key={gw.gateway_name} className='flex items-center gap-3'>
-                      <span className='text-xs text-[var(--text)] truncate w-20 shrink-0'>{gw.gateway_name}</span>
-                      <div className='flex-1 h-2 rounded-full overflow-hidden' style={{ background: 'color-mix(in srgb, var(--text) 6%, transparent)' }}>
-                        <div
-                          className='h-full rounded-full transition-all duration-1000'
-                          style={{ width: `${gw.success_rate}%`, background: 'linear-gradient(90deg, var(--success), var(--accent-cyan))' }}
-                        />
-                      </div>
-                      <div className='text-right shrink-0'>
-                        <span className='text-[10px] font-mono text-[var(--text)]'>{gw.success_rate.toFixed(1)}%</span>
-                        <p className='text-[9px] font-mono text-[var(--muted)]'>{gw.avg_latency_ms}ms</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              ))}
             </div>
           </Reveal>
         </div>
       </section>
 
       {/* ═══════ STATS ═══════ */}
-      <section className="py-20 sm:py-24 px-4" style={{ background: '#e8f0fe' }}>
+      <section className="py-20 sm:py-24 px-4" style={{ background: 'var(--bg1)' }}>
         <div className="mx-auto max-w-5xl grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((stat, i) => (
             <Reveal key={stat.label} delay={i * 0.1}>
               <motion.div className="text-center p-8 rounded-2xl"
-                style={{ border: '1px solid var(--border)', background: '#ffffff' }}
+                style={{ border: '1px solid var(--border)', background: 'var(--bg3)' }}
                 whileHover={{ y: -6, boxShadow: `0 12px 40px ${BLUE}12` }} transition={{ duration: 0.3 }}>
                 <motion.div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4"
                   style={{ background: `${BLUE}0c` }}
                   whileHover={{ rotate: 10, scale: 1.1 }}>
                   <stat.icon size={20} style={{ color: BLUE }} />
                 </motion.div>
-                <div className="text-4xl font-black" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>
+                <div className="text-4xl font-black" style={{ fontFamily: 'Outfit', color: 'var(--text)' }}>
                   <CountUp end={stat.value} suffix={stat.suffix} />
                 </div>
-                <div className="text-xs font-mono mt-2 uppercase tracking-wider" style={{ color: '#94a3b8' }}>{stat.label}</div>
+                <div className="text-xs font-mono mt-2 uppercase tracking-wider" style={{ color: 'var(--muted)' }}>{stat.label}</div>
               </motion.div>
             </Reveal>
           ))}
@@ -603,7 +348,7 @@ export function LandingPageContent() {
       </section>
 
       {/* ═══════ FEATURES ═══════ */}
-      <section id="features" className="py-20 sm:py-28 px-4" style={{ background: '#ffffff' }}>
+      <section id="features" className="py-20 sm:py-28 px-4" style={{ background: 'var(--bg3)' }}>
         <div className="mx-auto max-w-7xl">
           <Reveal>
             <div className="text-center mb-16">
@@ -611,10 +356,10 @@ export function LandingPageContent() {
                 style={{ border: `1px solid ${BLUE}18`, background: `${BLUE}08`, color: BLUE }}>
                 <Target size={12} /> Features
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black" style={{ fontFamily: 'Outfit', color: 'var(--text)' }}>
                 Everything you need to reconcile
               </h2>
-              <p className="mt-5 max-w-2xl mx-auto text-lg" style={{ color: '#4a6fa5' }}>
+              <p className="mt-5 max-w-2xl mx-auto text-lg" style={{ color: 'var(--muted)' }}>
                 Built for finance teams managing complex multi-channel payment flows.
               </p>
             </div>
@@ -623,7 +368,7 @@ export function LandingPageContent() {
             {features.map((feat, i) => (
               <Reveal key={feat.title} delay={i * 0.08}>
                 <motion.div className="group p-7 rounded-2xl cursor-pointer h-full relative overflow-hidden"
-                  style={{ border: '1px solid var(--border)', background: '#ffffff' }}
+                  style={{ border: '1px solid var(--border)', background: 'var(--bg3)' }}
                   whileHover={{ y: -6, boxShadow: `0 20px 60px ${feat.color}12`, borderColor: `${feat.color}20` }}
                   transition={{ duration: 0.3 }}
                   onClick={() => { const stepMap: Record<string, number> = { 'Multi-Gateway Support': 3, 'AI-Powered Matching': 4, 'Automated Workflows': 4, 'Real-time Analytics': 1, 'Bank-Grade Security': 11, 'Multi-Currency': 12 }; setDemoStep(stepMap[feat.title] ?? 0); setDemoOpen(true); }}>
@@ -638,8 +383,8 @@ export function LandingPageContent() {
                     whileHover={{ rotate: 10, scale: 1.1 }}>
                     <feat.icon size={20} style={{ color: feat.color }} />
                   </motion.div>
-                  <h3 className="text-lg font-bold mb-2" style={{ color: '#0c1b3a' }}>{feat.title}</h3>
-                  <p className="text-sm leading-relaxed" style={{ color: '#4a6fa5' }}>{feat.desc}</p>
+                  <h3 className="text-lg font-bold mb-2" style={{ color: 'var(--text)' }}>{feat.title}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>{feat.desc}</p>
                   <div className="mt-4 flex items-center gap-3">
                     <div className="flex items-center gap-1.5 text-xs font-semibold" style={{ color: feat.color }}>
                       Watch demo <Play size={10} fill={feat.color} />
@@ -656,7 +401,7 @@ export function LandingPageContent() {
       </section>
 
       {/* ═══════ HOW IT WORKS ═══════ */}
-      <section className="py-20 sm:py-28 px-4" style={{ background: '#f0f5ff' }}>
+      <section className="py-20 sm:py-28 px-4" style={{ background: 'var(--bg2)' }}>
         <div className="mx-auto max-w-6xl">
           <Reveal>
             <div className="text-center mb-16">
@@ -664,7 +409,7 @@ export function LandingPageContent() {
                 style={{ border: `1px solid ${BLUE}18`, background: `${BLUE}08`, color: BLUE }}>
                 <Zap size={12} /> How it Works
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black" style={{ fontFamily: 'Outfit', color: 'var(--text)' }}>
                 Four steps to zero friction
               </h2>
             </div>
@@ -673,15 +418,15 @@ export function LandingPageContent() {
             {steps.map((step, i) => (
               <Reveal key={step.num} delay={i * 0.12}>
                 <motion.div className="relative p-6 rounded-2xl text-center h-full"
-                  style={{ border: '1px solid var(--border)', background: '#ffffff' }}
+                  style={{ border: '1px solid var(--border)', background: 'var(--bg3)' }}
                   whileHover={{ y: -6, boxShadow: `0 16px 48px ${BLUE}10` }} transition={{ duration: 0.3 }}>
                   <motion.div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5 text-white text-lg font-black"
                     style={{ fontFamily: 'Outfit', background: `linear-gradient(135deg, ${BLUE}, ${BLUE_LIGHT})` }}
                     whileHover={{ rotate: 5, scale: 1.1 }}>
                     {step.num}
                   </motion.div>
-                  <h3 className="text-lg font-bold mb-2" style={{ color: '#0c1b3a' }}>{step.title}</h3>
-                  <p className="text-sm leading-relaxed" style={{ color: '#4a6fa5' }}>{step.desc}</p>
+                  <h3 className="text-lg font-bold mb-2" style={{ color: 'var(--text)' }}>{step.title}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>{step.desc}</p>
                 </motion.div>
               </Reveal>
             ))}
@@ -689,143 +434,51 @@ export function LandingPageContent() {
         </div>
       </section>
 
-      {/* ═══════ PRICING ═══════ */}
-      <section id="pricing" className="py-20 sm:py-28 px-4" style={{ background: '#ffffff' }}>
-        <div className="mx-auto max-w-6xl">
+      {/* ═══════ PAYMENT / SUBSCRIPTION ═══════ */}
+      <section id="pricing" className="py-20 sm:py-28 px-4" style={{ background: 'var(--bg3)' }}>
+        <div className="mx-auto max-w-2xl">
           <Reveal>
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono mb-4"
-                style={{ border: `1px solid ${BLUE}18`, background: `${BLUE}08`, color: BLUE }}>
-                <CreditCard size={12} /> Pricing
-              </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>
-                Simple, transparent pricing
-              </h2>
-              <p className="mt-5 max-w-xl mx-auto text-lg" style={{ color: '#4a6fa5' }}>Start free, scale as you grow.</p>
-              <div className="flex items-center justify-center gap-4 mt-8">
-                <span className="text-sm font-medium" style={{ color: !annual ? '#0c1b3a' : '#94a3b8' }}>Monthly</span>
-                <motion.button onClick={() => setAnnual(!annual)} className="relative w-14 h-7 rounded-full"
-                  style={{ background: annual ? BLUE : '#cbd5e1' }} whileTap={{ scale: 0.95 }}>
-                  <motion.div className="absolute top-1 w-5 h-5 rounded-full bg-white shadow-md"
-                    animate={{ left: annual ? '32px' : '4px' }} transition={{ type: 'spring', stiffness: 500, damping: 30 }} />
-                </motion.button>
-                <span className="text-sm font-medium" style={{ color: annual ? '#0c1b3a' : '#94a3b8' }}>
-                  Annual <span className="text-xs font-mono px-2 py-0.5 rounded-full" style={{ background: '#dcfce7', color: '#057642' }}>Save 20%</span>
-                </span>
-              </div>
-            </div>
-          </Reveal>
-          <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
-            {pricingPlans.map((plan, i) => (
-              <Reveal key={plan.name} delay={i * 0.1}>
-                <motion.div className="relative p-8 rounded-2xl h-full flex flex-col"
-                  style={{
-                    border: plan.popular ? `2px solid ${BLUE}` : '1px solid var(--border)',
-                    background: plan.popular ? `linear-gradient(135deg, ${BLUE}06, ${BLUE}03)` : '#ffffff',
-                  }}
-                  whileHover={{ y: -6, boxShadow: plan.popular ? `0 20px 60px ${BLUE}18` : `0 12px 40px ${BLUE}08` }}
-                  transition={{ duration: 0.3 }}>
-                  {plan.popular && (
-                    <motion.div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold"
-                      style={{ background: `linear-gradient(135deg, ${BLUE}, ${BLUE_LIGHT})`, color: 'white' }}
-                      initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 500, damping: 20 }}>
-                      Most Popular
-                    </motion.div>
-                  )}
-                  <h3 className="text-xl font-bold" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>{plan.name}</h3>
-                  <p className="text-sm mt-1" style={{ color: '#4a6fa5' }}>{plan.desc}</p>
-                  <div className="mt-6 mb-6">
-                    <span className="text-5xl font-black" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>${annual ? plan.yearly : plan.monthly}</span>
-                    <span className="text-sm ml-1" style={{ color: '#4a6fa5' }}>/month</span>
-                  </div>
-                  <Link to={plan.name === 'Enterprise' ? '/contact' : '/signup'} className="block mb-6 no-underline">
-                    <Button variant={plan.popular ? 'primary' : 'outline'} size="lg" className="w-full">
-                      {plan.cta} <ArrowRight size={14} className="ml-2" />
+            <motion.div className="relative rounded-2xl p-8 sm:p-10 text-center overflow-hidden"
+              style={{ border: `1.5px solid ${BLUE}15`, background: `linear-gradient(135deg, ${BLUE}04, ${BLUE}01)` }}
+              whileHover={{ boxShadow: `0 12px 48px ${BLUE}10` }}>
+              <div className="absolute inset-0" style={{ backgroundImage: `radial-gradient(circle at 30% 20%, ${BLUE}06 0%, transparent 60%)` }} />
+              <div className="relative">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono mb-5"
+                  style={{ border: `1px solid ${BLUE}18`, background: `${BLUE}08`, color: BLUE }}>
+                  <CreditCard size={12} /> Subscription
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-black mb-3" style={{ fontFamily: 'Outfit', color: 'var(--text)' }}>
+                  Start using PayFlow today
+                </h2>
+                <p className="text-base mb-8 max-w-md mx-auto" style={{ color: 'var(--muted)' }}>
+                  Pay once and get full access to all features — no tiers, no hidden fees.
+                </p>
+                <div className="flex items-baseline justify-center gap-1 mb-8">
+                  <span className="text-5xl font-black" style={{ fontFamily: 'Outfit', color: 'var(--text)' }}>$49</span>
+                  <span className="text-base" style={{ color: 'var(--muted)' }}>/one-time</span>
+                </div>
+                <Link to="/">
+                  <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                    <Button variant="primary" size="lg" className="min-w-[240px]" style={{ background: `linear-gradient(135deg, ${BLUE}, ${BLUE_LIGHT})`, boxShadow: `0 4px 20px ${BLUE}30` }}>
+                      Pay & Get Access <ArrowRight size={16} className="ml-2" />
                     </Button>
-                  </Link>
-                  <div className="flex flex-col gap-3 flex-1">
-                    {plan.features.map((f) => (
-                      <div key={f} className="flex items-center gap-2.5">
-                        <CheckCircle2 size={14} className="shrink-0" style={{ color: '#057642' }} />
-                        <span className="text-sm" style={{ color: '#0c1b3a' }}>{f}</span>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              </Reveal>
-            ))}
-          </div>
+                  </motion.div>
+                </Link>
+                <p className="text-xs mt-4 font-mono" style={{ color: 'var(--muted)' }}>
+                  Instant access · No recurring charges · Full features
+                </p>
+              </div>
+            </motion.div>
+          </Reveal>
         </div>
       </section>
 
-      {/* ═══════ TESTIMONIALS ═══════ */}
-      <section className="py-20 sm:py-28 px-4" style={{ background: '#e8f0fe' }}>
-        <div className="mx-auto max-w-7xl">
-          <Reveal>
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono mb-4"
-                style={{ border: `1px solid ${BLUE}18`, background: `${BLUE}08`, color: BLUE }}>
-                <Star size={12} /> Testimonials
-              </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>
-                Loved by finance teams
-              </h2>
-            </div>
-          </Reveal>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {testimonials.map((t, i) => (
-              <Reveal key={t.name} delay={i * 0.08}>
-                <motion.div className="p-7 rounded-2xl h-full flex flex-col"
-                  style={{ border: '1px solid var(--border)', background: '#ffffff' }}
-                  whileHover={{ y: -6, boxShadow: `0 16px 48px ${BLUE}0c` }} transition={{ duration: 0.3 }}>
-                  <div className="flex gap-0.5 mb-4">
-                    {Array.from({ length: t.rating }).map((_, s) => (
-                      <motion.div key={s} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + s * 0.05 }}>
-                        <Star size={14} className="fill-yellow-400 text-yellow-400" />
-                      </motion.div>
-                    ))}
-                  </div>
-                  <p className="text-sm leading-relaxed mb-6 flex-1" style={{ color: '#0c1b3a' }}>"{t.text}"</p>
-                  <div className="flex items-center gap-3">
-                    <motion.div className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-white"
-                      style={{ background: `linear-gradient(135deg, ${BLUE_LIGHT}, ${BLUE})` }}
-                      whileHover={{ scale: 1.1 }}>{t.avatar}</motion.div>
-                    <div>
-                      <p className="text-sm font-semibold" style={{ color: '#0c1b3a' }}>{t.name}</p>
-                      <p className="text-xs font-mono" style={{ color: '#94a3b8' }}>{t.role}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* ═══════ FAQ ═══════ */}
-      <section className="py-20 sm:py-28 px-4" style={{ background: '#ffffff' }}>
-        <div className="mx-auto max-w-3xl">
-          <Reveal>
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono mb-4"
-                style={{ border: `1px solid ${BLUE}18`, background: `${BLUE}08`, color: BLUE }}>
-                <Zap size={12} /> FAQ
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-black" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>Frequently asked questions</h2>
-            </div>
-          </Reveal>
-          <div className="flex flex-col gap-3">
-            {faqs.map((faq, i) => (
-              <Reveal key={faq.q} delay={i * 0.06}>
-                <FaqItem q={faq.q} a={faq.a} />
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+
+
 
       {/* ═══════ CTA ═══════ */}
-      <section className="py-20 sm:py-28 px-4" style={{ background: '#e8f0fe' }}>
+      <section className="py-20 sm:py-28 px-4" style={{ background: 'var(--bg1)' }}>
         <Reveal>
           <motion.div className="relative mx-auto max-w-5xl rounded-3xl overflow-hidden text-center"
             style={{ border: `1px solid ${BLUE}15` }}
@@ -840,10 +493,10 @@ export function LandingPageContent() {
                 <Rocket size={36} style={{ color: BLUE, margin: '0 auto' }} />
               </motion.div>
               <p className="text-xs font-mono uppercase tracking-widest mb-4" style={{ color: BLUE }}>Start Building</p>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-6" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-6" style={{ fontFamily: 'Outfit', color: 'var(--text)' }}>
                 Ready to Simplify<br />Payment Reconciliation?
               </h2>
-              <p className="text-lg mb-10 max-w-xl mx-auto leading-relaxed" style={{ color: '#4a6fa5' }}>
+              <p className="text-lg mb-10 max-w-xl mx-auto leading-relaxed" style={{ color: 'var(--muted)' }}>
                 Join 500+ fintech teams automating their reconciliation with AI-powered matching.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
@@ -863,168 +516,7 @@ export function LandingPageContent() {
         </Reveal>
       </section>
 
-      {/* ═══════ CONTACT + FOOTER ═══════ */}
-      <section className="py-20 sm:py-28 px-4" style={{ background: '#ffffff' }}>
-        <div className="mx-auto max-w-6xl">
-          <Reveal>
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono mb-4"
-                style={{ border: `1px solid ${BLUE}18`, background: `${BLUE}08`, color: BLUE }}>
-                <Mail size={12} /> Contact
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-black" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>Get in Touch</h2>
-              <p className="mt-4 max-w-xl mx-auto leading-relaxed" style={{ color: '#4a6fa5' }}>
-                Have questions about payment reconciliation or enterprise solutions? Our team is here to help.
-              </p>
-            </div>
-          </Reveal>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-16">
-            <Reveal delay={0.1}>
-              <div className="flex flex-col gap-4">
-                <div className="p-8 rounded-2xl flex flex-col gap-5" style={{ border: '1px solid var(--border)', background: '#f0f5ff' }}>
-                  {contactCards.map((card) => (
-                    <motion.div key={card.title} className="flex items-start gap-4 p-4 rounded-xl"
-                      style={{ border: '1px solid rgba(30,64,175,0.04)', background: '#ffffff' }}
-                      whileHover={{ x: 4, boxShadow: `0 4px 16px ${BLUE}08` }} transition={{ duration: 0.2 }}>
-                      <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style={{ background: `${BLUE}10` }}>
-                        <card.icon size={18} style={{ color: BLUE }} />
-                      </div>
-                      <div>
-                        <p className="text-[11px] font-mono uppercase tracking-wider mb-1.5 font-semibold" style={{ color: '#94a3b8' }}>{card.title}</p>
-                        {card.lines.map((line, li) => (
-                          <p key={li} className="text-sm leading-relaxed" style={{ color: '#0c1b3a' }}>{line}</p>
-                        ))}
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-                <div className="flex gap-3 pl-1">
-                  {socialLinks.map((s) => (
-                    <motion.a key={s.label} href={s.href} className="w-12 h-12 rounded-xl flex items-center justify-center"
-                      style={{ border: '1px solid var(--border)', background: '#ffffff', color: '#4a6fa5', textDecoration: 'none' }}
-                      whileHover={{ y: -3, color: BLUE, borderColor: `${BLUE}20`, boxShadow: `0 4px 16px ${BLUE}08` }} title={s.label}>
-                      <s.icon size={18} />
-                    </motion.a>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-
-            <Reveal delay={0.2}>
-              <AnimatePresence mode="wait">
-                {contactSubmitted ? (
-                  <motion.div key="success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
-                    className="p-14 rounded-2xl text-center" style={{ border: '1px solid rgba(5,118,66,0.2)', background: '#f0f5ff' }}>
-                    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.2 }}>
-                      <CheckCircle size={64} className="mx-auto mb-5" style={{ color: '#057642' }} />
-                    </motion.div>
-                    <h3 className="text-2xl font-extrabold mb-2" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>Message Sent!</h3>
-                    <p className="mb-8" style={{ color: '#4a6fa5' }}>We'll get back to you within 4 hours.</p>
-                    <Button variant="outline" onClick={() => { setContactSubmitted(false); setContactErrors({}); setContactForm({ name: '', company: '', email: '', phone: '', subject: '', message: '' }) }}>
-                      Send Another Message
-                    </Button>
-                  </motion.div>
-                ) : (
-                  <motion.form key="form" ref={formRef} onSubmit={handleContactSubmit}
-                    className="p-9 rounded-2xl" style={{ border: '1px solid var(--border)', background: '#f0f5ff' }}>
-                    <h3 className="text-lg font-bold mb-7" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>Send us a message</h3>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
-                      <div>
-                        <FloatingInput label="Full Name" required value={contactForm.name} onChange={(v) => setContactForm({ ...contactForm, name: v })} />
-                        {contactErrors.name && <p style={{ fontSize: '11px', marginTop: '4px', fontFamily: 'JetBrains Mono, monospace', color: '#dc2626' }}>Name is required</p>}
-                      </div>
-                      <FloatingInput label="Company Name" value={contactForm.company} onChange={(v) => setContactForm({ ...contactForm, company: v })} />
-                    </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
-                      <div>
-                        <FloatingInput label="Email Address" type="email" required value={contactForm.email} onChange={(v) => setContactForm({ ...contactForm, email: v })} />
-                        {contactErrors.email && <p style={{ fontSize: '11px', marginTop: '4px', fontFamily: 'JetBrains Mono, monospace', color: '#dc2626' }}>Valid email is required</p>}
-                      </div>
-                      <FloatingInput label="Phone Number" type="tel" value={contactForm.phone} onChange={(v) => setContactForm({ ...contactForm, phone: v })} />
-                    </div>
-                    <div style={{ marginBottom: '16px' }}>
-                      <FloatingInput label="Subject" required value={contactForm.subject} onChange={(v) => setContactForm({ ...contactForm, subject: v })} />
-                      {contactErrors.subject && <p style={{ fontSize: '11px', marginTop: '4px', fontFamily: 'JetBrains Mono, monospace', color: '#dc2626' }}>Subject is required</p>}
-                    </div>
-                    <div className="mb-7">
-                      <FloatingInput label="Message" required isTextarea rows={4} value={contactForm.message} onChange={(v) => setContactForm({ ...contactForm, message: v })} />
-                      {contactErrors.message && <p className="text-[11px] mt-1 font-mono" style={{ color: '#dc2626' }}>Message is required</p>}
-                    </div>
-                    <div className="flex gap-3 flex-wrap">
-                      <Button type="submit" variant="primary" size="lg" loading={contactLoading} className="flex-1 min-w-[160px]">
-                        <Send size={14} className="mr-2" /> Send Message
-                      </Button>
-                      <Link to="/contact" className="flex-1 min-w-[160px] no-underline">
-                        <Button variant="outline" size="lg" className="w-full"><Calendar size={14} className="mr-2" /> Schedule a Demo</Button>
-                      </Link>
-                    </div>
-                  </motion.form>
-                )}
-              </AnimatePresence>
-            </Reveal>
-          </div>
-
-          <Reveal>
-            <div className="mb-16 p-10 rounded-2xl" style={{ border: '1px solid var(--border)', background: '#f0f5ff' }}>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
-                {(Object.entries(quickLinks) as [string, { label: string; to: string }[]][]).map(([category, items]) => (
-                  <div key={category}>
-                    <h4 className="text-sm font-bold mb-5 uppercase tracking-wide" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>{category}</h4>
-                    <ul className="flex flex-col gap-3" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                      {items.map((item) => (
-                        <li key={item.label}>
-                          <Link to={item.to} className="text-sm transition-colors hover:text-[var(--primary)]" style={{ color: '#4a6fa5', textDecoration: 'none' }}>{item.label}</Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Reveal>
-
-
-
-          <Reveal>
-            <div className="mb-16 py-12 px-10 rounded-2xl text-center" style={{ border: '1px solid var(--border)', background: '#f0f5ff' }}>
-              <motion.div animate={{ rotate: [0, 5, -5, 0] }} transition={{ duration: 3, repeat: Infinity }}>
-                <Newspaper size={32} className="mx-auto mb-4" style={{ color: BLUE }} />
-              </motion.div>
-              <h3 className="text-xl font-extrabold mb-2" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>Stay Updated</h3>
-              <p className="text-sm mb-7 max-w-md mx-auto leading-relaxed" style={{ color: '#4a6fa5' }}>
-                Receive product updates, release notes, and engineering blogs directly in your inbox.
-              </p>
-              <AnimatePresence mode="wait">
-                {newsletterSubmitted ? (
-                  <motion.div key="done" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-                    className="flex items-center justify-center gap-2.5 font-semibold text-sm" style={{ color: '#057642' }}>
-                    <CheckCircle size={20} /> You're subscribed!
-                  </motion.div>
-                ) : (
-                  <motion.form key="form" onSubmit={handleNewsletterSubmit} className="flex items-center justify-center gap-3 max-w-md mx-auto flex-wrap">
-                    <input type="email" required value={newsletterEmail} onChange={(e) => setNewsletterEmail(e.target.value)}
-                      className="flex-1 min-w-[220px] px-5 py-3.5 rounded-xl text-sm outline-none transition-all focus:shadow-[0_0_0_3px_rgba(30,64,175,0.1)]"
-                      style={{ border: '1.5px solid rgba(30,64,175,0.12)', background: '#ffffff', color: '#0c1b3a' }}
-                      placeholder="Enter your email" />
-                    <Button type="submit" variant="primary" size="md" loading={newsletterLoading}>Subscribe</Button>
-                  </motion.form>
-                )}
-              </AnimatePresence>
-            </div>
-          </Reveal>
-
-          <footer className="py-10" style={{ borderTop: '1px solid var(--border)' }}>
-            <div className="flex flex-col items-center gap-3 text-center">
-              <div className="flex items-center gap-2.5">
-                <AnimatedLogo size="sm" showText={false} animate={false} />
-                <span className="text-lg font-bold" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>PayFlow</span>
-              </div>
-              <p className="text-xs font-mono" style={{ color: '#94a3b8' }}>&copy; 2026 PayFlow Recon Engine. All Rights Reserved.</p>
-            </div>
-          </footer>
-        </div>
-      </section>
 
       {/* ═══════ VIDEO MODAL ═══════ */}
       {videoModal && (
@@ -1048,7 +540,7 @@ export function LandingPageContent() {
                 <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
                 <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
               </div>
-              <span className="text-xs font-mono" style={{ color: '#94a3b8' }}>payflow-demo.com</span>
+              <span className="text-xs font-mono" style={{ color: 'var(--muted)' }}>payflow-demo.com</span>
               <button onClick={() => setVideoModal(null)} className="text-white/60 hover:text-white transition-colors text-lg leading-none">&times;</button>
             </div>
             <div className="relative" style={{ paddingTop: '56.25%' }}>
@@ -1063,7 +555,7 @@ export function LandingPageContent() {
             <div className="px-5 py-4 flex items-center justify-between" style={{ background: '#111d35' }}>
               <div>
                 <h4 className="text-white font-bold text-sm">{videoModal.title}</h4>
-                <p className="text-xs mt-0.5" style={{ color: '#94a3b8' }}>Feature walkthrough &middot; {videoModal.duration}</p>
+                <p className="text-xs mt-0.5" style={{ color: 'var(--muted)' }}>Feature walkthrough &middot; {videoModal.duration}</p>
               </div>
               <motion.button
                 onClick={() => setVideoModal(null)}
@@ -1080,6 +572,8 @@ export function LandingPageContent() {
 
       {/* ═══════ INTERACTIVE DEMO WALKTHROUGH ═══════ */}
       <DemoWalkthrough isOpen={demoOpen} onClose={() => setDemoOpen(false)} initialStep={demoStep} />
+
+      <Footer />
     </div>
   )
 }
