@@ -50,7 +50,7 @@ function PublicHeader() {
 
         <div className="flex items-center gap-3">
           {isAuthenticated ? (
-            <Link to="/home">
+            <Link to="/">
               <Button variant="primary" size="sm">Dashboard <ChevronRight size={14} className="ml-1" /></Button>
             </Link>
           ) : (

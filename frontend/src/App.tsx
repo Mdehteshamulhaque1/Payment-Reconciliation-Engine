@@ -19,7 +19,7 @@ import { GatewayLoader } from '@/components/ui/GatewayLoader'
 const MarketingLayout = lazy(() => import('@/components/layout/MarketingLayout'))
 const LoginPage = lazy(() => import('@/pages/auth/LoginPage'))
 const SignupPage = lazy(() => import('@/pages/auth/SignupPage'))
-const HomePage = lazy(() => import('@/pages/HomePage'))
+const LandingPage = lazy(() => import('@/pages/LandingPage'))
 const PricingPage = lazy(() => import('@/pages/PricingPage'))
 const DocsPage = lazy(() => import('@/pages/DocsPage'))
 const ApiDocsPage = lazy(() => import('@/pages/ApiDocsPage'))
@@ -67,10 +67,10 @@ function PublicRoute() {
   return <Outlet />
 }
 
-/** Catch-all route: authenticated users go to /home, unauthenticated to /home */
+/** Catch-all route: authenticated users go to /, unauthenticated to /home */
 function RootRedirect() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
-  return <Navigate to='/home' replace />
+  return <Navigate to={isAuthenticated ? '/' : '/home'} replace />
 }
 
 /** Initializes theme from localStorage on mount */
@@ -138,8 +138,8 @@ export default function App() {
               <Route path='/signup' element={<PublicRoute />}>
                 <Route index element={<SignupPage />} />
               </Route>
-              <Route path='/home' element={<HomePage />} />
               <Route element={<MarketingLayout />}>
+                <Route path='/home' element={<LandingPage />} />
                 <Route path='/pricing' element={<PricingPage />} />
                 <Route path='/docs' element={<DocsPage />} />
                 <Route path='/api-docs' element={<ApiDocsPage />} />
@@ -147,7 +147,7 @@ export default function App() {
                 <Route path='/about' element={<AboutPage />} />
               </Route>
               <Route element={<ProtectedRoute />}>
-                <Route path='/' element={<Navigate to='/home' replace />} />
+                <Route path='/' element={<DashboardPage />} />
                 <Route path='/transactions' element={<TransactionsPage />} />
                 <Route path='/gateways' element={<GatewaysPage />} />
                 <Route path='/reconciliation' element={<ReconciliationPage />} />

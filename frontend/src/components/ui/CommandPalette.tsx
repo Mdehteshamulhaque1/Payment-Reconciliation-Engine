@@ -6,7 +6,7 @@ import { useThemeStore } from '@/store/themeStore'
 import { useDevStore } from '@/store/devStore'
 
 const commands = [
-  { id: 'dashboard', label: 'Home', icon: LayoutDashboard, path: '/home', category: 'Navigation' },
+  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/', category: 'Navigation' },
   { id: 'transactions', label: 'Transactions', icon: ArrowRightLeft, path: '/transactions', category: 'Navigation' },
   { id: 'gateways', label: 'Gateways', icon: Network, path: '/gateways', category: 'Navigation' },
   { id: 'reconciliation', label: 'Reconciliation', icon: GitCompareArrows, path: '/reconciliation', category: 'Navigation' },

@@ -13,7 +13,7 @@ interface CommandItem {
 }
 
 const defaultItems: CommandItem[] = [
-  { id: 'dashboard', label: 'Home', icon: BarChart3, href: '/home', shortcut: 'G D' },
+  { id: 'dashboard', label: 'Dashboard', icon: BarChart3, href: '/', shortcut: 'G D' },
   { id: 'transactions', label: 'Transactions', icon: CreditCard, href: '/transactions', shortcut: 'G T' },
   { id: 'gateways', label: 'Gateways', icon: Shield, href: '/gateways', shortcut: 'G G' },
   { id: 'reconciliation', label: 'Reconciliation', icon: FileText, href: '/reconciliation' },
