@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.dependencies import get_current_active_user, get_db, PaginationParams
 from app.models.transaction import TransactionStatus
+from app.schemas.payment_location import PaymentLocationOut, PaymentLocationResponse
 from app.schemas.transaction import (
     TransactionCreate,
     TransactionEventOut,
@@ -104,3 +105,19 @@ async def retry(transaction_id: int, db: AsyncSession = Depends(get_db), _user=D
 async def events(transaction_id: int, db: AsyncSession = Depends(get_db), _user=Depends(get_current_active_user)):
     evts = await transaction_service.get_transaction_events(db, transaction_id)
     return [TransactionEventOut.model_validate(e) for e in evts]
+
+
+@router.get("/{transaction_id}/location", response_model=PaymentLocationResponse | None, summary="Get payment location for a transaction")
+async def get_location(transaction_id: int, db: AsyncSession = Depends(get_db), _user=Depends(get_current_active_user)):
+    txn = await transaction_service.get_transaction(db, transaction_id)
+    if not txn.location:
+        return None
+    loc = txn.location
+    return PaymentLocationResponse(
+        transaction_id=txn.transaction_ref,
+        amount=txn.amount,
+        sender=getattr(txn.merchant, "name", None) if txn.merchant else None,
+        receiver=getattr(txn.customer, "name", None) if txn.customer else None,
+        payment_time=txn.created_at,
+        location=PaymentLocationOut.model_validate(loc),
+    )

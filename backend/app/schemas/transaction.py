@@ -3,6 +3,7 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field
 
 from app.models.transaction import TransactionStatus, TransactionType
+from app.schemas.payment_location import PaymentLocationOut
 
 
 class TransactionCreate(BaseModel):
@@ -55,6 +56,7 @@ class TransactionOut(BaseModel):
     retry_count: int
     created_at: datetime
     updated_at: datetime
+    location: PaymentLocationOut | None = None
 
 
 class TransactionListResponse(BaseModel):

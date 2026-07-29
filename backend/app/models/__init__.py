@@ -8,6 +8,7 @@ from app.models.merchant import Merchant
 from app.models.customer import Customer
 from app.models.transaction import Transaction, TransactionStatus, TransactionType
 from app.models.transaction_event import TransactionEvent
+from app.models.payment_location import PaymentLocation
 from app.models.idempotency_key import IdempotencyKey
 from app.models.currency import Currency
 from app.models.exchange_rate import ExchangeRate
@@ -34,7 +35,7 @@ from app.models.exception import ExceptionRecord
 __all__ = [
     "User", "Role", "Permission", "Session", "RefreshToken", "APIKey",
     "Merchant", "Customer",
-    "Transaction", "TransactionStatus", "TransactionType", "TransactionEvent",
+    "Transaction", "TransactionStatus", "TransactionType", "TransactionEvent", "PaymentLocation",
     "IdempotencyKey", "Currency", "ExchangeRate",
     "PaymentGateway", "GatewayType", "GatewayHealth",
     "Settlement", "SettlementStatus", "BankRecord",

@@ -62,3 +62,4 @@ class Transaction(Base):
     customer = relationship("Customer", lazy="selectin")
     gateway = relationship("PaymentGateway", lazy="selectin")
     events = relationship("TransactionEvent", back_populates="transaction", lazy="selectin")
+    location = relationship("PaymentLocation", back_populates="transaction", lazy="selectin", uselist=False)

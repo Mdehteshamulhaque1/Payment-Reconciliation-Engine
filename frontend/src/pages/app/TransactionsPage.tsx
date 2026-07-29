@@ -4,6 +4,7 @@ import { Plus, Search, Eye, XCircle, RotateCcw, RefreshCw } from 'lucide-react'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { DataTable } from '@/components/ui/DataTable'
 import { StatusChip } from '@/components/ui/StatusChip'
+import { LocationCard } from '@/components/ui/LocationCard'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { FilterTabs } from '@/components/ui/FilterTabs'
@@ -206,6 +207,7 @@ export default function TransactionsPage() {
                 </>
               )}
             </div>
+            {selectedTxn.location && <LocationCard location={selectedTxn.location} />}
           </div>
         )}
       </Modal>

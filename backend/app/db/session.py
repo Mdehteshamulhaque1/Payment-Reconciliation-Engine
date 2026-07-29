@@ -29,6 +29,7 @@ def import_all_models() -> None:
         customer,
         transaction,
         transaction_event,
+        payment_location,
         idempotency_key,
         currency,
         exchange_rate,

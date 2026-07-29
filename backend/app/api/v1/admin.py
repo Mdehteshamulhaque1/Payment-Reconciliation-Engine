@@ -43,12 +43,14 @@ async def system_stats(
     from app.models.transaction import Transaction
     from app.models.settlement import Settlement
     from app.models.reconciliation_result import ReconciliationResult
+    from app.models.payment_location import PaymentLocation
 
     return {
         "total_users": (await db.execute(select(func.count(User.id)))).scalar() or 0,
         "total_transactions": (await db.execute(select(func.count(Transaction.id)))).scalar() or 0,
         "total_settlements": (await db.execute(select(func.count(Settlement.id)))).scalar() or 0,
         "total_reconciliations": (await db.execute(select(func.count(ReconciliationResult.id)))).scalar() or 0,
+        "total_locations": (await db.execute(select(func.count(PaymentLocation.id)))).scalar() or 0,
     }
 
 

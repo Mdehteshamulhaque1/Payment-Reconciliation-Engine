@@ -28,6 +28,7 @@ export interface Transaction {
   retry_count: number
   created_at: string
   updated_at: string
+  location: PaymentLocation | null
 }
 
 export interface Gateway {
@@ -280,6 +281,28 @@ export interface TokenResponse {
 export interface LoginRequest {
   email: string
   password: string
+}
+
+export interface PaymentLocation {
+  id: number
+  transaction_id: number
+  sender_id: number | null
+  receiver_id: number | null
+  amount: number
+  latitude: number
+  longitude: number
+  accuracy: number | null
+  city: string | null
+  state: string | null
+  country: string | null
+  full_address: string | null
+  timezone: string | null
+  ip_address: string | null
+  device_info: string | null
+  payment_timestamp: string | null
+  location_capture_timestamp: string | null
+  google_maps_url: string | null
+  created_at: string
 }
 
 export interface SignupRequest {
