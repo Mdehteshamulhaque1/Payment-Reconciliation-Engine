@@ -12,8 +12,6 @@ import { Button } from '@/components/ui/Button'
 import { DemoWalkthrough } from '@/components/demo/DemoWalkthrough'
 import { AnimatedLogo } from '@/components/ui/AnimatedLogo'
 import { lazy, Suspense } from 'react'
-import { useAuthStore } from '@/store/authStore'
-
 const LiveDashboardSection = lazy(() => import('@/components/dashboard/LiveDashboardSection'))
 
 /* ═══════════ ANIMATION HELPERS ═══════════ */
@@ -242,7 +240,7 @@ const socialLinks = [
 
 const quickLinks = {
   Product: [
-    { label: 'Features', to: '/home#features' }, { label: 'Pricing', to: '/pricing' }, { label: 'Dashboard', to: '/' },
+    { label: 'Features', to: '/#features' }, { label: 'Pricing', to: '/pricing' }, { label: 'Dashboard', to: '/dashboard' },
     { label: 'Reconciliation', to: '/reconciliation' }, { label: 'Fraud Detection', to: '/fraud' }, { label: 'Reports', to: '/reports' },
   ],
   Resources: [
@@ -320,8 +318,6 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 /* ═══════════ MAIN ═══════════ */
 
 export function LandingPageContent() {
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
-
   const [contactForm, setContactForm] = useState({ name: '', company: '', email: '', phone: '', subject: '', message: '' })
   const [contactSubmitted, setContactSubmitted] = useState(false)
   const [contactLoading, setContactLoading] = useState(false)
@@ -452,64 +448,23 @@ export function LandingPageContent() {
                 <BarChart3 size={12} /> Live Operations
               </div>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>
-                {isAuthenticated ? 'Your Command Center' : 'See PayFlow in Action'}
+                Command Center
               </h2>
               <p className="mt-5 max-w-2xl mx-auto text-lg" style={{ color: '#4a6fa5' }}>
-                {isAuthenticated
-                  ? 'Real-time payment operations with live transaction data across all gateways.'
-                  : 'Sign in to see your live transaction data, gateway health, and reconciliation status.'}
+                Real-time payment operations with live transaction data across all gateways.
               </p>
             </div>
           </Reveal>
 
-          {isAuthenticated ? (
-            <Suspense fallback={
-              <div className="flex items-center justify-center py-20">
-                <div className="animate-spin h-8 w-8 rounded-full border-2" style={{ borderColor: `${BLUE}20 ${BLUE}20 ${BLUE}20 ${BLUE}` }} />
-              </div>
-            }>
-              <Reveal delay={0.1}>
-                <LiveDashboardSection />
-              </Reveal>
-            </Suspense>
-          ) : (
+          <Suspense fallback={
+            <div className="flex items-center justify-center py-20">
+              <div className="animate-spin h-8 w-8 rounded-full border-2" style={{ borderColor: `${BLUE}20 ${BLUE}20 ${BLUE}20 ${BLUE}` }} />
+            </div>
+          }>
             <Reveal delay={0.1}>
-              <motion.div className="relative mx-auto max-w-4xl rounded-3xl overflow-hidden text-center"
-                style={{ border: `1px solid ${BLUE}12`, background: '#f8faff' }}
-                whileHover={{ boxShadow: `0 16px 56px ${BLUE}10` }}>
-                <div className="absolute inset-0 backdrop-blur-sm bg-white/40 z-10 flex items-center justify-center">
-                  <div className="p-8 text-center max-w-md">
-                    <motion.div animate={{ rotate: [0, 5, -5, 0] }} transition={{ duration: 3, repeat: Infinity }} className="mb-4">
-                      <BarChart3 size={40} style={{ color: BLUE, margin: '0 auto' }} />
-                    </motion.div>
-                    <h3 className="text-2xl font-extrabold mb-3" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>Your Live Dashboard Awaits</h3>
-                    <p className="text-sm mb-7 leading-relaxed" style={{ color: '#4a6fa5' }}>
-                      Sign in to view your real-time transaction KPI cards, payment flow visualization, gateway health, and live transaction stream.
-                    </p>
-                    <Link to="/login">
-                      <Button variant="primary" size="lg" className="min-w-[200px]" style={{ background: `linear-gradient(135deg, ${BLUE}, ${BLUE_LIGHT})`, boxShadow: `0 4px 20px ${BLUE}40` }}>
-                        Sign In to View Dashboard <ArrowRight size={16} className="ml-2" />
-                      </Button>
-                    </Link>
-                    <p className="mt-4 text-xs font-mono" style={{ color: '#94a3b8' }}>No account? <Link to="/signup" style={{ color: BLUE }}>Create one free</Link></p>
-                  </div>
-                </div>
-                <div className="p-8 opacity-30 pointer-events-none select-none">
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                    {[{ label: 'Transactions', val: '12,847' }, { label: 'Volume', val: '$4.2M' }, { label: 'Success Rate', val: '98.3%' }, { label: 'Gateways', val: '6' }].map((m, i) => (
-                      <div key={i} className="p-5 rounded-2xl" style={{ border: `1px solid ${BLUE}10`, background: '#ffffff' }}>
-                        <p className="text-[10px] font-mono uppercase tracking-wider mb-1" style={{ color: '#94a3b8' }}>{m.label}</p>
-                        <p className="text-xl font-bold font-mono" style={{ color: '#0c1b3a' }}>{m.val}</p>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="h-24 rounded-2xl flex items-center justify-center" style={{ border: `1px solid ${BLUE}10`, background: '#ffffff' }}>
-                    <p className="text-sm font-mono" style={{ color: '#94a3b8' }}>Payment Flow Visualization</p>
-                  </div>
-                </div>
-              </motion.div>
+              <LiveDashboardSection />
             </Reveal>
-          )}
+          </Suspense>
         </div>
       </section>
 
@@ -782,8 +737,8 @@ export function LandingPageContent() {
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <MagneticButton>
-                  <Link to="/signup">
-                    <Button variant="primary" size="lg" className="min-w-[220px]">Get Started Free <ArrowRight size={16} className="ml-2" /></Button>
+                  <Link to="/">
+                    <Button variant="primary" size="lg" className="min-w-[220px]">Go to Dashboard <ArrowRight size={16} className="ml-2" /></Button>
                   </Link>
                 </MagneticButton>
                 <MagneticButton>

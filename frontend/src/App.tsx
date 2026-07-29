@@ -87,10 +87,10 @@ export default function App() {
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route element={<MarketingLayout />}>
-                <Route path='/home' element={<LandingPage />} />
+                <Route path='/' element={<LandingPage />} />
               </Route>
               <Route element={<DashboardLayout />}>
-                <Route path='/' element={<DashboardPage />} />
+                <Route path='/dashboard' element={<DashboardPage />} />
                 <Route path='/transactions' element={<TransactionsPage />} />
                 <Route path='/gateways' element={<GatewaysPage />} />
                 <Route path='/reconciliation' element={<ReconciliationPage />} />

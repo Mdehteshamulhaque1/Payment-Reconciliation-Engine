@@ -47,7 +47,7 @@ function SidebarContent({ collapsed, onCollapseToggle }: { collapsed: boolean; o
   return (
     <div className="flex h-full flex-col">
       <div className={cn('flex items-center px-4 pt-5 pb-3', collapsed ? 'justify-center px-2' : 'gap-3')}>
-        <Link to="/home" className="no-underline">
+        <Link to="/" className="no-underline">
           <AnimatedLogo size="sm" showText={!collapsed} animate={true} />
         </Link>
       </div>

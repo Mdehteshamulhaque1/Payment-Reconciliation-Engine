@@ -191,9 +191,9 @@ export default function AboutPage() {
               We're hiring across engineering, product, and go-to-market. Help us build the future of financial operations.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/signup">
+              <Link to="/">
                 <Button variant="primary" size="lg" className="min-w-[200px]">
-                  Try PayFlow Free <ArrowRight size={16} className="ml-2" />
+                  Go to Dashboard <ArrowRight size={16} className="ml-2" />
                 </Button>
               </Link>
               <Link to="/contact">

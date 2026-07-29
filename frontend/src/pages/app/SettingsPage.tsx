@@ -35,7 +35,7 @@ export default function SettingsPage() {
               <h3 className='font-semibold'>Profile</h3>
             </div>
             <div className='space-y-4'>
-              <Input label='Name' defaultValue={user?.full_name ?? ''} disabled />
+              <Input label='Name' defaultValue={user?.name ?? ''} disabled />
               <Input label='Email' defaultValue={user?.email ?? ''} disabled />
               <Input label='Role' defaultValue={user?.role ?? 'Admin'} disabled />
               <p className='text-xs text-muted-foreground font-mono'>Profile editing is managed by your administrator.</p>

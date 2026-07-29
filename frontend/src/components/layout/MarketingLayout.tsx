@@ -6,8 +6,8 @@ import { AnimatedLogo } from '@/components/ui/AnimatedLogo'
 import { Button } from '@/components/ui/Button'
 
 const navLinks = [
-  { label: 'Home', path: '/home', color: '#1e40af' },
-  { label: 'Features', path: '/home#features', color: '#1e40af' },
+  { label: 'Home', path: '/', color: '#1e40af' },
+  { label: 'Features', path: '/#features', color: '#1e40af' },
   { label: 'Docs', path: '/docs', color: '#1e40af' },
   { label: 'API', path: '/api-docs', color: '#1e40af' },
   { label: 'About', path: '/about', color: '#1e40af' },
@@ -19,7 +19,7 @@ function PublicHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-[color-mix(in_srgb,var(--accent-cyan)_8%,var(--border))] bg-[color-mix(in_srgb,var(--surface)_85%,transparent)] backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link to="/home" className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2">
           <AnimatedLogo size="sm" showText={false} animate={false} />
           <span className="text-lg font-bold tracking-tight text-[var(--text)]" style={{ fontFamily: 'Outfit' }}>PayFlow</span>
         </Link>
@@ -109,7 +109,7 @@ function PublicFooter() {
             <h4 className="text-sm font-semibold text-[var(--text)] mb-3">Product</h4>
             <ul className="space-y-2">
               {[
-                { label: 'Features', to: '/home#features' },
+                { label: 'Features', to: '/#features' },
                 { label: 'Docs', to: '/docs' },
                 { label: 'API Reference', to: '/api-docs' },
               ].map((item) => (
@@ -156,7 +156,7 @@ interface MarketingLayoutProps {
 
 export default function MarketingLayout({ children }: MarketingLayoutProps) {
   const location = useLocation()
-  const isLandingPage = location.pathname === '/home'
+  const isLandingPage = location.pathname === '/'
 
   return (
     <div className="min-h-screen bg-[var(--bg1)] flex flex-col">

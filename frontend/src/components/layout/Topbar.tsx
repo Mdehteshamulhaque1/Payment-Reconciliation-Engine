@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Search, Bell, Moon, Sun, Monitor, Menu, PanelLeftClose, PanelLeft, User, Settings, Clock, Wifi, Shield, Code, ChevronRight, BarChart3 } from 'lucide-react'
+import { Bell, Moon, Sun, Monitor, Menu, PanelLeftClose, PanelLeft, User, Settings, Clock, Wifi, Shield, Code, BarChart3 } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { useThemeStore } from '@/store/themeStore'
 import { useDevStore } from '@/store/devStore'
@@ -117,14 +117,14 @@ export function Topbar({ onMenuToggle, onCollapseToggle, collapsed }: TopbarProp
             trigger={
               <button className="flex items-center gap-2 rounded-lg px-2 py-1.5 transition-all hover:bg-[color-mix(in_srgb,var(--accent-cyan)_5%,transparent)] group">
                 <div className="flex h-7 w-7 items-center justify-center rounded-lg text-[10px] font-bold text-white font-mono" style={{ background: 'linear-gradient(135deg, var(--primary), var(--accent-cyan))', boxShadow: '0 0 12px color-mix(in srgb, var(--primary) 20%, transparent)' }}>
-                  {user?.full_name?.[0]?.toUpperCase() || 'U'}
+                  {user?.name?.[0]?.toUpperCase() || 'U'}
                 </div>
-                <span className="hidden lg:block text-xs font-medium text-[var(--text)]">{user?.full_name || 'User'}</span>
+                <span className="hidden lg:block text-xs font-medium text-[var(--text)]">{user?.name || 'User'}</span>
               </button>
             }
           >
             <div className="px-3 py-2 border-b border-[var(--border)]">
-              <p className="text-sm font-medium text-[var(--text)]">{user?.full_name || 'User'}</p>
+              <p className="text-sm font-medium text-[var(--text)]">{user?.name || 'User'}</p>
               <p className="text-[10px] text-[var(--muted)] font-mono">{user?.email}</p>
             </div>
             <Dropdown.Item icon={<User size={14} />} onClick={() => window.location.href = '/settings'}>Profile</Dropdown.Item>
