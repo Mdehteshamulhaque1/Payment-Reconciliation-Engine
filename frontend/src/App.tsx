@@ -12,7 +12,6 @@ import { GatewayLoader } from '@/components/ui/GatewayLoader'
 import MarketingLayout from '@/components/layout/MarketingLayout'
 
 const LandingPage = lazy(() => import('@/pages/LandingPage'))
-const DashboardPage = lazy(() => import('@/pages/app/DashboardPage'))
 const TransactionsPage = lazy(() => import('@/pages/app/TransactionsPage'))
 const GatewaysPage = lazy(() => import('@/pages/app/GatewaysPage'))
 const ReconciliationPage = lazy(() => import('@/pages/app/ReconciliationPage'))
@@ -89,8 +88,7 @@ export default function App() {
               <Route element={<MarketingLayout />}>
                 <Route path='/' element={<LandingPage />} />
               </Route>
-              <Route element={<DashboardLayout />}>
-                <Route path='/dashboard' element={<DashboardPage />} />
+              <Route element={<DashboardLayout />}>{/* no default dashboard — all dashboard features are on the landing page */}
                 <Route path='/transactions' element={<TransactionsPage />} />
                 <Route path='/gateways' element={<GatewaysPage />} />
                 <Route path='/reconciliation' element={<ReconciliationPage />} />

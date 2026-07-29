@@ -7,12 +7,16 @@ import {
   GitBranch, Mail, Phone, Send, Calendar,
   CheckCircle, Github, Linkedin, Twitter, Newspaper, MapPin, ChevronDown,
   Sparkles, Target, Play, ArrowDown, Rocket,
+  Cpu, Activity, GitCompareArrows, Wallet, AlertTriangle,
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { DemoWalkthrough } from '@/components/demo/DemoWalkthrough'
 import { AnimatedLogo } from '@/components/ui/AnimatedLogo'
-import { lazy, Suspense } from 'react'
-const LiveDashboardSection = lazy(() => import('@/components/dashboard/LiveDashboardSection'))
+import { ExecutiveHero } from '@/components/ui/ExecutiveHero'
+import { FlowMap } from '@/components/ui/FlowMap'
+import { LiveStream } from '@/components/ui/LiveStream'
+import { GatewayHealthCenter } from '@/components/ui/GatewayHealthCenter'
+import { useDashboardStats, useGatewayComparison, useTopFailures } from '@/hooks/useAnalytics'
 
 /* ═══════════ ANIMATION HELPERS ═══════════ */
 
@@ -317,7 +321,27 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 /* ═══════════ MAIN ═══════════ */
 
+const cardStyle = {
+  background: 'color-mix(in srgb, var(--surface) 88%, transparent)',
+  border: '1px solid color-mix(in srgb, var(--accent-cyan) 12%, var(--border))',
+}
+
+function HealthRow({ icon: Icon, label, value, color }: { icon: typeof Activity; label: string; value: string | number; color: string }) {
+  return (
+    <div className='flex items-center justify-between'>
+      <div className='flex items-center gap-2'>
+        <Icon size={14} style={{ color }} />
+        <span className='text-xs text-[var(--muted)]'>{label}</span>
+      </div>
+      <span className='text-sm font-mono font-bold text-[var(--text)]'>{value}</span>
+    </div>
+  )
+}
+
 export function LandingPageContent() {
+  const { data: dashboardStats } = useDashboardStats()
+  const { data: gatewayComp } = useGatewayComparison()
+  const { data: topFailures } = useTopFailures()
   const [contactForm, setContactForm] = useState({ name: '', company: '', email: '', phone: '', subject: '', message: '' })
   const [contactSubmitted, setContactSubmitted] = useState(false)
   const [contactLoading, setContactLoading] = useState(false)
@@ -438,33 +462,120 @@ export function LandingPageContent() {
         </div>
       </section>
 
-      {/* ═══════ LIVE DASHBOARD ═══════ */}
+      {/* ═══════ COMMAND CENTER DASHBOARD ═══════ */}
       <section className="py-20 sm:py-28 px-4" style={{ background: '#ffffff' }}>
         <div className="mx-auto max-w-7xl">
           <Reveal>
-            <div className="text-center mb-14">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono mb-4"
-                style={{ border: `1px solid ${BLUE}18`, background: `${BLUE}08`, color: BLUE }}>
-                <BarChart3 size={12} /> Live Operations
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+              <div>
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono mb-4"
+                  style={{ border: `1px solid ${BLUE}18`, background: `${BLUE}08`, color: BLUE }}>
+                  <BarChart3 size={12} /> Command Center
+                </div>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>
+                  Live Operations
+                </h2>
+                <p className="mt-2 max-w-2xl text-lg" style={{ color: '#4a6fa5' }}>
+                  Real-time payment operations with live transaction data across all gateways.
+                </p>
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black" style={{ fontFamily: 'Outfit', color: '#0c1b3a' }}>
-                Command Center
-              </h2>
-              <p className="mt-5 max-w-2xl mx-auto text-lg" style={{ color: '#4a6fa5' }}>
-                Real-time payment operations with live transaction data across all gateways.
-              </p>
+              <div className='flex items-center gap-2'>
+                <div className='flex items-center gap-1.5 rounded-full px-3 py-1' style={{ border: '1px solid color-mix(in srgb, var(--success) 20%, transparent)', background: 'color-mix(in srgb, var(--success) 5%, transparent)' }}>
+                  <span className='relative flex h-1.5 w-1.5'>
+                    <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--success)] opacity-75' />
+                    <span className='relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--success)]' />
+                  </span>
+                  <span className='text-[10px] font-mono font-medium text-[var(--success)]'>LIVE</span>
+                </div>
+                <div className='flex items-center gap-1.5 rounded-full px-3 py-1' style={{ border: '1px solid color-mix(in srgb, var(--accent-cyan) 15%, transparent)', background: 'color-mix(in srgb, var(--accent-cyan) 5%, transparent)' }}>
+                  <Cpu size={10} className='text-[var(--accent-cyan)]' />
+                  <span className='text-[10px] font-mono font-medium text-[var(--accent-cyan)]'>SYS OK</span>
+                </div>
+              </div>
             </div>
           </Reveal>
 
-          <Suspense fallback={
-            <div className="flex items-center justify-center py-20">
-              <div className="animate-spin h-8 w-8 rounded-full border-2" style={{ borderColor: `${BLUE}20 ${BLUE}20 ${BLUE}20 ${BLUE}` }} />
+          <Reveal delay={0.1}>
+            <div style={{ borderRadius: '20px', border: `1px solid ${BLUE}12`, overflow: 'hidden', background: '#f8faff' }}>
+              <ExecutiveHero />
             </div>
-          }>
-            <Reveal delay={0.1}>
-              <LiveDashboardSection />
-            </Reveal>
-          </Suspense>
+          </Reveal>
+
+          <Reveal delay={0.15}>
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 my-6'>
+              <div style={{ borderRadius: '20px', border: `1px solid ${BLUE}12`, overflow: 'hidden', background: '#f8faff' }}>
+                <FlowMap />
+              </div>
+              <div className='grid grid-cols-1 gap-6'>
+                <div style={{ borderRadius: '20px', border: `1px solid ${BLUE}12`, overflow: 'hidden', background: '#f8faff' }}>
+                  <LiveStream />
+                </div>
+                <div style={{ borderRadius: '20px', border: `1px solid ${BLUE}12`, overflow: 'hidden', background: '#f8faff' }}>
+                  <GatewayHealthCenter />
+                </div>
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.2}>
+            <div className='grid grid-cols-1 gap-5 lg:grid-cols-3'>
+              <div className='relative rounded-2xl p-5' style={cardStyle}>
+                <h3 className='text-sm font-semibold mb-4' style={{ fontFamily: 'Outfit' }}>System Health</h3>
+                <div className='space-y-3'>
+                  <HealthRow icon={GitCompareArrows} label='Reconciliation Accuracy' value={`${(dashboardStats?.reconciliation_accuracy ?? 0).toFixed(1)}%`} color='var(--success)' />
+                  <HealthRow icon={Wallet} label='Pending Settlements' value={dashboardStats?.pending_settlements ?? 0} color='var(--warning)' />
+                  <HealthRow icon={AlertTriangle} label='Fraud Cases' value={dashboardStats?.fraud_cases ?? 0} color='var(--danger)' />
+                  <HealthRow icon={Activity} label='Total Settlements' value={dashboardStats?.total_settlements ?? 0} color='var(--accent-cyan)' />
+                </div>
+              </div>
+
+              <div className='relative rounded-2xl p-5' style={cardStyle}>
+                <h3 className='text-sm font-semibold mb-4' style={{ fontFamily: 'Outfit' }}>Top Failures</h3>
+                <div className='space-y-3'>
+                  {topFailures?.slice(0, 5).map((f, i) => (
+                    <div key={i} className='flex items-center gap-3'>
+                      <div className='flex-1 min-w-0'>
+                        <div className='flex items-center justify-between mb-1'>
+                          <span className='text-xs text-[var(--text)] truncate'>{f.reason || 'Unknown'}</span>
+                          <span className='text-[10px] font-mono text-[var(--muted)] ml-2 shrink-0'>{f.count}</span>
+                        </div>
+                        <div className='h-1.5 rounded-full overflow-hidden' style={{ background: 'color-mix(in srgb, var(--text) 6%, transparent)' }}>
+                          <div
+                            className='h-full rounded-full transition-all duration-1000'
+                            style={{ width: `${f.percentage}%`, background: 'linear-gradient(90deg, var(--danger), color-mix(in srgb, var(--warning) 60%, transparent))' }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {(!topFailures || topFailures.length === 0) && (
+                    <p className='text-xs text-[var(--muted)] font-mono text-center py-4'>No failure data</p>
+                  )}
+                </div>
+              </div>
+
+              <div className='relative rounded-2xl p-5' style={cardStyle}>
+                <h3 className='text-sm font-semibold mb-4' style={{ fontFamily: 'Outfit' }}>Gateway Performance</h3>
+                <div className='space-y-3'>
+                  {gatewayComp?.slice(0, 5).map((gw) => (
+                    <div key={gw.gateway_name} className='flex items-center gap-3'>
+                      <span className='text-xs text-[var(--text)] truncate w-20 shrink-0'>{gw.gateway_name}</span>
+                      <div className='flex-1 h-2 rounded-full overflow-hidden' style={{ background: 'color-mix(in srgb, var(--text) 6%, transparent)' }}>
+                        <div
+                          className='h-full rounded-full transition-all duration-1000'
+                          style={{ width: `${gw.success_rate}%`, background: 'linear-gradient(90deg, var(--success), var(--accent-cyan))' }}
+                        />
+                      </div>
+                      <div className='text-right shrink-0'>
+                        <span className='text-[10px] font-mono text-[var(--text)]'>{gw.success_rate.toFixed(1)}%</span>
+                        <p className='text-[9px] font-mono text-[var(--muted)]'>{gw.avg_latency_ms}ms</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
