@@ -19,7 +19,10 @@ from app.models.bank_record import BankRecord
 from app.models.reconciliation_result import ReconciliationResult, ReconciliationMatchType, ReconciliationDiscrepancyType
 from app.models.reconciliation_rule import ReconciliationRule
 from app.models.fraud_case import FraudCase, FraudType, FraudCaseStatus
+from app.models.fraud_alert import FraudAlert, FraudAlertSeverity, FraudAlertStatus
 from app.models.risk_score import RiskScore
+from app.models.device_fingerprint import DeviceFingerprint
+from app.models.behavioral_profile import BehavioralProfile
 from app.models.webhook_event import WebhookEvent, WebhookSource, WebhookEventStatus
 from app.models.webhook_log import WebhookLog
 from app.models.ledger_entry import LedgerEntry, LedgerEntryType
@@ -40,7 +43,9 @@ __all__ = [
     "PaymentGateway", "GatewayType", "GatewayHealth",
     "Settlement", "SettlementStatus", "BankRecord",
     "ReconciliationResult", "ReconciliationMatchType", "ReconciliationDiscrepancyType", "ReconciliationRule",
-    "FraudCase", "FraudType", "FraudCaseStatus", "RiskScore",
+    "FraudCase", "FraudType", "FraudCaseStatus",
+    "FraudAlert", "FraudAlertSeverity", "FraudAlertStatus",
+    "RiskScore", "DeviceFingerprint", "BehavioralProfile",
     "WebhookEvent", "WebhookSource", "WebhookEventStatus", "WebhookLog",
     "LedgerEntry", "LedgerEntryType",
     "Notification", "NotificationChannel", "NotificationStatus",

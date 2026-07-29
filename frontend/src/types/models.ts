@@ -161,16 +161,27 @@ export interface FraudCase {
   transaction_id: number
   fraud_type: string
   risk_score: number
+  ml_risk_score: number | null
+  rule_risk_score: number | null
+  model_contributions: string | null
+  shap_explanation: string | null
+  evidence_json: string | null
   reason: string
   description: string
   severity: string
   status: string
+  assigned_to: number | null
+  escalated: boolean
+  tags: string | null
+  resolution: string | null
+  review_notes: string | null
   created_at: string
 }
 
 export interface FraudDashboard {
   total_cases: number
   open_cases: number
+  investigating: number
   critical: number
   high: number
   medium: number
@@ -179,13 +190,49 @@ export interface FraudDashboard {
   confirmed_fraud: number
   false_positives: number
   avg_risk_score: number
+  cases_last_24h: number
 }
 
 export interface FraudScanResponse {
   is_suspicious: boolean
   risk_score: number
+  rule_risk_score: number
+  ml_risk_score: number
   fraud_type: string | null
   factors: string[]
+  case_id: number | null
+  alert_id: number | null
+  ml_explanation: Record<string, unknown> | null
+  travel_check: Record<string, unknown> | null
+  velocity_check: Record<string, unknown> | null
+  behavioral_check: Record<string, unknown> | null
+  graph_check: Record<string, unknown> | null
+}
+
+export interface FraudAlert {
+  id: number
+  transaction_id: number | null
+  case_id: number | null
+  alert_type: string
+  severity: string
+  status: string
+  title: string
+  description: string | null
+  metadata_json: string | null
+  is_read: boolean
+  assigned_to: number | null
+  created_at: string
+  resolved_at: string | null
+}
+
+export interface MLDashboard {
+  avg_ml_risk_score: number
+  avg_rule_risk_score: number
+  ml_case_count: number
+  model_usage: Record<string, number>
+  feature_importance: Record<string, number>
+  fraud_rings: Array<{ customer_ids: number[]; shared_merchants: number[]; size: number; risk: number }>
+  ml_enabled: boolean
 }
 
 export interface Notification {
