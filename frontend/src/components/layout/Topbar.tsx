@@ -48,7 +48,7 @@ export function Topbar({ onMenuToggle, onCollapseToggle, collapsed }: TopbarProp
           <motion.button whileTap={{ scale: 0.9 }} onClick={onCollapseToggle} className="hidden lg:flex rounded-lg p-2 text-[var(--muted)] hover:bg-[color-mix(in_srgb,var(--accent-cyan)_8%,transparent)] hover:text-[var(--accent-cyan)] transition-colors">
             {collapsed ? <PanelLeft size={18} /> : <PanelLeftClose size={18} />}
           </motion.button>
-          <Link to="/" className="flex items-center gap-2.5 group">
+          <Link to="/home" className="flex items-center gap-2.5 group">
             <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--accent-cyan)]" style={{ boxShadow: '0 0 12px color-mix(in srgb, var(--primary) 20%, transparent)' }}>
               <BarChart3 size={16} className="text-white" />
             </div>

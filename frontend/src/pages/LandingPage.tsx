@@ -317,7 +317,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 /* ═══════════ MAIN ═══════════ */
 
-export default function LandingPage() {
+export function LandingPageContent() {
   const [contactForm, setContactForm] = useState({ name: '', company: '', email: '', phone: '', subject: '', message: '' })
   const [contactSubmitted, setContactSubmitted] = useState(false)
   const [contactLoading, setContactLoading] = useState(false)
@@ -1000,3 +1000,5 @@ export default function LandingPage() {
     </div>
   )
 }
+
+export default LandingPageContent

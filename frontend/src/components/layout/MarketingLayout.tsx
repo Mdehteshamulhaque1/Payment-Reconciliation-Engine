@@ -1,7 +1,7 @@
 import { Link, useLocation, Outlet } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Menu, X, ChevronRight } from 'lucide-react'
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { useAuthStore } from '@/store/authStore'
 import { AnimatedLogo } from '@/components/ui/AnimatedLogo'
 import { Button } from '@/components/ui/Button'
@@ -50,7 +50,7 @@ function PublicHeader() {
 
         <div className="flex items-center gap-3">
           {isAuthenticated ? (
-            <Link to="/">
+            <Link to="/home">
               <Button variant="primary" size="sm">Dashboard <ChevronRight size={14} className="ml-1" /></Button>
             </Link>
           ) : (
@@ -164,7 +164,11 @@ function PublicFooter() {
   )
 }
 
-export default function MarketingLayout() {
+interface MarketingLayoutProps {
+  children?: ReactNode
+}
+
+export default function MarketingLayout({ children }: MarketingLayoutProps) {
   const location = useLocation()
   const isLandingPage = location.pathname === '/home'
 
@@ -172,7 +176,7 @@ export default function MarketingLayout() {
     <div className="min-h-screen bg-[var(--bg1)] flex flex-col">
       <PublicHeader />
       <main className="flex-1">
-        <Outlet />
+        {children || <Outlet />}
       </main>
       {!isLandingPage && <PublicFooter />}
     </div>

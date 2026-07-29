@@ -17,7 +17,7 @@ interface NavSection { label: string; items: NavItem[] }
 
 const sections: NavSection[] = [
   { label: 'CORE', items: [
-    { label: 'Dashboard', href: '/', icon: LayoutDashboard },
+    { label: 'Home', href: '/home', icon: LayoutDashboard },
     { label: 'Transactions', href: '/transactions', icon: ArrowRightLeft },
     { label: 'Gateways', href: '/gateways', icon: Network },
   ]},

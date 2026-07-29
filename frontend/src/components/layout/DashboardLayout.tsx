@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, type ReactNode } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Sidebar } from './Sidebar'
@@ -16,7 +16,11 @@ const pageVariants = {
   },
 }
 
-export default function DashboardLayout() {
+interface DashboardLayoutProps {
+  children?: ReactNode
+}
+
+export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [collapsed, setCollapsed] = useState(() => localStorage.getItem('pf-sidebar-collapsed') === '1')
   const location = useLocation()
@@ -52,7 +56,7 @@ export default function DashboardLayout() {
               animate="animate"
               exit="exit"
             >
-              <Outlet />
+              {children || <Outlet />}
             </motion.div>
           </AnimatePresence>
         </main>
