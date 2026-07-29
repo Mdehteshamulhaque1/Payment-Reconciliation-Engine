@@ -2,7 +2,6 @@ import { Link, useLocation, Outlet } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Menu, X, ChevronRight } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
-import { useAuthStore } from '@/store/authStore'
 import { AnimatedLogo } from '@/components/ui/AnimatedLogo'
 import { Button } from '@/components/ui/Button'
 
@@ -17,8 +16,6 @@ const navLinks = [
 
 function PublicHeader() {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
-
   return (
     <header className="sticky top-0 z-50 border-b border-[color-mix(in_srgb,var(--accent-cyan)_8%,var(--border))] bg-[color-mix(in_srgb,var(--surface)_85%,transparent)] backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -49,20 +46,9 @@ function PublicHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
-          {isAuthenticated ? (
-            <Link to="/">
-              <Button variant="primary" size="sm">Dashboard <ChevronRight size={14} className="ml-1" /></Button>
-            </Link>
-          ) : (
-            <>
-              <Link to="/login" className="hidden sm:block">
-                <Button variant="ghost" size="sm">Sign In</Button>
-              </Link>
-              <Link to="/signup">
-                <Button variant="primary" size="sm">Get Started <ChevronRight size={14} className="ml-1" /></Button>
-              </Link>
-            </>
-          )}
+          <Link to="/">
+            <Button variant="primary" size="sm">Dashboard <ChevronRight size={14} className="ml-1" /></Button>
+          </Link>
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}

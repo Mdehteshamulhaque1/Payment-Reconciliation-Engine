@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Search, Bell, Moon, Sun, Monitor, Menu, PanelLeftClose, PanelLeft, LogOut, User, Settings, Clock, Wifi, Shield, Code, ChevronRight, BarChart3 } from 'lucide-react'
+import { Search, Bell, Moon, Sun, Monitor, Menu, PanelLeftClose, PanelLeft, User, Settings, Clock, Wifi, Shield, Code, ChevronRight, BarChart3 } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { useThemeStore } from '@/store/themeStore'
 import { useDevStore } from '@/store/devStore'
@@ -18,7 +18,6 @@ interface TopbarProps {
 
 export function Topbar({ onMenuToggle, onCollapseToggle, collapsed }: TopbarProps) {
   const user = useAuthStore((s) => s.user)
-  const logout = useAuthStore((s) => s.logout)
   const { theme, cycleTheme } = useThemeStore()
   const { devMode, toggleDevMode, setDevPanelOpen } = useDevStore()
   const [time, setTime] = useState(new Date())
@@ -132,7 +131,7 @@ export function Topbar({ onMenuToggle, onCollapseToggle, collapsed }: TopbarProp
             <Dropdown.Item icon={<Settings size={14} />} onClick={() => window.location.href = '/settings'}>Settings</Dropdown.Item>
             {devMode && <Dropdown.Item icon={<Code size={14} />} onClick={() => setDevPanelOpen(true)}>API Metrics</Dropdown.Item>}
             <Dropdown.Divider />
-            <Dropdown.Item icon={<LogOut size={14} />} onClick={logout} danger>Sign out</Dropdown.Item>
+            <Dropdown.Item icon={<User size={14} />} onClick={() => {}}>Signed in as {user.name}</Dropdown.Item>
           </Dropdown>
         </div>
       </div>
