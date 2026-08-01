@@ -25,7 +25,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const location = useLocation()
 
   return (
-    <div className="flex min-h-screen flex-col bg-[var(--bg1)]">
+    <div className="flex min-h-screen flex-col bg-[var(--bg)]">
       <Topbar />
       <Sidebar />
       <ChatBot />

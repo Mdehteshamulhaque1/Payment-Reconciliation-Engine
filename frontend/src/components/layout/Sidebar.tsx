@@ -33,20 +33,11 @@ const sections: NavSection[] = [
   ]},
 ]
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface SidebarProps {
-}
-
-export function Sidebar(_props: SidebarProps) {
+export function Sidebar() {
   const location = useLocation()
 
   return (
-    <nav className="sticky top-16 z-40 flex items-center gap-1 overflow-x-auto border-b px-4 py-2 scrollbar-none"
-      style={{
-        borderColor: 'color-mix(in srgb, var(--accent-cyan) 8%, var(--border))',
-        background: 'color-mix(in srgb, var(--surface) 85%, transparent)',
-        backdropFilter: 'blur(12px)',
-      }}>
+    <nav className="sticky top-12 z-40 flex items-center gap-0.5 overflow-x-auto border-b border-[var(--hairline)] glass-strong px-4 py-1.5 scrollbar-none">
       {sections.map((section) =>
         section.items.map((item) => {
           const isActive = location.pathname === item.href
@@ -56,35 +47,23 @@ export function Sidebar(_props: SidebarProps) {
               key={item.href}
               to={item.href}
               className={cn(
-                'group relative flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium whitespace-nowrap transition-all duration-300 shrink-0',
+                'group relative flex items-center gap-1.5 rounded-pill px-3 py-1.5 text-body-md whitespace-nowrap transition-all duration-200 shrink-0',
                 isActive
-                  ? 'text-[var(--accent-cyan)] bg-[color-mix(in_srgb,var(--accent-cyan)_8%,transparent)]'
-                  : 'text-[var(--muted)] hover:text-[var(--text)] hover:bg-[color-mix(in_srgb,var(--accent-cyan)_5%,transparent)]',
+                  ? 'text-[var(--primary)] bg-[color-mix(in_srgb,var(--primary)_8%,transparent)]'
+                  : 'text-[var(--ink-mute)] hover:text-[var(--ink)] hover:bg-[color-mix(in_srgb,var(--primary)_4%,transparent)]',
               )}
             >
               {isActive && (
                 <motion.div
                   layoutId="sidebar-active"
-                  className="absolute inset-0 rounded-lg"
+                  className="absolute inset-0 rounded-pill"
                   style={{
-                    boxShadow: 'inset 0 0 0 1px color-mix(in srgb, var(--accent-cyan) 20%, transparent)',
+                    boxShadow: 'inset 0 0 0 1px color-mix(in srgb, var(--primary) 20%, transparent)',
                   }}
                   transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                 />
               )}
-              <motion.div
-                className="shrink-0"
-                whileHover={{ scale: 1.15 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-              >
-                <Icon
-                  size={16}
-                  className={cn(
-                    'transition-all duration-300',
-                    isActive && 'drop-shadow-[0_0_6px_var(--accent-cyan)]',
-                  )}
-                />
-              </motion.div>
+              <Icon size={15} className="shrink-0" />
               <span>{item.label}</span>
             </NavLink>
           )

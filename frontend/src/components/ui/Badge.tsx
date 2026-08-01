@@ -13,24 +13,24 @@ interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 const variantStyles: Record<BadgeVariant, string> = {
-  success: 'bg-[color-mix(in_srgb,var(--success)_10%,transparent)] text-[var(--success)] border border-[color-mix(in_srgb,var(--success)_20%,transparent)] shadow-[color-mix(in_srgb,var(--success)_12%,transparent)_0_0_12px]',
-  warning: 'bg-[color-mix(in_srgb,var(--warning)_10%,transparent)] text-[var(--warning)] border border-[color-mix(in_srgb,var(--warning)_20%,transparent)] shadow-[color-mix(in_srgb,var(--warning)_12%,transparent)_0_0_12px]',
-  danger: 'bg-[color-mix(in_srgb,var(--danger)_10%,transparent)] text-[var(--danger)] border border-[color-mix(in_srgb,var(--danger)_20%,transparent)] shadow-[color-mix(in_srgb,var(--danger)_12%,transparent)_0_0_12px]',
-  info: 'bg-[color-mix(in_srgb,var(--info)_10%,transparent)] text-[var(--info)] border border-[color-mix(in_srgb,var(--info)_20%,transparent)] shadow-[color-mix(in_srgb,var(--info)_12%,transparent)_0_0_12px]',
-  neutral: 'bg-[color-mix(in_srgb,var(--muted)_8%,transparent)] text-[var(--muted)] border border-[color-mix(in_srgb,var(--muted)_15%,transparent)]',
-  primary: 'bg-[color-mix(in_srgb,var(--accent-cyan)_10%,transparent)] text-[var(--accent-cyan)] border border-[color-mix(in_srgb,var(--accent-cyan)_20%,transparent)] shadow-[color-mix(in_srgb,var(--accent-cyan)_12%,transparent)_0_0_12px]',
+  success: 'bg-[color-mix(in_srgb,var(--success)_10%,transparent)] text-[var(--success)]',
+  warning: 'bg-[color-mix(in_srgb,var(--warning)_10%,transparent)] text-[var(--warning)]',
+  danger: 'bg-[color-mix(in_srgb,var(--danger)_10%,transparent)] text-[var(--danger)]',
+  info: 'bg-[color-mix(in_srgb,var(--info)_10%,transparent)] text-[var(--info)]',
+  neutral: 'bg-[color-mix(in_srgb,var(--ink-mute)_8%,transparent)] text-[var(--ink-mute)]',
+  primary: 'bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] text-[var(--primary-deep)]',
 }
 
 const sizeStyles: Record<BadgeSize, string> = {
-  sm: 'px-2 py-0.5 text-[10px]',
-  md: 'px-2.5 py-1 text-xs',
+  sm: 'px-2 py-0.5 text-micro-cap',
+  md: 'px-2.5 py-1 text-caption',
 }
 
 export function Badge({ variant = 'neutral', size = 'sm', pulse, dot, icon, className, children, ...props }: BadgeProps) {
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-md font-mono font-bold uppercase tracking-wider',
+        'inline-flex items-center gap-1.5 rounded-pill font-normal uppercase tracking-[0.1px]',
         variantStyles[variant],
         sizeStyles[size],
         className,

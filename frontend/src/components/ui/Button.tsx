@@ -1,9 +1,9 @@
-import { type ButtonHTMLAttributes, type ReactNode, type MouseEvent, forwardRef, useRef, useCallback, useState } from 'react'
+import { type ButtonHTMLAttributes, type ReactNode, forwardRef } from 'react'
 import { Loader2, Check } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { cn } from '../../lib/utils'
 
-type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'link'
+type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'link' | 'glass' | 'brutal' | 'skeuo'
 type ButtonSize = 'sm' | 'md' | 'lg'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -17,86 +17,72 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary: cn(
-    'bg-gradient-to-r from-[var(--primary)] to-[var(--primary-strong)] text-white',
-    'shadow-lg hover:shadow-xl hover:-translate-y-0.5',
-    'hover:shadow-[0_8px_30px_var(--primary-glow)]',
-    'active:translate-y-0 active:scale-[0.97] active:shadow-md',
-    'disabled:opacity-50',
-    'glass-sweep',
+    'bg-[var(--primary)] text-[var(--on-primary)]',
+    'hover:bg-[var(--primary-deep)]',
+    'active:bg-[var(--primary-press)]',
+    'disabled:opacity-50 disabled:cursor-not-allowed',
   ),
   secondary: cn(
-    'border border-[var(--border)] bg-[var(--surface)] text-[var(--text)]',
-    'hover:border-[var(--accent-cyan)] hover:bg-[color-mix(in_srgb,var(--accent-cyan)_5%,transparent)]',
-    'hover:-translate-y-0.5 hover:shadow-hud',
-    'active:translate-y-0 active:scale-[0.97]',
+    'border border-[var(--hairline)] bg-[var(--canvas)] text-[var(--ink)]',
+    'hover:border-[var(--primary)] hover:text-[var(--primary)]',
+    'active:bg-[color-mix(in_srgb,var(--primary)_6%,transparent)]',
   ),
   outline: cn(
-    'border border-[var(--border)] bg-transparent text-[var(--text)]',
-    'hover:border-[var(--accent-cyan)] hover:bg-[color-mix(in_srgb,var(--accent-cyan)_5%,transparent)]',
-    'hover:-translate-y-0.5 hover:shadow-[0_0_20px_color-mix(in_srgb,var(--accent-cyan)_6%,transparent)]',
-    'active:translate-y-0 active:scale-[0.97]',
+    'border border-[var(--hairline)] bg-transparent text-[var(--ink)]',
+    'hover:border-[var(--primary)] hover:text-[var(--primary)]',
+    'active:bg-[color-mix(in_srgb,var(--primary)_6%,transparent)]',
   ),
   ghost: cn(
-    'text-[var(--muted)] hover:text-[var(--text)]',
-    'hover:bg-[color-mix(in_srgb,var(--accent-cyan)_6%,transparent)]',
+    'text-[var(--ink-mute)] hover:text-[var(--ink)]',
+    'hover:bg-[color-mix(in_srgb,var(--primary)_6%,transparent)]',
     'active:scale-[0.97]',
   ),
   danger: cn(
-    'bg-gradient-to-r from-[var(--danger)] to-[var(--danger-strong)] text-white',
-    'shadow-lg hover:shadow-xl hover:-translate-y-0.5',
-    'hover:shadow-[0_8px_30px_color-mix(in_srgb,var(--danger)_20%,transparent)]',
-    'active:translate-y-0 active:scale-[0.97]',
-    'glass-sweep',
+    'bg-[var(--danger)] text-white',
+    'hover:opacity-90',
+    'active:opacity-80',
   ),
-  link: 'text-[var(--accent-cyan)] underline-offset-4 hover:underline p-0 h-auto',
+  link: cn(
+    'text-[var(--primary)] underline-offset-4 hover:underline p-0 h-auto',
+  ),
+  glass: cn(
+    'glass text-[var(--ink)] hover:bg-[color-mix(in_srgb,var(--primary)_8%,transparent)]',
+    'active:scale-[0.97]',
+  ),
+  brutal: cn(
+    'brutal-border-sm bg-[var(--canvas)] text-[var(--ink)] font-bold uppercase tracking-[0.02em]',
+    'hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none',
+    'active:translate-x-[4px] active:translate-y-[4px] active:shadow-none',
+    'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[4px_4px_0_var(--ink)]',
+  ),
+  skeuo: cn(
+    'skeuo-btn text-white font-medium',
+    'active:skeuo-press',
+    'disabled:opacity-50 disabled:cursor-not-allowed',
+  ),
 }
 
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: 'h-8 px-3 text-xs gap-1.5 rounded-lg',
-  md: 'h-10 px-5 text-sm gap-2 rounded-xl',
-  lg: 'h-12 px-7 text-base gap-2.5 rounded-xl',
+  sm: 'h-8 px-4 text-button-sm gap-1.5',
+  md: 'h-10 px-5 text-button-md gap-2',
+  lg: 'h-12 px-7 text-button-md gap-2.5',
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', loading, icon, iconRight, disabled, children, success, ...props }, ref) => {
-    const btnRef = useRef<HTMLButtonElement>(null)
-    const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>([])
-
-    const combinedRef = useCallback((node: HTMLButtonElement | null) => {
-      (btnRef as React.MutableRefObject<HTMLButtonElement | null>).current = node
-      if (typeof ref === 'function') ref(node)
-      else if (ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node
-    }, [ref])
-
-    const handleRipple = useCallback((e: MouseEvent<HTMLButtonElement>) => {
-      if (variant === 'link') return
-      const rect = btnRef.current?.getBoundingClientRect()
-      if (!rect) return
-      const id = Date.now()
-      const x = e.clientX - rect.left
-      const y = e.clientY - rect.top
-      setRipples((prev) => [...prev, { id, x, y }])
-      setTimeout(() => setRipples((prev) => prev.filter((r) => r.id !== id)), 600)
-    }, [variant])
-
     return (
       <motion.div
         whileTap={!disabled && !loading ? { scale: 0.97 } : undefined}
         className="inline-block"
       >
         <button
-          ref={combinedRef}
+          ref={ref}
           disabled={disabled || loading}
-          onClick={(e) => {
-            handleRipple(e)
-            props.onClick?.(e as unknown as MouseEvent<HTMLButtonElement>)
-          }}
           className={cn(
-            'inline-flex items-center justify-center font-semibold transition-all duration-300 relative overflow-hidden',
-            'disabled:cursor-not-allowed',
+            'pill-button',
             variantStyles[variant],
             sizeStyles[size],
-            success && 'bg-[var(--success)] !shadow-[0_0_20px_color-mix(in_srgb,var(--success)_20%,transparent)]',
+            success && '!bg-[var(--success)]',
             className,
           )}
           {...props}
@@ -118,17 +104,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           </AnimatePresence>
           {children}
           {iconRight}
-          {/* Ripple effects */}
-          {ripples.map((r) => (
-            <span
-              key={r.id}
-              className="absolute rounded-full bg-white/20 pointer-events-none"
-              style={{
-                left: r.x - 10, top: r.y - 10, width: 20, height: 20,
-                animation: 'rippleExpand 0.6s ease-out forwards',
-              }}
-            />
-          ))}
         </button>
       </motion.div>
     )

@@ -1,13 +1,12 @@
 import { create } from 'zustand'
 
-type Theme = 'light' | 'dim' | 'dark'
+type Theme = 'light' | 'dark'
 const THEME_KEY = 'pf_theme'
-const THEMES: Theme[] = ['light', 'dim', 'dark']
+const THEMES: Theme[] = ['light', 'dark']
 
 function applyTheme(theme: Theme) {
   const html = document.documentElement
-  html.classList.remove('dim', 'dark')
-  if (theme === 'dim') html.classList.add('dim')
+  html.classList.remove('dark')
   if (theme === 'dark') html.classList.add('dark')
 }
 
